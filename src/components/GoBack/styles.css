@@ -1,0 +1,12 @@
+.goBack {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+}
+.goBack .icon {
+    color: #666666;
+}
+.goBack:hover {
+    cursor: pointer;
+}

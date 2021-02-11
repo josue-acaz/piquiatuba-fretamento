@@ -1,0 +1,29 @@
+.action3 {
+    margin-top: 2rem;
+}
+.action3 .action3-paper {
+    padding: .5rem;
+    margin-left: .5rem;
+    text-align: center;
+}
+.action3 .action3-paper:hover {
+    cursor: pointer;
+    background-color: #fafafa;
+}
+.action3 .action3-paper .whatsapp-icon {
+    font-size: 32px;
+    color: #25d366;
+}
+.action3 .action3-paper p {
+    font-size: 16px;
+    font-weight: 500;
+    color: #666666;
+}
+.action3 .action3-paper .email-icon {
+    font-size: 32px;
+    color: #2525db;
+}
+.action3 .action3-paper .download-icon {
+    font-size: 32px;
+    color: #444444;
+}

@@ -1,0 +1,17 @@
+.pagetitle {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+.pagetitle .title {
+    font-weight: bold;
+    color: #7a7a7a;
+    text-align: left;
+    font-size: 24px;
+}
+.pagetitle .subtitle {
+    font-weight: 500;
+    color: #cccccc;
+    font-size: 12px;
+    text-transform: uppercase;
+}

@@ -1,0 +1,108 @@
+.flight-segment {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+}
+.btn-remove-segment .icon {
+    color: red;
+}
+.btn-expand .icon {
+    font-size: 28px;
+}
+.flight-segment-minimized {
+    background-color: #f2f2f2;
+}
+.flight-segment-minimized .content .expand-content {
+    padding: 1rem;
+}
+.flight-segment-minimized {
+    margin-bottom: .5rem;
+}
+.flight-segment-editing {
+    margin-top: .5rem;
+}
+.flight-segment .segment-type {
+    flex-direction: column;
+}
+.flight-segment .segment-type span {
+    display: block;
+}
+.flight-segment .segment-type .error {
+    color: #ec3d3d;
+    font-size: 14px;
+}
+.flight-segment .segment-type .select-segment-type {
+    width: 150px;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: .6rem;
+    height: auto;
+    cursor: pointer;
+    padding-left: .6rem;
+    padding-right: .2rem;
+    background-color: #ffffff;
+    color: #444444;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .23);
+}
+.flight-segment .segment-type .select-segment-type .MuiSvgIcon-root {
+    color: #444444;
+}
+.flight-segment .segment-type .select-segment-trip {
+    background-color: #324f80;
+    color: #ffffff;
+}
+.flight-segment .segment-type .select-segment-transfer {
+    background-color: #f2f2f2;
+    color: #444444;
+}
+.flight-segment .segment-type .select-segment-trip .MuiSvgIcon-root {
+    color: #ffffff;
+}
+.flight-segment .calculed_distance {
+    padding: .2rem 1rem .2rem 1rem;
+    border-radius: .5rem;
+    background-color: #4CAF50;
+    color: #ffffff;
+}
+.flight-segment .segment-summary {
+    margin-left: 10px;
+}
+.flight-segment .calculed_flight_time {
+    padding: .2rem 1rem .2rem 1rem;
+    border-radius: .5rem;
+    background-color: #ffa822;
+    color: #ffffff;
+    margin-left: 1rem;
+}
+
+@media screen and (max-width: 800px) {
+    .flight-segment .segment-footer {
+        flex-direction: column;
+    }
+    .flight-segment .calculed_flight_time {
+        width: 100%;
+        margin-left: 0;
+    }
+    .flight-segment .segment-footer .segment-type {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    .flight-segment .segment-footer .segment-type .select-segment-type {
+        width: 100%;
+    }
+    .flight-segment .segment-footer .calculed {
+        flex-direction: column;
+        width: 100%;
+    }
+    .flight-segment .segment-footer .calculed_distance {
+        display: block;
+        margin-bottom: 1rem;
+        width: 100%;
+        margin-right: 0;
+    }
+}

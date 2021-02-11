@@ -1,0 +1,59 @@
+.share .btnShare {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+}
+.share .dialog {
+    transition: .2s;
+}
+.share .btnShare .icon {
+    font-size: 24px;
+    color: #444444;
+}
+.share .btnShare .icon:hover {
+    color: blue;
+}
+.share {
+    position: relative;
+}
+.share .dialog {
+    position: absolute;
+    left: -70px;
+    top: 10px;
+    background-color: #ffffff;
+    z-index: 9;
+    display: flex;
+    border-width: 1px;
+    border-color: #e7e7e7;
+    border-style: solid;
+    border-radius: .6rem;
+    height: 50px;
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+.share .dialog span {
+    display: inline-block;
+    cursor: pointer;
+}
+.share .dialog span .icon {
+    font-size: 20px;
+}
+.share .dialog span .whatsapp {
+    color: #444444;
+}
+.share .dialog span .whatsapp:hover {
+    color: #25d366;
+}
+.share .dialog span .email {
+    color: #444444;
+}
+.share .dialog span .email:hover {
+    color: #254ac4;
+}

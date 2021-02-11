@@ -1,0 +1,7 @@
+.toolbar-actions {
+    display: flex;
+    align-items: center;
+}
+.toolbar-actions .tooltip-col {
+    display: inline-block;
+}

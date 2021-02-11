@@ -1,0 +1,52 @@
+.header-nav {
+    height: 66px;
+    background-color: #f1f1f1;
+}
+.header-nav .nav { /*Alterar, no momento está sendo usando a margem à direita para compensar*/
+    position: fixed;
+    margin-right: 18%; /* Same as the width of the sidenav */
+    width: 100%;
+    background-color: #ffffff;
+    z-index: 998;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.23);
+    display: flex;
+    align-items: center;
+    height: inherit;
+}
+.header-nav .user-menu { /*Modificar isso aqui*/
+    text-align: right;
+    width: 100%;
+    height: inherit;
+    padding-top: .4rem;
+    padding-right: .4rem;
+}
+.header-nav .btnCollapseSidebar {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.header-nav .btnCollapseSidebar .icon {
+    font-size: 32px;
+    color: #666666;
+}
+
+@media screen and (max-width: 1200px) {
+    .header-nav .user-menu {
+        text-align: left;
+    }
+    .header-nav .user-menu {
+        display: inline-block;
+        width: auto;
+        padding-right: 0px;
+        padding-left: .4rem;
+    }
+    .header-nav .collapse-sidebar {
+        display: inline-block;
+        padding: .6rem .8rem 0rem 0rem;
+    }
+    .header-nav .nav {
+        display: flex;
+        margin-right: 0%;
+        justify-content: space-between;
+    }
+}

@@ -1,0 +1,25 @@
+.layout {
+    background-color: #ffffff;
+    height: 100%;
+}
+.layout .minimizedSidebar {
+    width: 100px;
+}
+.layout .maximizedMain {
+    margin-left: 100px;
+}
+
+@media screen and (max-width: 1200px) {
+    .layout .minimizedSidebar {
+        display: none;
+    }
+    .layout .maximizedMain {
+        margin-left: 0%;
+    }
+    .layout .minimizedSidebar {
+        width: 100%;
+    }
+    .layout .maximizedMain {
+        margin-left: 0%;
+    }
+}

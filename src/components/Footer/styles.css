@@ -1,0 +1,36 @@
+footer {
+    margin-top: 3rem;
+    padding-bottom: 3rem;
+    text-align: center;
+    justify-content: center;
+}
+
+footer p {
+    font-size: 18px;
+}
+footer .title {
+    font-weight: bold;
+    font-size: 20px;
+}
+footer img {
+    width: 160px;
+    height: 80px;
+    object-fit: contain;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+}
+
+@media screen and (max-width: 800px) {
+    footer img {
+        height: 130px;
+        height: 50px;
+    }
+    footer .title {
+        font-size: 18px;
+    }
+}

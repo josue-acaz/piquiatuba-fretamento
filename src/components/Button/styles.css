@@ -1,0 +1,20 @@
+.pqb-button {
+    border: none;
+    width: 200px;
+    height: 40px;
+    display: flex;
+    border-radius: .5rem;
+    align-items: center;
+    justify-content: center;
+    background-color: #324f80;
+    color: #ffffff;
+    font-size: 16px;
+    border-width: 2px;
+    border-color: #324f80;
+    border-style: solid;
+}
+
+.pqb-button:hover {
+    border-color: #cccccc;
+    cursor: pointer;
+}

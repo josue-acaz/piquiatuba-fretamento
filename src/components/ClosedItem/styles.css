@@ -1,0 +1,74 @@
+.closed-item {
+    padding: .4rem .6rem .4rem .6rem;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    width: 150px;
+    max-width: 150px;
+    height: 40px;
+    -webkit-transition: .4s;
+    transition: all .4s;
+}
+.closed-item p {
+    color: #ffffff;
+    width: 100%;
+    text-align: left;
+    margin-left: 5px;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.closed-item .circle {
+    background-color: #ffffff;
+    border-radius: 20rem;
+    height: 25px;
+    width: 25px;
+    -webkit-transition: .4s;
+    transition: all .4s;
+}
+.closed-item::before{
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.closed-item .circle::before{
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.closed-item .circle .icon {
+    color: #888888;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.closed-primary {
+    background-color: teal;
+    -webkit-transition: .4s;
+    transition: .4s;
+    position: relative;
+}
+.closed-secondary {
+    background-color: #ff9e9e;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.closed-under {
+    background-color: #cacaca;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.closed-item .switch {
+    position: absolute;
+    right: 10px;
+}
+
+@media screen and (max-width: 800px) {
+    .closed-item {
+        width: 80px;
+        position: relative;
+    }
+    .closed-item p {
+        display: none;
+    }
+}

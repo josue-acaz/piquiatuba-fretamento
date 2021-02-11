@@ -1,0 +1,68 @@
+.loader-processing-action,
+.loader-processing-action:after {
+  border-radius: 50%;
+  width: 6em;
+  height: 6em;
+}
+.loader-processing-action {
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: .5em solid #f2f2f2;
+  border-right: .5em solid #f2f2f2;
+  border-bottom: .5em solid #f2f2f2;
+  border-left: .5em solid red;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: loadAction 1.1s infinite linear;
+  animation: loadAction 1.1s infinite linear;
+}
+@-webkit-keyframes loadAction {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes loadAction {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.processing-action {
+    height: 93vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.processing-action .loader-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.processing-action .content {
+    text-align: center;
+    position: relative;
+}
+.processing-action .content .icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+.processing-action .icon {
+    font-size: 28px;
+    color: red;
+}
+
+.processing-action .desc {
+    margin-top: 1rem;
+}

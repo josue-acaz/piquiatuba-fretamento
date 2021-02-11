@@ -1,0 +1,102 @@
+input[type="text"], textarea, select { 
+    outline: none;
+}
+/* width */
+.spanoption::-webkit-scrollbar {
+    width: 10px;
+}
+  
+/* Track */
+.spanoption::-webkit-scrollbar-track {
+    background: #e4e4e4; 
+}
+   
+/* Handle */
+.spanoption::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+/* Handle on hover */
+.spanoption::-webkit-scrollbar-thumb:hover {
+    background: #6e6e6e; 
+}
+.autocomplete {
+    position: relative;
+}
+.autocomplete input {
+    width: 100%;
+    font-size: 18px;
+    color: #444444;
+    padding: .8rem .5rem .8rem .5rem;
+    border: none;
+    border-radius: .6rem;
+    cursor: pointer;
+}
+.autocomplete .auto-container {
+    padding: 1.2rem 1rem 1.8rem 1.2rem;
+    background-color: #ffffff;
+    position: absolute;
+    width: 100%;
+    top: 2.2rem;
+    border-bottom-left-radius: .6rem;
+    border-bottom-right-radius: .6rem;
+    z-index: 980;
+}
+.autocomplete .spanoption {
+    background-color: #ffffff;
+    max-height: 350px;
+    overflow-y: scroll;
+    border: none;
+    border-left-width: .1rem;
+    border-left-color: #ebebeb;
+    border-left-style: solid;
+    padding-left: .8rem;
+    padding-right: .8rem;
+}
+.autocomplete .spanoption .options .item {
+    padding: 1rem .2rem 1rem .2rem;
+    background-color: #ffffff;
+    border-bottom-style: solid;
+    border-bottom-width: .1rem;
+    border-bottom-color: #f7f7f7;
+    overflow: hidden;
+}
+.autocomplete .spanoption .options .item:hover {
+    background-color: #f4f4f4;
+}
+.autocomplete .spanoption .options .item {
+    font-size: 18px;
+    color: #444444;
+}
+.autocomplete .spanoption .options .op:hover {
+    cursor: pointer;
+}
+.autocomplete .input {
+    position: relative;
+}
+.autocomplete .spanicon {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    z-index: 99;
+    cursor: pointer;
+}
+.autocomplete .noresults {
+    color: #444444;
+    padding-left: 1.2rem;
+}
+.autocomplete .loading-options {
+    color: #444444;
+    padding-left: .2rem;
+}
+
+@media screen and (max-width: 800px) {
+    .autocomplete input {
+        font-size: 16px;
+    }
+    .autocomplete .spanoption .options .item {
+        font-size: 16px;
+    }
+}

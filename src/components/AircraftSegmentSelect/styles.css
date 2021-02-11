@@ -1,0 +1,69 @@
+.aircraft-segment-select {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: .5rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+}
+.render-aircraft-segment {
+    height: auto;
+    padding: 1rem;
+    border-radius: .5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .23);
+}
+.render-aircraft-segment .thumbnail {
+    height: 140px;
+}
+.render-aircraft-segment .thumbnail img {
+    height: inherit;
+    border-radius: .5rem;
+    width: 100%;
+    object-fit: cover;
+}
+.render-aircraft-segment .thumbnail {
+    width: 30%;
+    position: relative;
+}
+.render-aircraft-segment .view-schedule {
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 2rem;
+    top: 5px;
+    right: 5px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .23);
+}
+.render-aircraft-segment .view-schedule .icon {
+    color: #324f80;
+    font-size: 24px;
+}
+.render-aircraft-segment .details {
+    width: 70%;
+    height: 140px;
+    padding-left: 1rem;
+}
+.render-aircraft-segment .aircraft-name {
+    font-size: 18px;
+    color: #324f80;
+}
+.render-aircraft-segment .aircrfat-prefix {
+    font-size: 16px;
+    color: #444444;
+}
+
+@media screen and (max-width: 800px) {
+    .flex-aircraft-segment {
+        flex-direction: column;
+    }
+    .flex-aircraft-segment .thumbnail {
+        width: 100%;
+        height: 160px;
+    }
+    .flex-aircraft-segment .details{
+        width: 100%;
+        padding-left: 0rem;
+        height: auto;
+    }
+    .flex-aircraft-segment .details .aircraft-summary {
+        margin-top: 1rem;
+    }
+}

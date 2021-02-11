@@ -1,0 +1,19 @@
+.inline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.inline .cmp {
+    display: inline-block;
+}
+.inline .cmp .center-cmp {
+    display: flex;
+    align-items: center;
+}
+.inline .center-cmp .select {
+    display: block;
+}
+.inline .center-cmp .label {
+    display: block;
+}

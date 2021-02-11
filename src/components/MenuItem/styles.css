@@ -1,0 +1,123 @@
+.menu-item {
+    padding: 1.2rem .4rem 1.2rem .4rem;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid transparent;
+    transition: .2s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.menu-item .left {
+    display: flex;
+    align-items: center;
+}
+.submenus .a-submenu {
+    padding: .8rem .4rem .8rem 1.4rem;
+    background-color: #fafafa;
+    display: flex;
+    align-items: center;
+    border-bottom-width: 1px;
+    border-bottom-color: #f2f2f2;
+    border-bottom-style: solid;
+    transition: .2s;
+}
+.submenus .a-submenu:hover {
+    background-color: #f2f2f2;
+}
+.submenus .submenu-item {
+    display: flex;
+    align-items: center;
+}
+.submenu-item .icon-submenu {
+    font-size: 20px;
+}
+.menu-item-active {
+    background-color: rgba(247, 247, 247, .5);
+    cursor: pointer;
+    border-left: 2px solid #024be9;
+    border-right: 2px solid transparent;
+}
+.menu-item .left .col-item {
+    display: inline-block;
+    height: 100%;
+}
+.menu-item .left .col-item .icon {
+    font-size: 24px;
+}
+.a-menu:visited {
+    color: #9b9b9b;
+}
+.a-submenu {
+    border-right-width: 2px;
+    border-right-style: solid;
+    border-right-color: transparent;
+    border-left: 2px solid transparent;
+    transition: .2s;
+}
+.a-submenu:visited {
+    color: #777777;
+}
+.a-submenu:hover {
+    background-color: rgba(247, 247, 247, .5);
+    cursor: pointer;
+    border-left: 2px solid #024be9;
+    border-right-width: 2px;
+    border-right-style: solid;
+    border-right-color: transparent;
+    color: #024be9;
+}
+.menu-item .left {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.menu-item .justify-center {
+    justify-content: center;
+}
+.menu-item .left .col-item .active {
+    color: #024be9;
+}
+.menu-item .left .col-item .label {
+    font-size: 14px;
+    margin-left: 5px;
+}
+.submenus .submenu-item .col-item .label {
+    font-size: 14px;
+    margin-left: 5px;
+}
+.submenus .submenu-item .col-item .to-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.menu-item .col-item .to-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.menu-item:hover {
+    background-color: #f7f7f780;
+    cursor: pointer;
+    border-left-width: 2px;
+    border-left-color: #024be9;
+    color: #024be9;
+    border-left-style: solid;
+}
+.a-menu .hide-label {
+    display: none;
+}
+
+.a-menu {
+    position: relative;
+}
+.minimized-submenus {
+    transition: .2s;
+    background-color: #fafafa;
+    position: absolute;
+    height: auto;
+    width: 200px;
+    top: 30px;
+    left: 100px;
+    z-index: -999999;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

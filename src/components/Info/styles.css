@@ -1,0 +1,108 @@
+#info {
+    background-color: rgba(0, 0, 0, 0.05);
+    position: fixed;
+    z-index: 999999;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+  
+  .info .card {
+      position: absolute;
+      top: 38%; /* centers the loading animation vertically one the screen */
+      left: 41%; /* centers the loading animation horizontally one the screen */
+      text-align: center;
+      background-color: #ffffff;
+      padding: 2rem 4rem 2rem 4rem;
+  }
+  
+  .info .card .process .success-icon {
+      font-size: 3.2rem;
+      color: #599026;
+  }
+  
+  .info .card .process .error-icon {
+      font-size: 3.2rem;
+      color: #ff6666;
+  }
+  
+  .info .card p {
+      font-size: 18px;
+      color: #444;
+  }
+  
+  .info .card button {
+      border: none;
+      margin-top: 1rem;
+      padding: .4rem 0rem .4rem 0rem;
+      width: 100%;
+      font-size: 16px;
+      color: #111111;
+      background-color: #324f80;
+      color: #ffffff;
+  }
+  
+  .lds-ellipsis {
+      display: inline-block;
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+    .lds-ellipsis div {
+      position: absolute;
+      top: 33px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #264d90;
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+    .lds-ellipsis div:nth-child(1) {
+      left: 8px;
+      animation: lds-ellipsis1 0.6s infinite;
+    }
+    .lds-ellipsis div:nth-child(2) {
+      left: 8px;
+      animation: lds-ellipsis2 0.6s infinite;
+    }
+    .lds-ellipsis div:nth-child(3) {
+      left: 32px;
+      animation: lds-ellipsis2 0.6s infinite;
+    }
+    .lds-ellipsis div:nth-child(4) {
+      left: 56px;
+      animation: lds-ellipsis3 0.6s infinite;
+    }
+    @keyframes lds-ellipsis1 {
+      0% {
+        transform: scale(0);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    @keyframes lds-ellipsis3 {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(0);
+      }
+    }
+    @keyframes lds-ellipsis2 {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(24px, 0);
+      }
+    }
+    
+  
+  @media screen and (max-width: 800px) {
+    .info .card {
+      top: 32%;
+        left: 12%;
+    }
+  }

@@ -1,0 +1,38 @@
+.main-nav {
+    padding: .8rem .8rem .8rem .8rem;
+    border-bottom: 1px solid #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    height: 66px;
+    overflow: hidden;
+}
+.main-nav img {
+    height: 50px;
+    width: 50px;
+    object-fit: contain;
+}
+.main-nav .btnShowSidebar {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    display: none;
+}
+.main-nav .btnShowSidebar .icon {
+    font-size: 28px;
+    color: #666666;
+}
+@media screen and (max-width: 1200px) {
+    .main-nav {
+        width: 100%;
+        justify-content: space-between;
+        padding: 1rem .8rem .8rem .4rem;
+    }
+    .main-nav .col-nav {
+        display: inline-block;
+    }
+    .main-nav .btnShowSidebar {
+        display: flex;
+    }
+}

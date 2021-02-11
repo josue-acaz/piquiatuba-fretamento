@@ -1,0 +1,23 @@
+.search-cmp .lupa input {
+    background-color: #ffffff;
+    padding: 1rem 1rem 1rem 3rem;
+}
+.search-cmp .lupa {
+    background-color: #ffffff;
+}
+.search-cmp .lupa span {
+    top: 10px;
+}
+.search-cmp .icon {
+    font-size: 28px;
+    color: #666666;
+}
+
+@media screen and (max-width: 800px) {
+    .search-cmp input {
+        padding-left: .5rem;
+    }
+    .search-cmp .lupa span {
+        left: 5px;
+    }
+}

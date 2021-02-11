@@ -1,0 +1,83 @@
+.generate-quotation {
+    background-color: #f2f2f2;
+    height: auto;
+}
+.generate-quotation .add-segment-btn button {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+}
+.generate {
+    margin-bottom: 10rem;
+}
+.generate .with-extra-info {
+    background-color: #ffffff;
+    padding: .5rem 1rem .5rem 1rem;
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+}
+.generate label {
+    font-size: 16px;
+    color: #444444;
+    font-weight: 500;
+}
+.view-quote-price {
+    background-color: #ffffff;
+    padding: 1rem 1rem 0rem 1rem;
+    border-radius: .5rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+}
+.view-quote-price .icon {
+    font-size: 26px;
+}
+.view-quote-price .estimated_price {
+    padding: .5rem 1rem .5rem 1rem;
+    background-color: #f2f2f2;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .23);
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    border-radius: .5rem;
+    width: auto;
+    color: #324f80;
+}
+.view-quote-price .price_per_km {
+    margin-left: 1rem;
+    padding: .5rem 1rem .5rem 1rem;
+    background-color: #f2f2f2;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .23);
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    border-radius: .5rem;
+    width: auto;
+    color: #444444;
+}
+
+.view-quote-price .total_distance {
+    padding: .2rem 1rem .2rem 1rem;
+    border-radius: .5rem;
+    background-color: #324f80;
+    color: #ffffff;
+}
+
+@media screen and (max-width: 800px) {
+    .view-quote-price .estimated_price {
+        width: 100%;
+    }
+    .view-quote-price .header {
+        flex-direction: column;
+    }
+    .view-quote-price .header .title {
+        width: 100%;
+    }
+    .view-quote-price .header .total_distance {
+        width: 100%;
+        margin-top: .5rem;
+    }
+    .view-quote-price .estimated {
+        flex-direction: column;
+    }
+    .view-quote-price .price_per_km {
+        width: 100%;
+        margin-left: 0;
+    }
+}

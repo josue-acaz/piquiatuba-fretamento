@@ -1,0 +1,28 @@
+.client-segment .select {
+    width: 100%;
+    font-size: 18px;
+    color: #444444;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: .6rem;
+    background-color: #f2f2f2;
+    padding: .4rem .5rem .4rem 1.2rem;
+    cursor: pointer;
+}
+.client-segment .aeromedical-title {
+    color: rgb(255, 86, 86);
+}
+.client-segment .aeromedical-icon {
+    color: rgb(255, 86, 86);
+    margin-right: 5px;
+}
+
+@media screen and (max-width: 800px) {
+    .client-segment .ambulance-config {
+        flex-direction: column;
+    }
+    .client-segment .switch-ambulance {
+        width: 100%;
+    }
+}

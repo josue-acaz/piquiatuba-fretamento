@@ -1,0 +1,62 @@
+.input-adorment {
+    position: relative;
+}
+
+.input-container {
+    z-index: 9;
+}
+.input-adorment span.adorment {
+    position: absolute;
+    top: 9px;
+    font-size: 18px;
+    color: #666666;
+    font-weight: 400;
+    padding-left: .5rem;
+}
+
+.primary-input {
+    background-color: #ffffff;
+}
+
+.secondary-input {
+    background-color: #f2f2f2;
+}
+
+.input-adorment span.adorment-start {
+    left: 12px;
+}
+
+.input-adorment span.adorment-end {
+    right: 12px;
+}
+
+.input-adorment input.input {
+    width: 100%;
+    font-size: 18px;
+    color: #444444;
+    border: none;
+    border-radius: .6rem;
+}
+
+.input-adorment input.input-start {
+    padding: .8rem .8rem .8rem 2.8rem;
+}
+
+.iinput-adorment input.input-end {
+    padding: .8rem 2.8rem .8rem .8rem;
+}
+
+.input-adorment .icon {
+    position: absolute;
+    top: 2px;
+}
+
+@media screen and (max-width: 800px) {
+    input.input {
+        font-size: 16px;
+    }
+}
+
+.input-container {
+    margin-bottom: 10px;
+}

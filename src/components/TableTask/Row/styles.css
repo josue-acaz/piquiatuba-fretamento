@@ -1,0 +1,13 @@
+.expand-row .expand-cell {
+    padding-bottom: 0;
+    padding-top: 0;
+    border: none;
+}
+.expand-row .expansive-content-row {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.expand-row .expand-collapse {
+    padding-left: 0;
+    padding-right: 0;
+}

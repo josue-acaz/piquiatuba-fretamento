@@ -1,0 +1,43 @@
+.generated .content {
+    margin-top: 2rem;
+}
+.generated .content .img {
+    text-align: center;
+}
+.generated .action-title {
+    font-size: 18px;
+    font-weight: 400;
+    color: #888888;
+    text-align: center;
+    margin-top: 1rem;
+}
+.generated .actions {
+    display: flex;
+    justify-content: center;
+}
+.generated .actions .action-buttons {
+    width: 400px;
+    background-color: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+    border-radius: .5rem;
+    padding: .5rem 1rem .5rem 1rem;
+    margin-top: 1rem;
+}
+.generated .actions .action-buttons .whatsapp-btn:hover  {
+    color: #25d366;
+}
+.generated .action-buttons .email-btn:hover {
+    color: #0072C6;
+}
+.generated .action-buttons .cloud-btn:hover {
+    color: #264d90;
+}
+
+@media screen and (max-width: 800px) {
+    .actions .action-buttons {
+        width: 100%;
+    }
+}

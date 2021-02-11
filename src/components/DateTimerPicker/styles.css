@@ -1,0 +1,14 @@
+.calendar-select {
+    width: 100%;
+}
+.calendar-select input {
+    width: 100%;
+    font-size: 18px;
+    padding: .8rem;
+    border: none;
+    border-radius: .6rem;
+    background-color: #f2f2f2;
+}
+.calendar-select input:hover {
+    outline: none;
+}

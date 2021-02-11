@@ -1,0 +1,45 @@
+.sidebar {
+    height: 100%;
+    width: 18%;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    transition: width .2s;
+    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.23);
+}
+.sidebar a {
+    text-decoration: none;
+}
+.sidebar .menu {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #fafafa;
+    border-top: 1px solid #f1f1f1;
+}
+.sidebar .menuBtn {
+    border: 0;
+    background-color: transparent;
+    text-align: right;
+    width: 100%;
+    cursor: pointer;
+}
+.sidebar .menu .menuBtn .icon {
+    font-size: 24px;
+    color: #444444;
+}
+
+@media screen and (max-width: 1200px) {
+    .sidebar {
+        display: none;
+        height: 100%;
+    }
+    .sidebar {
+        width: 100%;
+    }
+    .sidebar .menu {
+        display: none;
+    }
+}

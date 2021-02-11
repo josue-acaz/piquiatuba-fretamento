@@ -1,0 +1,34 @@
+input[type="text"], [type="number"] { 
+    outline: none;
+}
+
+.input-container {
+    z-index: 9;
+}
+
+input.input {
+    width: 100%;
+    font-size: 18px;
+    padding: .8rem;
+    border: none;
+    border-radius: .6rem;
+}
+
+.input-primary {
+    background-color: #f2f2f2;
+    color: #444444;
+}
+
+.input-secondary {
+    background-color: #ffffff;
+    color: #444444;
+}
+
+@media screen and (max-width: 800px) {
+    input.input {
+        font-size: 16px;
+    }
+}
+.input-container {
+    margin-bottom: 10px;
+}

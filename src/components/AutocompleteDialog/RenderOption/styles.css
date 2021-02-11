@@ -1,0 +1,19 @@
+.render-option {
+    border-top-width: 1px;
+    border-top-color: #cccccc;
+    border-top-style: solid;
+}
+.render-option .op {
+    height: auto;
+    width: 100%;
+}
+.render-option-bottom-border {
+    border-bottom-width: 1px;
+    border-bottom-color: #f0f0f0;
+    border-bottom-style: solid;
+}
+.auto-dialog .render-op-border-top {
+    border-top-width: 1px;
+    border-top-color: #f0f0f0;
+    border-top-style: solid;
+}
