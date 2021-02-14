@@ -20,7 +20,7 @@ export default function Sidebar({className, options=[], handleShow, handleOpen, 
         });
 
         setVisible(visibleItems);
-    }, []);
+    }, [options]);
 
     function toggleOpen(name) {
         let _visible = {};

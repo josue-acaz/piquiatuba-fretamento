@@ -1,10 +1,10 @@
 import React from 'react';
 import {Switch, Route, useRouteMatch} from 'react-router-dom';
 
+import ListQuotations from './ListQuotations';
 import Generate from './Generate';
-import Consult from './Consult';
-import Medical from './Medical';
 import Generated from './Generated';
+import Medical from './Medical';
 
 export default function Quotations(props) {
     const {path} = useRouteMatch();
@@ -13,7 +13,7 @@ export default function Quotations(props) {
         {
             exact: false,
             path,
-            component: Consult
+            component: ListQuotations,
         },
         {
             exact: false,

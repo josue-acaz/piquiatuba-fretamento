@@ -7,7 +7,6 @@ import { PageTitle, Alert } from "../../../components";
 import { WrapperContent } from '../../../core/design';
 import TableTask from '../../../components/TableTask';
 import { useFeedback } from '../../../core/feedback/feedback.context';
-import { formatDatetime } from '../../../utils';
 import api from '../../../api';
 
 import './styles.css';
@@ -78,7 +77,7 @@ function getTableRows(bases) {
                 },
                 {
                     id: 5,
-                    text: formatDatetime(base.createdAt),
+                    text: base.createdAt,
                     disablePadding: false,
                     align: 'right',
                 },

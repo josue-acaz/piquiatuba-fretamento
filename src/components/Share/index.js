@@ -3,7 +3,7 @@ import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 import EmailIcon from '@material-ui/icons/Email';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import OutsideClickHandler from "react-outside-click-handler";
-import { shareOnWhatsapp, shareOnEmail } from "../../utils";
+import { shareOnWhatsapp } from "../../utils";
 
 import './styles.css';
 
@@ -12,7 +12,7 @@ export default function Share({ quotation, history }) {
     const handleOpen = () => { setOpen(!open) };
 
     function handleShareEmail(act) {
-        shareOnEmail(act, history, "/send");
+        
     }
 
     return(

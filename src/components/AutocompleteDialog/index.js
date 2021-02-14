@@ -13,7 +13,7 @@ import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import OutsideClickHandler from 'react-outside-click-handler';
 import RenderOption from './RenderOption';
-import {currency/**, formatDatetime, parseSqlToDatetime */} from '../../utils';
+import { currency } from '../../utils';
 import api from '../../api';
 
 import './styles.css';
@@ -160,7 +160,7 @@ export default function AutocompleteDialog({open=true, handleClose, title='Anexa
                                             <>
                                                 <p><strong>Origem ➟ </strong>{op.origin_aerodrome.full_name}, {op.origin_aerodrome.city_uf}</p>
                                                 <p><strong>Destino ➟ </strong>{op.destination_aerodrome.full_name}, {op.destination_aerodrome.city_uf}</p>
-                                                <p>Criada em {op.createdAt/**formatDatetime(parseSqlToDatetime(op.createdAt)) */}</p>
+                                                <p>Criada em {op.createdAt}</p>
                                                 <p><strong>{currency(op.price)}</strong></p>
                                             </>
                                         )}

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 import FindInPageOutlinedIcon from '@material-ui/icons/FindInPageOutlined';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import LocalHospitalOutlinedIcon from '@material-ui/icons/LocalHospitalOutlined';
@@ -7,6 +6,9 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ExploreIcon from '@material-ui/icons/Explore';
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
+import InsertChartOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
+import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 
 import Sidebar from "./Sidebar";
 import Content from "./Content";
@@ -40,13 +42,13 @@ export default function Layout({ children }) {
                     label: "Bases",
                     Icon: ExploreIcon,
                     to: "/bases",
-                }
+                },
             ],
         },
         {
             id: 3,
-            label: "Cotações",
-            Icon: MonetizationOnOutlinedIcon,
+            label: "Comercial",
+            Icon: BusinessCenterIcon,
             options: [
                 {
                     id: 1,
@@ -56,7 +58,7 @@ export default function Layout({ children }) {
                 },
                 {
                     id: 2,
-                    label: "Gerar Cotação",
+                    label: "Gerar cotação",
                     Icon: AddCircleOutlineIcon,
                     to: "/quotations/generate"
                 },
@@ -68,6 +70,19 @@ export default function Layout({ children }) {
                 },
             ],
         },
+        {
+            id: 4,
+            label: 'Monitoramento',
+            Icon: InsertChartOutlinedIcon,
+            options: [
+                {
+                    id: 1,
+                    label: "Programação",
+                    Icon: TimelineOutlinedIcon,
+                    to: "/coordination/programming"
+                },
+            ]
+        }
     ];
 
     const[showSidebar, setShowSidebar] = useState(false);

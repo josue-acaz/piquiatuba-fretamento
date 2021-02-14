@@ -5,6 +5,7 @@ import Dashboard from '../pages/Dashboard';
 import Bases from '../pages/Bases';
 import Aircrafts from '../pages/Aircrafts';
 import Quotations from '../pages/Quotations';
+import Coordination from '../pages/Coordination';
 import {FeedbackProvider} from '../core/feedback/feedback.context';
 
 const routes = [
@@ -31,6 +32,12 @@ const routes = [
         exact: false,
         path: "/quotations",
         component: Quotations,
+    },
+    {
+        id: 5,
+        exact: false,
+        path: "/coordination",
+        component: Coordination,
     }
 ];
 

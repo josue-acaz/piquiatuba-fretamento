@@ -1,0 +1,50 @@
+.list-quotations .select-quotation-status {
+    width: 180px;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: .6rem;
+    cursor: pointer;
+    height: 35px;
+}
+
+.list-quotations .select-opened {
+    background-color: #0072C6;
+    color: #ffffff;
+}
+.list-quotations .select-opened .MuiSelect-icon {
+    color: #ffffff;
+}
+.list-quotations .select-closed {
+    background-color: #4CAF50;
+    color: #ffffff;
+}
+.list-quotations .select-closed .MuiSelect-icon {
+    color: #ffffff;
+}
+.list-quotations .select-not_closed {
+    background-color: #ff9e9e;
+    color: #ffffff;
+}
+.list-quotations .select-not_closed .MuiSelect-icon {
+    color: #ffffff;
+}
+.list-quotations .type_of_transport {
+    width: auto;
+    border-radius: .5rem;
+    font-weight: 400;
+    font-size: 16px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.list-quotations .passengers-transport {
+    background-color: #ffa822;
+    color: #ffffff;
+}
+.list-quotations .aeromedical-transport {
+    background-color: #ffe2ec;
+    color: #666666;
+}

@@ -1,25 +1,11 @@
-import { parseISO, format, addMinutes, addDays } from "date-fns";
-import { PDF_URL } from "../global";
+import { parseISO, format, addDays } from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { isMobile } from 'react-device-detect';
 
-export function sleep(delay = 0) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, delay);
-    });
-}
-
-export function event(name="", value, isCheck=false) {
-    const obj = { target: { name } };
-    if(isCheck) {
-        obj.target.checked = value;
-    } else {
-        obj.target.value = value;
-    }
-
-    return(obj);
-}
-
+/**
+ * 
+ * @param {number} currency 
+ */
 export function formatCurrency(currency) {
     currency = currency.toString();
     var v = currency.replace(/\D/g,'');
@@ -31,73 +17,43 @@ export function formatCurrency(currency) {
     return v;
 }
 
-export function formatDatetime(datetime) { // 2018-04-01 16:00:00
-const __datetime = parseISO(datetime);
-return(format(__datetime, "dd 'de' MMMM', às ' HH:mm'h'", { locale: ptBR }));
-}
-
-// formata datas do tipo 2021-01-11T20:52:05.757Z para 2021-01-11 11:52:10
-export function parseSqlToDatetime(date) {
-    const arr = (new Date(date)).toLocaleString().split(' ');
-    const formatted = `${arr[0].split('/').reverse().join('-')} ${arr[1]}`;
-
-    return formatted;
-}
-
-export function capitalize(str, lower = false) {
+/**
+ * 
+ * @param {string} str 
+ * @param {boolean} lower 
+ */
+export function capitalize(str, lower=false) {
     return (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
 }
 
-export function formatDate(datetime) {
-
-function capitalizeFiristLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+/**
+ * 
+ * @param {string} value 
+ */
+export function capitalizeFiristLetter(value) {
+    return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
-const __date = parseISO(datetime);
-let formatted = format(__date, "iiii',' dd 'de' MMMM", { locale: ptBR });
-
-let result = "";
-if(formatted.includes("domingo") || formatted.includes("sábado")) {
-    const arr = formatted.split(", ");
-    const arrMMM = arr[1].split(" ");
-
-    result = `${capitalizeFiristLetter(arr[0])}, ${arrMMM[0]} ${arrMMM[1]} ${capitalizeFiristLetter(arrMMM[2])}`;
-    //result = capitalizeFiristLetter(arr[0]) + ", " + `${arrMMM[0]} ${arrMMM[1]} ${capitalizeFiristLetter(arrMMM[2])}`;
-} else {
-    const arr = formatted.split(", ");
-    const arrMMM = arr[1].split(" "); // 15 de outubro
-
-    //result = capitalizeFiristLetter(arr[0]) + "-Feira, " + `${arrMMM[0]} ${arrMMM[1]} ${capitalizeFiristLetter(arrMMM[2])}`;
-    result = `${capitalizeFiristLetter(arr[0])}-Feira, ${arrMMM[0]} ${arrMMM[1]} ${capitalizeFiristLetter(arrMMM[2])}`;
-}
-
-return result;
-}
-
-export function addMinutesToDatetime(datetime, minutes) {
-const __datetime = parseISO(datetime);
-return format(addMinutes(__datetime, minutes), "yyyy-MM-dd HH:mm:ss", { locale: ptBR });
-}
-
-export function getCurrentDate() {
-const now = new Date();
-return(format(now, "dd 'de' MMMM 'de' yyyy", { locale: ptBR }));
-}
-
-export function getExpirationDateOfProposal(days=7) {
-    let now = new Date();
-    return format(addDays(now, days), "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
-}
-
+/**
+ * 
+ * @param {number} value 
+ */
 export function currency(value) {
     return value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
 }
 
+/**
+ * 
+ * @param {number} minutes 
+ */
 export function MinutesToHoursNotation(minutes) {
     return (Math.floor(minutes/60)+"h "+minutes%60+" min");
 }
 
+/**
+ * 
+ * @param {number} value 
+ */
 export function priceToFloat(value) {
   const fractional = value.split(",")[1];
   const price = value.split(",")[0];
@@ -105,36 +61,10 @@ export function priceToFloat(value) {
   return(Number(`${price.split(".").join("")}.${fractional}`));
 }
 
-export function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-}
-
-export function getComparator(order, orderBy) {
-    return order === 'desc'
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-export function objectIsValid(object) {
-    return !(Object.keys(object).find(key => !object[key]));
-}
-
-export function onlyNumbers(v, isInt=false) {
-    if(isInt) {
-      v = v.replace(/\D/g,'');
-    } else {
-      v = v.replace(/[^\d.]|\.(?=.*\.)/g, '');
-    }
-    
-    return v;
-  }
-
+/**
+ * 
+ * @param {string} value 
+ */
 export function maskPhone(value) {
     // Máscara Telefone
     function mtel(v) {
@@ -146,26 +76,6 @@ export function maskPhone(value) {
     //Remove tudo o que não é dígito
     value = value.replace(/\D/g, '');
     return mtel(value);
-}
-
-export function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-}
-
-export function getID(quotation) {
-    const filename = !!quotation.filename ? quotation.filename : quotation.pdf_url.replace("s3-", "s3.").split(PDF_URL+"/")[1];
-    const prefix = filename.split("fretamento-piquiatuba-")[1].split(".pdf")[0];
-    return(`#${prefix}`);
-};
-
-export function getFilename(quotation) {
-    return(!!quotation.filename ? quotation.filename : quotation.pdf_url.replace("s3-", "s3.").split(PDF_URL+"/")[1]);
 }
 
 /**
@@ -181,40 +91,12 @@ export function shareOnWhatsapp(endpoint_share) {
     ), '_blank');
 }
 
-export function Download(act) {
-    window.open(act.pdf_url, '_blank');
-}
-
-export function shareOnEmail(act, history, route) {
-    const state = {
-        filename: getFilename(act), 
-        url: act.pdf_url, 
-        client_name: act.client_name, 
-        type_of_transport: "aeromedical",
-        current_date: act.createdAt
-    };
-
-    history.push(route, state); 
-}
-
-export function getIDFromURL(url) {
-    const filename  = url.replace("s3-", "s3.").split(PDF_URL+"/")[1];
-    const prefix = filename.split("fretamento-piquiatuba-")[1].split(".pdf")[0];
-    return prefix;
-}
-
-export function getTransportType(type_of_transport) {
-    let name = "";
-    if(!!type_of_transport) {
-        name=type_of_transport==="passengers"?"Passageiros":"Aeromédico";
-    } else {
-        name="Indefinido";
-    }
-
-    return name;
-}
-
-export function findDuplicates(arr=[], compare="") {
+/**
+ * 
+ * @param {Array<Object>} arr 
+ * @param {string} compare 
+ */
+export function findDuplicates(arr, compare) {
     let sorted_arr = arr.slice().sort();
     let results = [];
     for (let index = 0; index < sorted_arr.length - 1; index++) {
@@ -225,22 +107,12 @@ export function findDuplicates(arr=[], compare="") {
     return results;
 }
 
-export function getAerodrome(q, type="") {
-    const name = q[type] ? q[type].oaci_code+" • "+q[type].name : "Indefinido";
-    return name;
-}
-
-export function getAircraft(q) {
-    const name = q["aircraft"] ? q["aircraft"].prefix+" • "+q["aircraft"].name : "Indefinido";
-    return name;
-}
-
-export function getAdmin(q) {
-    const name = q["company"] ? q["company"].name : "Indefinido";
-    return name;
-}
-
-export function normalizeString(text, max_length = 20) {
+/**
+ * 
+ * @param {*} text 
+ * @param {*} max_length 
+ */
+export function normalizeString(text, max_length=20) {
     let cut = text;
     if (text.length > max_length) {
       const __part = text.slice(0, max_length - 1);
@@ -250,6 +122,35 @@ export function normalizeString(text, max_length = 20) {
     return cut;
 }
 
-export function objectIsEmpty(obj) {
-    return Object.keys(obj).length === 0;
+/**
+ * 
+ * @param {string} date 
+ * @param {string} date_format_type 
+ */
+export function getDatetime(date, date_format_type, add_days=0) {
+    console.log({date});
+    date = parseISO(date);
+
+    if(add_days > 0) {
+        date = addDays(date, add_days);
+    }
+
+    const formatted = format(date, date_format_type, {locale: ptBR});
+    return formatted;
+}
+
+/**
+ * 
+ * @param {string} date_format_type 
+ * @param {number} add_days 
+ */
+export function getCurrentDate(date_format_type, add_days=0) {
+    let date = new Date();
+  
+    if(add_days > 0) {
+      date = addDays(date, add_days);
+    }
+  
+    const formatted = format(date, date_format_type, {locale: ptBR});
+    return formatted;
 }

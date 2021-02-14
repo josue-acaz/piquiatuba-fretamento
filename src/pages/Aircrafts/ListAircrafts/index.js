@@ -3,20 +3,13 @@ import {useRouteMatch} from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
-import { useSelector } from 'react-redux';
-import { PageTitle, Alert, AircraftStatusSelect } from "../../../components";
+import { PageTitle, Alert } from "../../../components";
 import { WrapperContent } from '../../../core/design';
 import TableTask from '../../../components/TableTask';
 import { useFeedback } from '../../../core/feedback/feedback.context';
 import { currency } from '../../../utils';
 import api from '../../../api';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
-import SideConfig from '../../../components/SideConfig';
-import { Row, Col } from 'react-bootstrap';
-import DateTimerPicker from '../../../components/DateTimerPicker';
-import Button from '@material-ui/core/Button';
-import Switch from '@material-ui/core/Switch';
-import { FlexContent } from '../../../core/design';
 
 import './styles.css';
 
@@ -53,12 +46,6 @@ const headCells = [
     },
     {
         id: 6,
-        label: 'Status hoje',
-        disablePadding: false,
-        align: 'right',
-    },
-    {
-        id: 7,
         label: 'Ações',
         disablePadding: false,
         align: 'right',
@@ -66,7 +53,6 @@ const headCells = [
 ];
 
 export default function ListAircrafts({history}) {
-    const authenticated = useSelector(state => state.authentication.user);
     const {path} = useRouteMatch();
     const feedback = useFeedback();
     const [loading, setLoading] = useState(true);
@@ -84,19 +70,9 @@ export default function ListAircrafts({history}) {
         count: 0,
         text: '',
         order: 'DESC', 
-        filter: 'receiver', 
+        filter: 'name', 
         orderBy:'createdAt',
     });
-
-    const [filters, setFilters] = useState({
-        date: '',
-        onlyAvailable: false,
-    });
-
-    function handleChangeFilters(e) {
-        const { name, value, checked } = e.target;
-        setFilters(filters => ({ ...filters, [name]: name === 'onlyAvailable' ? checked : value }));
-    }
 
     function handleOpen(name) {
         setOpen(open => ({ ...open, [name]: true }));
@@ -195,24 +171,6 @@ export default function ListAircrafts({history}) {
         pagination.text,
     ]);
 
-    async function handleUpdateStatus(aircraft_id, data) {
-        const {new_status, annotation} = data;
-        console.log(data);
-        try {
-            await api.post(`/aircrafts/${aircraft_id}/status`, {
-                status: new_status,
-                annotation,
-            }, {
-                headers: {
-                    user_id: authenticated.user.id,
-                }
-            });
-            console.log('Status atualizado...');
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
     function getTableRows(aircrafts) {
         let rows = [];
     
@@ -260,18 +218,6 @@ export default function ListAircrafts({history}) {
                         disablePadding: false,
                         align: 'right',
                         text: (
-                            <AircraftStatusSelect 
-                                aircraft_id={aircraft.id} 
-                                status={aircraft.aircraft_status[0].status} 
-                                handleUpdate={handleUpdateStatus}
-                            />
-                        ),
-                    },
-                    {
-                        id: 7,
-                        disablePadding: false,
-                        align: 'right',
-                        text: (
                             <Tooltip className="action-tooltip" title="Acessar galeria" onClick={() => {
                                 handleAccessGallery(aircraft.id, {
                                     aircraft_name: aircraft.full_name, 
@@ -292,10 +238,6 @@ export default function ListAircrafts({history}) {
         return rows;
     }
 
-    function handleSubmit(e) {
-        e.preventDefault();
-    }
-
     return(
         <WrapperContent>
             <Alert 
@@ -308,40 +250,6 @@ export default function ListAircrafts({history}) {
                 onConfirm={onConfirmDelete}
                 onCancel={() => handleClose('alert')}
             />
-            <SideConfig 
-                open={open.filters} 
-                handleOpen={() => handleOpen('filters')} 
-                handleClose={() => handleClose('filters')}
-            >
-                <h3>Filtros</h3>
-                <form id="form-filters" onSubmit={handleSubmit}>
-                    <Row className="center-padding">
-                        <Col sm="12">
-                            <label>Monstrar status das aeronaves em: </label>
-                            <DateTimerPicker 
-                                name="date"
-                                value={filters.date}
-                                onChange={handleChangeFilters}
-                                placeholder="Selecione uma data..."
-                            />
-                        </Col>
-                        <Col sm="6">
-                            <label>Mostrar somente disponíveis?</label>
-                            <FlexContent>
-                                <Switch 
-                                    name="onlyAvailable"
-                                    color="primary"
-                                    checked={filters.onlyAvailable}
-                                    onChange={handleChangeFilters}
-                                />
-                                <p className="pr-only"><strong>{filters.onlyAvailable ? 'SIM' : 'NÃO'}</strong></p>
-                            </FlexContent>
-                        </Col>
-                    </Row>
-
-                    <Button type="submit" variant="contained" color="primary">Aplicar</Button>
-                </form>
-            </SideConfig>
             <section id="aeronaves" className="aeronaves">
                 <div className="header">
                     <div>

@@ -113,6 +113,26 @@ const EnumTypeOfTransport = [
     },
 ];
 
+const EnumInternalQuotationStatus = [
+    {
+        key: 'opened',
+        value: 'Aberta',
+    },
+    {
+        key: 'closed',
+        value: 'Fechada',
+    },
+    {
+        key: 'not_closed',
+        value: 'Não fechada',
+    }
+];
+
+const EnumDatetimeFormatTypes = Object.freeze({
+    SQL: "yyyy'-'MM'-'dd kk':'mm':'ss", // 2021-08-12 22:45:30
+    READABLE_V1: "dd 'de' MMMM', às ' HH:mm'h'", // 14 de Agosto, às 22:45h
+});
+
 export {
     PDF_URL,
     baseURL,
@@ -124,4 +144,6 @@ export {
     EnumAircraftImageView,
     EnumFlightSegmentType,
     EnumTypeOfTransport,
+    EnumInternalQuotationStatus,
+    EnumDatetimeFormatTypes,
 };

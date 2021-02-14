@@ -1,0 +1,180 @@
+/*Table Styles (START)*/
+.aircraft-monitoring td, .aircraft-monitoring th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    margin: 0;
+}
+
+.aircraft-monitoring tr:nth-child(even){background-color: transparent;}
+  
+.aircraft-monitoring tr:hover {background-color: transparent;}
+
+.aircraft-monitoring th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #ebebeb;
+    color: #666666;
+}
+.monitoring-table-head .assigned-label {
+    width: 100px;
+    border: none;
+    background-color: transparent;
+}
+.aircraft-monitoring .monitoring-table-head-container {
+    width: 100%;
+    height: 100%;
+}
+.aircraft-monitoring .monitoring-table-head-values {
+    padding: 0;
+    border: none;
+    height: 50px;
+}
+.aircraft-monitoring .monitoring-table-head-values tr {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.aircraft-monitoring .monitoring-table-head-values tr td {
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aircraft-monitoring .monitoring-table-head-values tr td.primary-color-value {
+    background-color: #f2f2f2;
+}
+.aircraft-monitoring .monitoring-table-head-values tr td.secondary-color-value {
+    background-color: #dddddd;
+}
+.aircraft-monitoring .monitoring-table-body-values {
+    padding: 0;
+    border: none;
+    border-width: 1px;
+    border-color: #ddd;
+    border-style: solid;
+    position: relative;
+    max-width: inherit;
+    transition: height .2s;
+}
+.aircraft-monitoring .monitoring-table-body-values tr {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: transparent;
+}
+.aircraft-monitoring .monitoring-table-body-values tr td {
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: transparent;
+    border-left-width: 1px;
+    border-left-color: #ddd;
+    border-left-style: solid;
+}
+/*Preencher com cor*/
+.monitoring-table-body-values .color-filling .period p {
+    font-size: 11px;
+    text-align: center;
+}
+.aircraft-monitoring .monitoring-table-body-values .color-filling:hover {
+    cursor: pointer;
+    filter: brightness(.9);
+}
+.aircraft-monitoring .monitoring-table-body-values .color-unavailable {
+    background-color: rgba(240, 230, 140, .8);
+}
+.aircraft-monitoring .monitoring-table-body-values .color-reserved {
+    background-color: rgba(240, 128, 128, .8);
+    color: #ffffff;
+}
+.aircraft-monitoring .monitoring-table-body-values .color-unavailable_per_flight {
+    background-color: rgba(144, 238, 144, .8);
+}
+.aircraft-monitoring .monitoring-table-body-values .color-unavailable_per_maintenance {
+    background-color: rgba(119, 136, 153, .8);
+    color: #ffffff;
+}
+.aircraft-monitoring .monitoring-table-body-values tr td.no-border-left {
+    border-left: none;
+}
+.aircraft-monitoring .monitoring-table {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+.aircraft-monitoring .monitoring-table table {
+    transition: width .2s;
+}
+/* width */
+.aircraft-monitoring .monitoring-table::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+  
+  /* Track */
+.aircraft-monitoring .monitoring-table::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+  /* Handle */
+.aircraft-monitoring .monitoring-table::-webkit-scrollbar-thumb {
+    background: #c7c7c7; 
+}
+  
+  /* Handle on hover */
+.aircraft-monitoring .monitoring-table::-webkit-scrollbar-thumb:hover {
+    background: #afafaf; 
+}
+.monitoring-table-row td.cell-prefix {
+    height: 100%;
+    position: relative;
+}
+.monitoring-table-row td .prefix-name {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+/*Table Styles (END)*/
+
+.programming .switch-detailed-view {
+    background-color: #f2f2f2;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    width: auto;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .23);
+    width: 300px;
+}
+
+/*Full Screen Aircraft Table*/
+/*
+.programming .aircraft-monitoring {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 9999999999;
+    background-color: #ffffff;
+}
+*/
