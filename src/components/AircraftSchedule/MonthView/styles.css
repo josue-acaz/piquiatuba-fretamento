@@ -1,0 +1,34 @@
+.month-view {
+    height: 100%;
+}
+.month-view table {
+    height: 100%;
+    min-width: 1200px;
+}
+.month-table-view {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+.month-table-view td, .month-table-view th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.month-view {
+    overflow-x: scroll;
+}
+.month-view .table-row td.cell-today {
+    color: rgb(44, 44, 255);
+    font-weight: bold;
+    background-color: rgb(228, 228, 255);
+}
+.month-view .table-row td .cell-content {
+    display: flex;
+    justify-content: flex-end;
+}
+.month-table-view tr:nth-child(even){background-color: #ffffff;}
+.month-table-view .table-row td:hover {
+    background-color: #f2f2f2;
+}
+/*.month-table-view tr:hover {background-color: #ddd;}*/
+  

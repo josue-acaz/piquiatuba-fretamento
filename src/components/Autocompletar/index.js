@@ -88,7 +88,7 @@ export default function Autocompletar({
         setValue(option[fieldName]);
         onOptionSelected({
             target: {
-                name,
+                name: name,
                 value: option,
             }
         });

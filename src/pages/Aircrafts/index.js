@@ -1,7 +1,7 @@
 import React from 'react';
 import {Switch, Route, useRouteMatch} from 'react-router-dom';
 
-import AddAircraft from './AddAircraft';
+import EditAircraft from './EditAircraft';
 import ListAircrafts from './ListAircrafts';
 import AircraftGallery from './AircraftGallery';
 
@@ -18,8 +18,8 @@ export default function Bases(props) {
         {
             id: 2,
             exact: false,
-            path: `${path}/add`,
-            component: AddAircraft,
+            path: `${path}/:aircraft_id/edit`,
+            component: EditAircraft,
         },
         {
             id: 3,

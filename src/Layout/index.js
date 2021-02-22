@@ -4,7 +4,6 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import LocalHospitalOutlinedIcon from '@material-ui/icons/LocalHospitalOutlined';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ExploreIcon from '@material-ui/icons/Explore';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import InsertChartOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
@@ -57,16 +56,10 @@ export default function Layout({ children }) {
                     to: "/quotations"
                 },
                 {
-                    id: 2,
-                    label: "Gerar cotação",
-                    Icon: AddCircleOutlineIcon,
-                    to: "/quotations/generate"
-                },
-                {
                     id: 3,
-                    label: "Informações Médicas",
+                    label: "Formulários médicos",
                     Icon: LocalHospitalOutlinedIcon,
-                    to: "/quotations/medical",
+                    to: "/medical-forms",
                 },
             ],
         },

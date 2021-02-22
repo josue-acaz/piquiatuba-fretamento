@@ -7,7 +7,10 @@ import { PageTitle, Alert } from "../../../components";
 import { WrapperContent } from '../../../core/design';
 import TableTask from '../../../components/TableTask';
 import { useFeedback } from '../../../core/feedback/feedback.context';
+import EditIcon from '@material-ui/icons/Edit';
+import { getDatetime } from '../../../utils';
 import api from '../../../api';
+import {EnumDatetimeFormatTypes} from '../../../global';
 
 import './styles.css';
 
@@ -42,51 +45,13 @@ const headCells = [
         disablePadding: false,
         align: 'right',
     },
+    {
+        id: 6,
+        label: 'Ações',
+        disablePadding: false,
+        align: 'right',
+    }
 ];
-
-function getTableRows(bases) {
-    let rows = [];
-
-    bases.forEach((base) => {
-        rows.push({
-            id: base.id,
-            cells: [
-                {
-                    id: 1,
-                    text: base.name,
-                    disablePadding: false,
-                    align: 'left',
-                },
-                {
-                    id: 2,
-                    text: base.latitude,
-                    disablePadding: false,
-                    align: 'right',
-                },
-                {
-                    id: 3,
-                    text: base.longitude,
-                    disablePadding: false,
-                    align: 'right',
-                },
-                {
-                    id: 4,
-                    text: base.aerodrome.full_name,
-                    disablePadding: false,
-                    align: 'right',
-                },
-                {
-                    id: 5,
-                    text: base.createdAt,
-                    disablePadding: false,
-                    align: 'right',
-                },
-            ],
-        })
-    });
-    
-    return rows;
-}
 
 export default function ListBases({history}) {
     const {path} = useRouteMatch();
@@ -180,7 +145,67 @@ export default function ListBases({history}) {
     }
 
     function handleAddBase() {
-        history.push(`${path}/add`);
+        history.push(`${path}/0/edit`);
+    }
+
+    function handleEditBase(base_id, base_name) {
+        history.push(`${path}/${base_id}/edit`, {base_name});
+    }
+
+    function getTableRows(bases) {
+        let rows = [];
+    
+        bases.forEach((base) => {
+            rows.push({
+                id: base.id,
+                cells: [
+                    {
+                        id: 1,
+                        text: base.name,
+                        disablePadding: false,
+                        align: 'left',
+                    },
+                    {
+                        id: 2,
+                        text: base.latitude,
+                        disablePadding: false,
+                        align: 'right',
+                    },
+                    {
+                        id: 3,
+                        text: base.longitude,
+                        disablePadding: false,
+                        align: 'right',
+                    },
+                    {
+                        id: 4,
+                        text: base.aerodrome.full_name,
+                        disablePadding: false,
+                        align: 'right',
+                    },
+                    {
+                        id: 5,
+                        text: getDatetime(base.createdAt, EnumDatetimeFormatTypes.READABLE_V1),
+                        disablePadding: false,
+                        align: 'right',
+                    },
+                    {
+                        id: 6,
+                        disablePadding: false,
+                        align: 'right',
+                        text: (
+                            <Tooltip className="action-tooltip" title="Editar aeronave" onClick={() => handleEditBase(base.id, base.name)}>
+                                <IconButton size="small" aria-label="edit">
+                                    <EditIcon className="icon icon-edit" />
+                                </IconButton>
+                            </Tooltip>
+                        )
+                    }
+                ],
+            })
+        });
+        
+        return rows;
     }
 
     useEffect(() => {
@@ -223,7 +248,6 @@ export default function ListBases({history}) {
                     headCells={headCells}
                     limit={pagination.limit}
                     expansion={false}
-                    withSwap={false}
                     page={pagination.page}
                     count={pagination.count}
                     handleRemoveSelecteds={handleRemoveSelecteds}

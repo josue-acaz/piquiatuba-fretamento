@@ -7,10 +7,10 @@ import Button from '@material-ui/core/Button';
 
 import './styles.css';
 
-export default function Extra({ getSelectedOptions=()=>[] }) {
+export default function Extra({ defaultValues, getSelectedOptions=()=>[] }) {
     const[id, setId] = useState(1);
     const[text, setText] = useState('');
-    const[infos, setInfos] = useState([]);
+    const[infos, setInfos] = useState(defaultValues ? defaultValues : []);
     const[control, setControl] = useState(false);
 
     function handleChangeText(e) {
@@ -81,7 +81,7 @@ export default function Extra({ getSelectedOptions=()=>[] }) {
             {infos.length > 0 && (
                 <div className="content">
                     {infos.map((info, index) => (
-                        <FlexSpaceBetween style={index === infos.length-1 ? { borderBottom: 'none', backgroundColor: ((index+1)%2 !== 0) ? '#f2f2f2' : '#ffffff', } : {
+                        <FlexSpaceBetween key={index} style={index === infos.length-1 ? { borderBottom: 'none', backgroundColor: ((index+1)%2 !== 0) ? '#f2f2f2' : '#ffffff', } : {
                         backgroundColor: ((index+1)%2 !== 0) ? '#f2f2f2' : '#ffffff',
                     }} className="single-info">
                         <FlexContent className="left">

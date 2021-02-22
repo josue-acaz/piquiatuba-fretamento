@@ -7,3 +7,12 @@ export function authHeader() {
         } else { return {} }
     } else { return null }
 }
+
+export function getToken() {
+    const authenticated = JSON.parse(localStorage.getItem('authenticated'));
+    if(authenticated) {
+        return authenticated.token;
+    }
+
+    return null;
+}

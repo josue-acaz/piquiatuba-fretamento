@@ -29,9 +29,12 @@ function RenderAircraft({aircraft, operates_aeromedical_transport}) {
 
     return(
         <div className="render-aircraft-segment">
-            <FullScreenDialog open={viewSchedule} title={aircraft.full_name} handleClose={closeSchedule}>
-                <AircraftSchedule aircraft_id={aircraft.id} />
-            </FullScreenDialog>
+            <AircraftSchedule 
+                open={viewSchedule} 
+                aircraft_id={aircraft.id} 
+                aircraft_name={aircraft.full_name}
+                handleClose={closeSchedule}
+            />
             <FlexContent className="flex-aircraft-segment">
                 <div className="thumbnail">
                     <img src={aircraft.thumbnail ? aircraft.thumbnail.url : no_image} alt="thumbnail" />
@@ -58,11 +61,12 @@ function RenderAircraft({aircraft, operates_aeromedical_transport}) {
                         <div className="aircraft-summary">
                             <p><strong>{aircraft.passengers} Passageiros</strong></p>
                             <p><strong>Velocidade: </strong>{aircraft.cruising_speed}Km/h (cruzeiro), {aircraft.maximum_speed}Km/h (máxima).</p>
-                            {!operates_aeromedical_transport && (
-                                <p><strong>Preço (passageiros): </strong>Até {aircraft.fixed_price_radius}Km, preço fixo de {currency(aircraft.fixed_price_for_passenger_transport)}. Acima de 900Km {currency(aircraft.price_per_km_passengers)} por Km.</p>
-                            )}
-                            {(operates_aeromedical_transport && aircraft.operates_aeromedical_transport) && (
-                                <p><strong>Preço (aeromédico): </strong>Até {aircraft.fixed_price_radius}Km, preço fixo de {currency(aircraft.fixed_price_for_aeromedical_transport)}. Acima de 900Km {currency(aircraft.price_per_km_aeromedical)} por Km.</p>
+                            {operates_aeromedical_transport ? (
+                                aircraft.operates_aeromedical_transport && (
+                                    <p><strong>Preço (aeromédico): </strong>Até {aircraft.fixed_price_radius}Km, preço fixo de {currency(aircraft.fixed_price_aeromedical)}. Acima de 900Km {currency(aircraft.price_per_km_aeromedical)} por Km.</p>
+                                )
+                            ) : (
+                                <p><strong>Preço (passageiros): </strong>Até {aircraft.fixed_price_radius}Km, preço fixo de {currency(aircraft.fixed_price_passengers)}. Acima de 900Km {currency(Number(aircraft.price_per_km_passengers))} por Km.</p>
                             )}
                         </div>
                     </FlexVerticalSpaceBetween>
@@ -73,11 +77,13 @@ function RenderAircraft({aircraft, operates_aeromedical_transport}) {
 }
 
 export default function AircraftSegmentSelect({
+    defaultValues,
     onChange,
     operates_aeromedical_transport,
     submitted=false,
 }) {
-    const [inputs, setInputs] = useState({
+    const [initWithValues, setInitWithValues] = useState(!!defaultValues);
+    const [inputs, setInputs] = useState(defaultValues ? defaultValues : {
         aircraft: '',
         aerodrome: '',
         aircraft_at_origin: false,
@@ -85,15 +91,11 @@ export default function AircraftSegmentSelect({
 
     function handleChange(e) {
         const {name, value} = e.target;
-        if(name === 'aircraft') {
-            console.log(value);
-        }
         setInputs(inputs => ({ ...inputs, [name]: value }));
     }
 
     useEffect(() => {
         onChange(inputs);
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         inputs.aircraft,
@@ -103,12 +105,17 @@ export default function AircraftSegmentSelect({
 
     // Se o tipo de transporte é alterado
     useEffect(() => {
-        handleChange({
-            target: {
-                name: 'aircraft',
-                value: '',
-            },
-        })
+        if(!initWithValues) {
+            handleChange({
+                target: {
+                    name: 'aircraft',
+                    value: '',
+                },
+            });
+        }
+
+        setInitWithValues(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [operates_aeromedical_transport]);
 
     return(

@@ -35,7 +35,11 @@
 .generated .action-buttons .cloud-btn:hover {
     color: #264d90;
 }
-
+.generated .error .obs-error {
+    font-size: 14px;
+    color: #444444;
+    margin-top: 1rem;
+}
 @media screen and (max-width: 800px) {
     .actions .action-buttons {
         width: 100%;

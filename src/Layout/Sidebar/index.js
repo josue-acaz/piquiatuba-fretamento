@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MenuItem } from "../../components";
 import MainNav from "./MainNav";
 import MenuIcon from '@material-ui/icons/Menu';
@@ -12,23 +12,9 @@ export default function Sidebar({className, options=[], handleShow, handleOpen, 
 
     const [visible, setVisible] = useState({});
 
-    useEffect(() => {
-        let visibleItems = {};
-
-        options.forEach((option, index) => {
-            visibleItems[`op_${index}`] = false;
-        });
-
-        setVisible(visibleItems);
-    }, [options]);
 
     function toggleOpen(name) {
-        let _visible = {};
-        Object.keys(visible).forEach(key => {
-            _visible[key] = key === name ? visible[name] ? false : true : false;
-        });
-
-        setVisible(_visible);
+        setVisible(visible_options => ({ ...visible_options, [name]: !visible[name] }));
     }
 
     function handleCloseAll() {

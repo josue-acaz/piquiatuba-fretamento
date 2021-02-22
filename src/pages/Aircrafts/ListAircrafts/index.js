@@ -4,12 +4,13 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
 import { PageTitle, Alert } from "../../../components";
-import { WrapperContent } from '../../../core/design';
+import { FlexContent, WrapperContent } from '../../../core/design';
 import TableTask from '../../../components/TableTask';
 import { useFeedback } from '../../../core/feedback/feedback.context';
 import { currency } from '../../../utils';
 import api from '../../../api';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
+import EditIcon from '@material-ui/icons/Edit';
 
 import './styles.css';
 
@@ -121,6 +122,7 @@ export default function ListAircrafts({history}) {
             });
 
             const {count, rows} = response.data;
+            console.log(rows);
             handleChangePagination('count', count);
             setRows(getTableRows(rows));
             setLoading(false);
@@ -155,11 +157,15 @@ export default function ListAircrafts({history}) {
     }
 
     function handleAddAircraft() {
-        history.push(`${path}/add`);
+        history.push(`${path}/0/edit`);
     }
 
     function handleAccessGallery(aircraft_id, data) {
         history.push(`${path}/${aircraft_id}/gallery`, data);
+    }
+
+    function handleEditAircraft(aircraft_id, aircraft_name) {
+        history.push(`${path}/${aircraft_id}/edit`, {aircraft_name});
     }
 
     useEffect(() => {
@@ -218,17 +224,24 @@ export default function ListAircrafts({history}) {
                         disablePadding: false,
                         align: 'right',
                         text: (
-                            <Tooltip className="action-tooltip" title="Acessar galeria" onClick={() => {
-                                handleAccessGallery(aircraft.id, {
-                                    aircraft_name: aircraft.full_name, 
-                                    aircraft_images: aircraft.aircraft_images,
-                                    operates_aeromedical_transport: aircraft.operates_aeromedical_transport,
-                                });
-                            }}>
-                                <IconButton size="small" aria-label="gallery">
-                                    <ImageOutlinedIcon className="icon icon-gallery" />
-                                </IconButton>
-                            </Tooltip>
+                            <FlexContent className="flex-actions">
+                                <Tooltip className="action-tooltip" title="Acessar galeria" onClick={() => {
+                                    handleAccessGallery(aircraft.id, {
+                                        aircraft_name: aircraft.full_name, 
+                                        aircraft_images: aircraft.aircraft_images,
+                                        operates_aeromedical_transport: aircraft.operates_aeromedical_transport,
+                                    });
+                                }}>
+                                    <IconButton size="small" aria-label="gallery">
+                                        <ImageOutlinedIcon className="icon icon-gallery" />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip className="action-tooltip" title="Editar aeronave" onClick={() => handleEditAircraft(aircraft.id, aircraft.full_name)}>
+                                    <IconButton size="small" aria-label="edit">
+                                        <EditIcon className="icon icon-edit" />
+                                    </IconButton>
+                                </Tooltip>
+                            </FlexContent>
                         ),
                     },
                 ],
@@ -269,7 +282,6 @@ export default function ListAircrafts({history}) {
                     headCells={headCells}
                     limit={pagination.limit}
                     expansion={true}
-                    withSwap={true}
                     page={pagination.page}
                     count={pagination.count}
                     handleRemoveSelecteds={handleRemoveSelecteds}

@@ -32,6 +32,7 @@ export default function FlightSegment({
     hide=false,
     completed,
     aircraft_id,
+    defaultValues,
 }) {
     const [inputs, setInputs] = useState(segmentInputs ? segmentInputs : {
         origin_city: '',
@@ -41,8 +42,9 @@ export default function FlightSegment({
         type: '',
     });
 
-    const [distance, setDistance] = useState(0);
-    const [flightTime, setFlightTime] = useState(0);
+    const [initWithValues, setInitWithValues] = useState(!!defaultValues);
+    const [distance, setDistance] = useState(defaultValues ? defaultValues.distance : 0);
+    const [flightTime, setFlightTime] = useState(defaultValues ? defaultValues.flight_time : 0);
 
     const [expand, setExpand] = useState(false);
     function toggleExpand() {
@@ -120,27 +122,31 @@ export default function FlightSegment({
     }
 
     useEffect(() => {
-        // Calcular distância
-        if(origin_aerodrome && destination_aerodrome) {
-            const p1 = {
-                latitude: origin_aerodrome.latitude,
-                longitude: origin_aerodrome.longitude,
-            };
+        if(!initWithValues) {
+            // Calcular distância
+            if(origin_aerodrome && destination_aerodrome) {
+                const p1 = {
+                    latitude: origin_aerodrome.latitude,
+                    longitude: origin_aerodrome.longitude,
+                };
 
-            const p2 = {
-                latitude: destination_aerodrome.latitude,
-                longitude: destination_aerodrome.longitude,
-            };
+                const p2 = {
+                    latitude: destination_aerodrome.latitude,
+                    longitude: destination_aerodrome.longitude,
+                };
 
-            calculateDistance(p1, p2);
-        }
+                calculateDistance(p1, p2);
+            }
 
-        // Acionar gatilho de informação faltando
-        if(!origin_aerodrome || !destination_aerodrome || !type_of_transport || !aircraft_id) {
-            if(!completed) {
-                onMissing(segmentNumber);
+            // Acionar gatilho de informação faltando
+            if(!origin_aerodrome || !destination_aerodrome || !type_of_transport || !aircraft_id) {
+                if(!completed) {
+                    onMissing(segmentNumber);
+                }
             }
         }
+
+        setInitWithValues(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         type,

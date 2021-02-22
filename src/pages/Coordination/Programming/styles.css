@@ -6,7 +6,7 @@
 }
 
 .aircraft-monitoring tr:nth-child(even){background-color: transparent;}
-  
+
 .aircraft-monitoring tr:hover {background-color: transparent;}
 
 .aircraft-monitoring th {
@@ -16,19 +16,37 @@
     background-color: #ebebeb;
     color: #666666;
 }
+
 .monitoring-table-head .assigned-label {
     width: 100px;
     border: none;
     background-color: transparent;
 }
+
+.monitoring-table-head-container .prefix-label {
+    height: 40px;
+    transition: height .2s;
+}
+.monitoring-table-head-container .prefix-name {
+    color: #666666;
+    font-weight: bold;
+}
+.monitoring-table-head .day {
+    font-size: 16px;
+    font-weight: bold;
+}
 .aircraft-monitoring .monitoring-table-head-container {
     width: 100%;
     height: 100%;
 }
+.monitoring-table-row .prefix-btn:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
 .aircraft-monitoring .monitoring-table-head-values {
     padding: 0;
     border: none;
-    height: 50px;
+    height: 40px;
 }
 .aircraft-monitoring .monitoring-table-head-values tr {
     width: 100%;
@@ -48,7 +66,6 @@
     align-items: center;
     justify-content: center;
 }
-
 .aircraft-monitoring .monitoring-table-head-values tr td.primary-color-value {
     background-color: #f2f2f2;
 }
@@ -59,7 +76,7 @@
     padding: 0;
     border: none;
     border-width: 1px;
-    border-color: #ddd;
+    border-color: #dbdbdb;
     border-style: solid;
     position: relative;
     max-width: inherit;
@@ -97,27 +114,33 @@
     cursor: pointer;
     filter: brightness(.9);
 }
-.aircraft-monitoring .monitoring-table-body-values .color-unavailable {
+.aircraft-monitoring .monitoring-table-body-values .color-RE {
     background-color: rgba(240, 230, 140, .8);
+    color: #666666;
 }
-.aircraft-monitoring .monitoring-table-body-values .color-reserved {
+.aircraft-monitoring .monitoring-table-body-values .color-IF {
     background-color: rgba(240, 128, 128, .8);
     color: #ffffff;
 }
-.aircraft-monitoring .monitoring-table-body-values .color-unavailable_per_flight {
-    background-color: rgba(144, 238, 144, .8);
-}
-.aircraft-monitoring .monitoring-table-body-values .color-unavailable_per_maintenance {
+.aircraft-monitoring .monitoring-table-body-values .color-IM {
     background-color: rgba(119, 136, 153, .8);
     color: #ffffff;
 }
 .aircraft-monitoring .monitoring-table-body-values tr td.no-border-left {
     border-left: none;
 }
-.aircraft-monitoring .monitoring-table {
-    overflow-x: scroll;
-    overflow-y: hidden;
+@media screen and (min-width: 800px) {
+    .monitoring-table table {
+        width: 100%;
+    }
 }
+@media screen and (max-width: 800px) {
+    .aircraft-monitoring .monitoring-table {
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+}
+
 .aircraft-monitoring .monitoring-table table {
     transition: width .2s;
 }
@@ -141,11 +164,22 @@
 .aircraft-monitoring .monitoring-table::-webkit-scrollbar-thumb:hover {
     background: #afafaf; 
 }
-.monitoring-table-row td.cell-prefix {
+.aircraft-monitoring td.cell-prefix {
     height: 100%;
     position: relative;
+    transition: height .2s;
 }
-.monitoring-table-row td .prefix-name {
+.next-prev-page-action {
+    margin-left: 1rem;
+}
+.next-prev-page-action .btn-action {
+    background-color: #f2f2f2;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .23);
+}
+.next-prev-page-action .btn-action-2 {
+    margin-left: .5rem;
+}
+.aircraft-monitoring td .prefix-name {
     height: 100%;
     width: 100%;
     display: flex;
@@ -157,24 +191,96 @@
 }
 /*Table Styles (END)*/
 
-.programming .switch-detailed-view {
-    background-color: #f2f2f2;
-    padding: .5rem 1rem;
-    border-radius: .5rem;
+.select-detailed-view {
     width: auto;
+    font-size: 18px;
+    color: #444444;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: .5rem;
+    background-color: #f2f2f2;
+    padding: .4rem .5rem .4rem 1.2rem;
+    cursor: pointer;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .23);
-    width: 300px;
 }
 
-/*Full Screen Aircraft Table*/
-/*
-.programming .aircraft-monitoring {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 9999999999;
-    background-color: #ffffff;
+.monitoring-subtitles .color-subtitle {
+    width: 35px;
+    height: 15px;
+    border-width: 1px;
+    border-color: #cccccc;
+    border-style: solid;
 }
-*/
+.monitoring-subtitles .subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+.monitoring-subtitles .subtitle p {
+    margin-left: 5px;
+    font-size: 14px;
+}
+.programming .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.programming .actions-programing {
+    display: flex;
+    align-items: center;
+}
+
+.programming .monitoring-subtitles {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 800px) {
+    .programming .header {
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+    .programming .actions-programing {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+    .next-prev-page-action {
+        margin-left: 0;
+    }
+    .programming .monitoring-subtitles {
+        display: inline-block;
+    }
+    .monitoring-table-row {
+        position: relative;
+    }
+    .monitoring-table-row td.cell-prefix {
+        position: absolute;
+        height: 41px;
+        width: 101px;
+        background-color: #ffffff;
+        z-index: 950;
+    }
+    .monitoring-table-row .no-border-bottom {
+        border-bottom: none;
+    }
+    .monitoring-table-head-container {
+        position: relative;
+    }
+    .monitoring-table-head-container td.cell-prefix {
+        position: absolute;
+        height: 41px;
+        width: 101px;
+        background-color: #ffffff;
+        z-index: 950;
+    }
+    .select-detailed-view .select {
+        width: 100%;
+    }
+}

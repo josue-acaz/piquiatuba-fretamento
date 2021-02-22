@@ -2,9 +2,8 @@ import React from 'react';
 import {Switch, Route, useRouteMatch} from 'react-router-dom';
 
 import ListQuotations from './ListQuotations';
-import Generate from './Generate';
+import EditQuotation from './EditQuotation';
 import Generated from './Generated';
-import Medical from './Medical';
 
 export default function Quotations(props) {
     const {path} = useRouteMatch();
@@ -17,18 +16,13 @@ export default function Quotations(props) {
         },
         {
             exact: false,
-            path: `${path}/generate`,
-            component: Generate
+            path: `${path}/:internal_quotation_id/edit`,
+            component: EditQuotation
         },
         {
             exact: false,
-            path: `${path}/generate/:internal_quotation_id/generated`,
+            path: `${path}/:internal_quotation_id/export-pdf`,
             component: Generated
-        },
-        {
-            exact: false,
-            path: `${path}/medical`,
-            component: Medical,
         },
     ];
 

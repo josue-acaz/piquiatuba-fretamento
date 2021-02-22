@@ -1,18 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import { useFeedback } from '../../../core/feedback/feedback.context';
-import {WrapperContent} from '../../../core/design';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import {WrapperContent, FlexSpaceBetween} from '../../../core/design';
 import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
+import WhatsappIcon from '@material-ui/icons/WhatsApp';
+import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
 import PageTitle from '../../../components/PageTitle';
 import TableTask from '../../../components/TableTask';
+import QuotationStatus from '../../../components/QuotationStatus';
 import Alert from '../../../components/Alert';
-import FullScreenDialog from '../../../components/FullScreenDialog';
-import { EnumInternalQuotationStatus, EnumDatetimeFormatTypes } from '../../../global';
-import { getDatetime } from '../../../utils';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import { getDatetime, shareOnWhatsapp } from '../../../utils';
+import { EnumDatetimeFormatTypes } from '../../../global';
 import api from '../../../api';
+
 import './styles.css';
 
 const headCells = [
@@ -54,35 +58,71 @@ const headCells = [
     },
 ];
 
-function InternalQuotationStatus({current_status, onChange}) {
-    const [status, setStatus] = useState(current_status);
-    const [inputs, setInputs] = useState({
-        departure_datetime: '',
-        arrival_datetime: '',
-    });
+function Actions({internal_quotation, last_internal_quotation_status, handleEditQuotation}) {
+    const [open, setOpen] = useState(false);
+
+    function handleSend() {
+        if(internal_quotation.document) {
+            setOpen(true);
+        } else {
+            alert('Cotação sem documento. Por favor, edite a cotação e gere um novo documento.');
+        }
+    }
+
+    function handleClose() {
+        setOpen(false);
+    }
+
+    function sendWithWhatsapp(internal_quotation_id) {
+        shareOnWhatsapp(`/quotations/${internal_quotation_id}/download`);
+    }
 
     return(
-        <>
-            <FullScreenDialog />
-            <Select 
-                id="status" 
-                name="status" 
-                displayEmpty
-                className={`select-quotation-status select-${status}`}
-                value={status}
-                disableUnderline={true}
-                onChange={(e) => setStatus(e.target.value)}
-            >
-                <MenuItem disabled value="">
-                    <em>Status da cotação...</em>
-                </MenuItem>
-                {EnumInternalQuotationStatus.map(internal_quotation_status => <MenuItem key={internal_quotation_status.key} value={internal_quotation_status.key}>{internal_quotation_status.value}</MenuItem>)}
-            </Select>
-        </>
+        <div className="actions">
+            <Dialog open={open} onClose={handleClose} className="dialog-send">
+                <DialogContent>
+                    <div className="send-action">
+                        <p className="title">Enviar por</p>
+
+                        <div className="send-content">
+                            <FlexSpaceBetween>
+                                <div className="share" onClick={() => sendWithWhatsapp(internal_quotation.id)}>
+                                    <IconButton>
+                                        <WhatsappIcon />
+                                    </IconButton>
+                                    <p>Whatsapp</p>
+                                </div>
+                                <div className="share">
+                                    <IconButton>
+                                        <EmailOutlinedIcon />
+                                    </IconButton>
+                                    <p>Email</p>
+                                </div>
+                            </FlexSpaceBetween>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+            {last_internal_quotation_status.status !== 'closed' && (
+                <Tooltip className="action-tooltip" title="Editar cotação">
+                    <IconButton size="small" aria-label="edit" onClick={() => {
+                        console.log(internal_quotation);
+                        handleEditQuotation(internal_quotation.id, internal_quotation.code);
+                    }}>
+                        <EditIcon className="icon icon-edit" />
+                    </IconButton>
+                </Tooltip>
+            )}
+            <Tooltip className="action-tooltip pdf-tooltip" title="Enviar PDF"> 
+                <IconButton size="small" aria-label="pdf" onClick={() => handleSend()}>
+                    <i className="pi pi-file-pdf"></i>
+                </IconButton>
+            </Tooltip>
+        </div>
     );
 }
 
-export default function ListQuotations() {
+export default function ListQuotations({history}) {
     const feedback = useFeedback();
     const [loading, setLoading] = useState(true);
     const [rows, setRows] = useState([]);
@@ -128,11 +168,7 @@ export default function ListQuotations() {
         let rows = [];
     
         internal_quotations.forEach((internal_quotation) => {
-
             const last_internal_quotation_status = internal_quotation.internal_quotation_status[0];
-            console.log({
-                last_internal_quotation_status,
-            })
 
             rows.push({
                 id: internal_quotation.id,
@@ -156,19 +192,27 @@ export default function ListQuotations() {
                     },
                     {
                         id: 3,
-                        text: <InternalQuotationStatus current_status={last_internal_quotation_status.status} />,
+                        text: (
+                            <QuotationStatus 
+                                internal_quotation_id={internal_quotation.id}
+                                internal_quotation_name={internal_quotation.full_name}
+                                flight_id={internal_quotation.flight.id}
+                                current_status={last_internal_quotation_status.status} 
+                            />
+                        ),
                         disablePadding: false,
                         align: 'right',
                     },
                     {
                         id: 4,
-                        text: (
-                            <div className={`type_of_transport ${internal_quotation.type_of_transport}-transport`}>
-                                <p>{internal_quotation.type_of_transport === 'aeromedical' ? 'UTI' : 'PAX'}</p>
-                            </div>
-                        ),
                         disablePadding: false,
                         align: 'right',
+                        text: internal_quotation.type_of_transport === 
+                        'aeromedical_with_uti' ? 'Aeromédico - UTI' : 
+                        internal_quotation.type_of_transport === 
+                        'aeromedical_without_uti' ? 'Aeromédico' : 
+                        internal_quotation.type_of_transport === 
+                        'passengers' ? 'PAX' : 'Carga',
                     },
                     {
                         id: 5,
@@ -181,13 +225,11 @@ export default function ListQuotations() {
                         disablePadding: false,
                         align: 'right',
                         text: (
-                            <div className="actions">
-                                <Tooltip className="action-tooltip" title="Editar cotação" onClick={() => {}}>
-                                    <IconButton size="small" aria-label="edit">
-                                        <EditIcon className="icon icon-edit" />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
+                            <Actions 
+                                last_internal_quotation_status={last_internal_quotation_status} 
+                                internal_quotation={internal_quotation} 
+                                handleEditQuotation={handleEditQuotation}
+                            />
                         ),
                     },
                 ],
@@ -230,6 +272,14 @@ export default function ListQuotations() {
     async function handleRemoveSelecteds(selecteds) {
         setSelecteds(selecteds);
         handleOpen('alert');
+    }
+
+    function handleAddQuotation() {
+        history.push('/quotations/0/edit');
+    }
+
+    function handleEditQuotation(internal_quotation_id, internal_quotation_code) {
+        history.push(`/quotations/${internal_quotation_id}/edit`, {internal_quotation_code});
     }
 
     useEffect(() => {
@@ -278,15 +328,20 @@ export default function ListQuotations() {
                 onCancel={() => handleClose('alert')}
             />
             <section id="list-quotations" className="list-quotations">
-                <PageTitle title="Lista de cotações" subtitle="Cotações" />
-
+                <FlexSpaceBetween>
+                    <PageTitle title="Lista de cotações" subtitle="Cotações" />
+                    <Tooltip title="Adicionar cotação">
+                        <IconButton onClick={handleAddQuotation}>
+                            <AddIcon className="icon" />
+                        </IconButton>
+                    </Tooltip>
+                </FlexSpaceBetween>
                 <TableTask 
                     rows={rows} 
                     loading={loading} 
                     headCells={headCells}
                     limit={pagination.limit}
                     expansion={true}
-                    withSwap={true}
                     page={pagination.page}
                     count={pagination.count}
                     handleRemoveSelecteds={handleRemoveSelecteds}

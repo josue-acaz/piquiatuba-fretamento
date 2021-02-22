@@ -10,8 +10,8 @@ import Switch from '@material-ui/core/Switch';
 
 import './styles.css';
 
-export default function ClientSegment({submitted, onChange}) {
-    const [inputs, setInputs] = useState({
+export default function ClientSegment({defaultValues, submitted, onChange}) {
+    const [inputs, setInputs] = useState(defaultValues ? defaultValues : {
         client_name: '',
         type_of_transport: '',
         ambulance_at_origin: false,
@@ -70,7 +70,7 @@ export default function ClientSegment({submitted, onChange}) {
                 </Col>
             </Row>
 
-            {inputs.type_of_transport === 'aeromedical' && (
+            {(inputs.type_of_transport === 'aeromedical_with_uti' || inputs.type_of_transport === 'aeromedical_without_uti') && (
                 <div className="aeromedical">
                     <FlexContent>
                         <AddBoxOutlinedIcon className="aeromedical-icon" />

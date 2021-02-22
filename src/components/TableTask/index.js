@@ -33,7 +33,6 @@ export default function TableTask({
   handleRemoveSelecteds,
   toolbar_search_placeholder,
   handleOpenFilterList,
-  withSwap=false,
   expansion = false,
 }) {
   const classes = useStyles();
@@ -105,7 +104,7 @@ export default function TableTask({
           swap={swap} 
           toggleSwap={toggleSwap}
           toolbar_search_placeholder={toolbar_search_placeholder} 
-          withSwap={withSwap}
+          withSwap={expansion}
           handleRemoveSelecteds={() => handleRemoveSelecteds(selected)}
           handleOpenFilterList={handleOpenFilterList}
         />
@@ -126,7 +125,7 @@ export default function TableTask({
                     onSelectAllClick={handleSelectAllClick}
                     onRequestSort={handleRequestSort}
                     rowCount={rows.length}
-                    withSwap={withSwap}
+                    withSwap={expansion}
                     swap={swap}
                   />
                   <TableBody>

@@ -1,6 +1,7 @@
 import { parseISO, format, addDays } from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { isMobile } from 'react-device-detect';
+import { EnumShareWhatsappEndpoints } from '../global';
 
 /**
  * 
@@ -38,7 +39,7 @@ export function capitalizeFiristLetter(value) {
  * 
  * @param {number} value 
  */
-export function currency(value) {
+export function currency(value=0) {
     return value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
 }
 
@@ -87,7 +88,7 @@ export function shareOnWhatsapp(endpoint_share) {
     const whatsapp_mobile = 'https://wa.me/?text=';
 
     window.open((isMobile ? whatsapp_mobile : whatsapp_desktop) + encodeURIComponent(
-        `Acesse:: https://fretamento-piquiatuba.netlify.app${endpoint_share}`
+        `Acesse:: ${EnumShareWhatsappEndpoints.TEST}${endpoint_share}`
     ), '_blank');
 }
 
@@ -128,8 +129,7 @@ export function normalizeString(text, max_length=20) {
  * @param {string} date_format_type 
  */
 export function getDatetime(date, date_format_type, add_days=0) {
-    console.log({date});
-    date = parseISO(date);
+    date = new Date(date);
 
     if(add_days > 0) {
         date = addDays(date, add_days);
@@ -137,6 +137,16 @@ export function getDatetime(date, date_format_type, add_days=0) {
 
     const formatted = format(date, date_format_type, {locale: ptBR});
     return formatted;
+}
+
+export function getDayOfMonth(date) {
+    const formatted = format(date, 'd', {locale: ptBR});
+    return Number(formatted);
+}
+
+export function getDayOfWeek(date) {
+    const formatted = format(date, 'i', {locale: ptBR});
+    return Number(formatted);
 }
 
 /**
@@ -154,3 +164,34 @@ export function getCurrentDate(date_format_type, add_days=0) {
     const formatted = format(date, date_format_type, {locale: ptBR});
     return formatted;
 }
+
+/**
+ * 
+ * @param {number} numero 
+ */
+export function numberToReal(numero) {
+    numero = numero.toFixed(2).split('.');
+    numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join('.');
+    return numero.join(',');
+}
+
+/**
+ * 
+ * @param v 
+ * @param isInt 
+ */
+export function onlyNumbers(v, isInt=false) {
+    if(isInt) {
+      v = v.replace(/\D/g,'');
+    } else {
+      v = v.replace(/[^\d.]|\.(?=.*\.)/g, '');
+    }
+    
+    return v;
+}
+
+/**
+ * Diz se o ano é bisexto
+ * @param {number} year
+ */
+export function isLeap (year) {return! ((year% 4) || (! (year% 100) && year% 400)); }

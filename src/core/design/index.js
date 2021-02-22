@@ -6,6 +6,7 @@ const FlexContent = styled.div`
 `;
 
 const FlexSpaceBetween = styled.div`
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -35,7 +36,15 @@ const SegmentCard = styled.div`
     transition: 0.2s;
 `;
 
+const Card = styled.div`
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: .5rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+`;
+
 export {
+    Card,
     WrapperContent, 
     FlexContent,
     FlexSpaceBetween,

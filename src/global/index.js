@@ -108,9 +108,17 @@ const EnumTypeOfTransport = [
         value: 'Passageiros',
     },
     {
-        key: 'aeromedical',
-        value: 'Aeromédico',
+        key: 'aeromedical_with_uti',
+        value: 'Aeromédico com UTI',
     },
+    {
+        key: 'aeromedical_without_uti',
+        value: 'Aeromédico sem UTI',
+    },
+    {
+        key: 'cargo',
+        value: 'Carga',
+    }
 ];
 
 const EnumInternalQuotationStatus = [
@@ -130,12 +138,19 @@ const EnumInternalQuotationStatus = [
 
 const EnumDatetimeFormatTypes = Object.freeze({
     SQL: "yyyy'-'MM'-'dd kk':'mm':'ss", // 2021-08-12 22:45:30
-    READABLE_V1: "dd 'de' MMMM', às ' HH:mm'h'", // 14 de Agosto, às 22:45h
+    READABLE_V1: "dd 'de' MMMM', às ' HH:mm", // 14 de Agosto, às 22:45h
+    READABLE_V2: "dd 'de' MMMM' de ' yyyy",
+});
+
+const EnumShareWhatsappEndpoints = Object.freeze({
+    TEST: 'http://localhost:3006',
+    PRODUCTION: 'https://fretamento-piquiatuba.netlify.app',
 });
 
 export {
     PDF_URL,
     baseURL,
+    EnumShareWhatsappEndpoints,
     EnumAircraftType,
     EnumAircraftCarrier,
     EnumAircraftNumberEngines,

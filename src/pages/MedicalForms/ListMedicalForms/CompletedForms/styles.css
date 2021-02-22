@@ -1,0 +1,22 @@
+.completed-forms .ref_quotation {
+    padding: 10px 15px 10px 15px;
+    border-radius: 15px;
+    background-color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.completed-forms .ref_quotation p {
+    color: #222222;
+    font-size: 16px;
+}
+.completed-forms .ref_quotation:hover {
+    cursor: pointer;
+    background-color: #cccccc;
+}
+.completed-forms .pi-file-pdf {
+    font-size: 18px;
+}
+.completed-forms .pi-file-pdf:hover {
+    color: #F40F02;
+}

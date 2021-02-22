@@ -19,20 +19,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FullScreenDialog({children, open, handleClose, title}) {
+export default function FullScreenDialog({children, className, CustomToolbar, open, handleClose, title}) {
   const classes = useStyles();
 
   return (
-    <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+    <Dialog className={className} fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
-          <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              {title}
-            </Typography>
-            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
+          {CustomToolbar ? CustomToolbar : (
+            <Toolbar style={{padding: 1}}>
+              <Typography variant="h6" className={classes.title}>
+                {title}
+              </Typography>
+              <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+                <CloseIcon />
+              </IconButton>
+            </Toolbar>
+          )}
         </AppBar>
         {children}
     </Dialog>

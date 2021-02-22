@@ -1,7 +1,7 @@
 import React from 'react';
 import {Switch, Route, useRouteMatch} from 'react-router-dom';
 
-import AddBase from './AddBase';
+import EditBase from './EditBase';
 import ListBases from './ListBases';
 
 export default function Bases(props) {
@@ -17,8 +17,8 @@ export default function Bases(props) {
         {
             id: 2,
             exact: false,
-            path: `${path}/add`,
-            component: AddBase,
+            path: `${path}/:base_id/edit`,
+            component: EditBase,
         },
     ];
 

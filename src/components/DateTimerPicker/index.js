@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Calendar } from 'primereact/calendar';
 import { addLocale } from 'primereact/api';
 
@@ -15,6 +15,7 @@ export default function DateTimerPicker({
     disabledDates,
     minDate=today,
     maxDate,
+    disabled=false,
 }) {
 
     addLocale('pt', {
@@ -38,6 +39,7 @@ export default function DateTimerPicker({
             value={value}
             minDate={minDate}
             maxDate={maxDate} 
+            disabled={disabled}
             onChange={onChange}
             placeholder={placeholder}
             disabledDates={disabledDates}

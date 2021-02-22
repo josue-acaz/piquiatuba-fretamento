@@ -18,7 +18,7 @@ import api from '../../api';
 
 import './styles.css';
 
-export default function AutocompleteDialog({open=true, handleClose, title='Anexar à cotação...', handleSelectedOption}) {
+export default function AutocompleteDialog({open=true, endpoint, handleClose, title='Anexar à cotação...', handleSelectedOption}) {
     const [fullScreen, setFullScreen] = useState(false);
     const toggleFullScreen = () => setFullScreen(!fullScreen);
     const [openFilterList, setOpenFilterList] = useState(false);
@@ -30,10 +30,11 @@ export default function AutocompleteDialog({open=true, handleClose, title='Anexa
     const [params, setParams] = useState({
         limit: 15,
         offset: 0,
-        type_of_transport: 'aeromedical',
+        type_of_transport: 'aeromedical_with_uti',
         text: '',
         target: 'origin',
         order: 'DESC',
+        orderBy: 'created_at',
     });
 
     function handleChangeParams(e) {
@@ -44,7 +45,7 @@ export default function AutocompleteDialog({open=true, handleClose, title='Anexa
     useEffect(() => {
         async function index() {
             setProcessing(true);
-            const response = await api.get('/internal/quotations/autocomplete', {params});
+            const response = await api.get(endpoint, {params});
             setOptions(response.data);
             setProcessing(false);
         }
@@ -155,15 +156,17 @@ export default function AutocompleteDialog({open=true, handleClose, title='Anexa
                                     lastRecord={lastRecord}
                                 >
                                     <div className="render-op">
-                                        <p>{op.name}</p>
-                                        {op.origin_aerodrome && (
+                                        <p>{op.full_name}</p>
+                                        {/**
+                                         * op.origin_aerodrome && (
                                             <>
                                                 <p><strong>Origem ➟ </strong>{op.origin_aerodrome.full_name}, {op.origin_aerodrome.city_uf}</p>
                                                 <p><strong>Destino ➟ </strong>{op.destination_aerodrome.full_name}, {op.destination_aerodrome.city_uf}</p>
                                                 <p>Criada em {op.createdAt}</p>
                                                 <p><strong>{currency(op.price)}</strong></p>
                                             </>
-                                        )}
+                                        )
+                                         */}
                                     </div>
                                 </RenderOption>
                             );

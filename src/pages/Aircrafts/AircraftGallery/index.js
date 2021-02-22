@@ -180,78 +180,77 @@ function GalleryTransportType({
     return(
         <div className={`gallery-transport gallery-${type_of_transport}`}>
             <h3 className="title">{title}</h3>
-            {gallery.length > 0 ? (
-                <>
-                    <UploadDialog 
-                        open={open} 
-                        fileName="image"
-                        handleClose={handleClose} 
-                        onCloseAndUploadedFiles={() => {
-                            handleClose();
-                            handleRefresh();
-                            console.log('Refresh firing...');
-                        }}
-                        params={{
-                            view,
-                            type: type_of_transport,
-                        }}
-                        endpoint={`${baseURL}/aircrafts/${aircraft_id}/images`}
-                        enableUpload={!!view}
-                    >
-                        <Select 
-                            id="view" 
-                            name="view" 
-                            className="select" 
-                            displayEmpty
-                            value={view}
-                            disableUnderline={true}
-                            onChange={handleChangeView}
+
+            <UploadDialog 
+                open={open} 
+                fileName="image"
+                handleClose={handleClose} 
+                onCloseAndUploadedFiles={() => {
+                    handleClose();
+                    handleRefresh();
+                    console.log('Refresh firing...');
+                }}
+                params={{
+                    view,
+                    type: type_of_transport,
+                }}
+                endpoint={`${baseURL}/aircrafts/${aircraft_id}/images`}
+                enableUpload={!!view}
+            >
+                <Select 
+                    id="view" 
+                    name="view" 
+                    className="select" 
+                    displayEmpty
+                    value={view}
+                    disableUnderline={true}
+                    onChange={handleChangeView}
+                >
+                    <MenuItem disabled value="">
+                        <em>Selecione o tipo de imagem...</em>
+                    </MenuItem>
+                    {EnumAircraftImageView.map((aircraft_image_view, index) => (
+                        <MenuItem 
+                            key={index} 
+                            value={aircraft_image_view.key}
                         >
-                            <MenuItem disabled value="">
-                                <em>Selecione o tipo de imagem...</em>
-                            </MenuItem>
-                            {EnumAircraftImageView.map((aircraft_image_view, index) => (
-                                <MenuItem 
-                                    key={index} 
-                                    value={aircraft_image_view.key}
-                                >
-                                    {aircraft_image_view.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </UploadDialog>
-                    <div className="header">
-                        {exclude ? (
-                            <FlexSpaceBetween className="delete-gallery-image">
-                                <div className="cancel">
-                                    <Button onClick={() => setExclude(false)} variant="outlined">Cancelar</Button>
-                                </div>
-                                <div className="action-delete">
-                                    <Tooltip title="Excluir selecionados">
-                                        <IconButton size="medium">
-                                            <DeleteIcon className="icon" />
-                                        </IconButton>
-                                    </Tooltip>
-                                </div>
-                            </FlexSpaceBetween>
-                        ) : (
-                            <Dropdown 
-                                Icon={EditOutlinedIcon} 
-                                options={action_options} 
-                                dropPosition="right" 
-                                decoration="square"
-                                text="Editar"
-                                iconSize="small"
-                            />
-                        )}
-                    </div>
-                    <SlickCarousel 
-                        images={gallery} 
-                        exclude={exclude} 
-                        loading={loading} 
+                            {aircraft_image_view.value}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </UploadDialog>
+            <div className="header">
+                {exclude ? (
+                    <FlexSpaceBetween className="delete-gallery-image">
+                        <div className="cancel">
+                            <Button onClick={() => setExclude(false)} variant="outlined">Cancelar</Button>
+                        </div>
+                        <div className="action-delete">
+                            <Tooltip title="Excluir selecionados">
+                                <IconButton size="medium">
+                                    <DeleteIcon className="icon" />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    </FlexSpaceBetween>
+                ) : (
+                    <Dropdown 
+                        Icon={EditOutlinedIcon} 
+                        options={action_options} 
+                        dropPosition="right" 
+                        decoration="square"
+                        text="Editar"
+                        iconSize="small"
                     />
-                </>
-            ) : (<p className="no-images">Nenhuma imagem</p>)}
+                )}
+            </div>
+            {gallery.length > 0 ? (
+                <SlickCarousel 
+                    images={gallery} 
+                    exclude={exclude} 
+                    loading={loading} 
+                />
+            ) : <p className="no-images">Nenhuma imagem</p>}
         </div>
     );
 }
@@ -341,6 +340,10 @@ export default function AircraftGallery({history}) {
         history.goBack();
     }
 
+    function handleRefresh() {
+        index();
+    }
+
     function getGalleryType(aircraft_images, type) {
         return aircraft_images.filter(aircraft_image => type === aircraft_image.type);
     }
@@ -356,7 +359,7 @@ export default function AircraftGallery({history}) {
     if(operates_aeromedical_transport) {
         transportTypeImages.push({
             title: 'Transporte aeromédico',
-            type_of_transport: 'aeromedical',
+            type_of_transport: 'aeromedical_with_uti',
         });
     }
 
@@ -376,7 +379,7 @@ export default function AircraftGallery({history}) {
                             key={index}
                             loading={loading}
                             aircraft_id={aircraft_id} 
-                            handleRefresh={() => index()} 
+                            handleRefresh={handleRefresh} 
                             title={transport_type_image.title}
                             type_of_transport={transport_type_image.type_of_transport} 
                             gallery={getGalleryType(images, transport_type_image.type_of_transport)}

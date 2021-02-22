@@ -110,7 +110,7 @@
 	text-align: center;
 	right: 20px;
 	top: 20px;
-	z-index: 999;
+	z-index: 920;
 	border-radius: 50%;
 	transition: background-color .2s, box-shadow .2s, transform .2s;
 }
@@ -291,7 +291,7 @@
 
 	.layout-sidebar {
 		top: 0;
-		z-index: 999;
+		z-index: 920;
 		height: 100%;
 		transform: translateX(-100%);
 	}

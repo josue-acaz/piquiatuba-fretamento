@@ -1,0 +1,127 @@
+.internal_quotation_status .select-quotation-status {
+    width: auto;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: .6rem;
+    cursor: pointer;
+    height: 25px;
+    width: 130px;
+}
+.internal_quotation_status .select-quotation-status .quotation-status-menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.internal_quotation_status .select-opened {
+    background-color: #cccccc;
+    color: #ffffff;
+}
+.internal_quotation_status .select-opened .MuiSelect-icon {
+    color: #ffffff;
+}
+.internal_quotation_status .select-closed {
+    background-color: #4CAF50;
+    color: #ffffff;
+}
+.internal_quotation_status .select-closed .MuiSelect-icon {
+    color: #ffffff;
+}
+.internal_quotation_status .select-not_closed {
+    background-color: #FF5A5F;
+    color: #ffffff;
+}
+.internal_quotation_status .select-not_closed .MuiSelect-icon {
+    color: #ffffff;
+}
+.close-quotation-dialog .close-quotation {
+    padding: 1rem;
+}
+.close-quotation-dialog .title {
+    font-size: 16px;
+    color: #444444;
+}
+.close-quotation-dialog .segment {
+    margin-top: 10px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top-width: 1px;
+    border-top-color: #cccccc;
+    border-top-style: solid;
+}
+.close-quotation-dialog .border-bottom {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #cccccc;
+}
+.close-quotation-dialog .segment-number {
+    font-size: 18px;
+    color: #444444;
+    font-weight: bold;
+}
+.close-quotation-dialog .segment-origin {
+    font-size: 14px;
+    color: #888888;
+}
+.close-quotation-dialog .segment-destination {
+    font-size: 16px;
+    color: #444444;
+    font-weight: bold;
+}
+.col-field label {
+    flex-direction: column;
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #444444;
+}
+.close-quotation-dialog #form-segment-status {
+    margin-top: 1rem;
+}
+.close-quotation-dialog .flight-segments {
+    margin-top: 1rem;
+}
+.close-quotation-dialog .segment .header {
+    margin-bottom: 1rem;
+}
+.close-quotation-dialog .segment-type {
+    width: 130px;
+    padding: .3rem 1rem;
+    border-radius: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.close-quotation-dialog .segment-type p {
+    font-size: 14px;
+}
+.not-closed-form label {
+    font-size: 16px;
+    color: #444444;
+}
+.close-quotation-dialog .segment .segment-type-trip {
+    background-color: #324f80;
+    color: #ffffff;
+}
+.close-quotation-dialog .segment .segment-type-transfer {
+    background-color: #f2f2f2;
+    color: #444444;
+}
+.close-quotation-dialog .submit-btn {
+    margin-top: 1rem;
+}
+
+.close-quotation-dialog .close-quotation {
+    margin-bottom: 1rem;
+}
+.close-quotation .segment {
+    position: relative;
+}
+
+@media screen and (max-width: 800px) {
+    .close-quotation-dialog .submit-btn {
+        width: 100%;
+    }
+}
