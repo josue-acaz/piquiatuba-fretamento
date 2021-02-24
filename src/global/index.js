@@ -1,5 +1,5 @@
 const PDF_URL = process.env.REACT_APP_AWS_CLOUD+'/public/pdfs';
-const baseURL = process.env.REACT_APP_API_URL;
+const baseURL = 'http://144.126.221.7:3333';
 
 const EnumAircraftType = [
     {
