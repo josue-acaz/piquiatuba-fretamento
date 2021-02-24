@@ -83,9 +83,29 @@ function getHourFromEndStatus(start_hour, end_hour) {
         end_hour = `${end_hour_time}:${end_minutes_number}`;
     }
 
-    console.log({end_hour});
-
     return end_hour;
+}
+
+/**
+ * 
+ * @param {string} hour_left 00:00
+ * @param {string} hour_right 00:00
+ * Retorna em minutos a diferença entre duas horas
+ */
+function subHours(hour_left, hour_right) {
+    const [left_hours, left_minutes] = hour_left.split(':');
+    const [right_hours, right_minutes] = hour_right.split(':');
+
+    // 08:30 left hour
+    // 10:40 right hour
+    const left_minutes_value = Number(left_minutes);
+    const right_minutes_value = Number(right_minutes);
+
+    const left_hours_value = Number(left_hours) + (left_minutes_value/60);
+    const right_hours_value = Number(right_hours) + (right_minutes_value/60);
+
+    const difference_hours = right_hours_value - left_hours_value;
+    return difference_hours*60;
 }
 
 const TableLayout = styled.table`
@@ -114,7 +134,7 @@ const CollorFilling = styled.div`
     z-index: 910;
 `;
 
-function CollorFillingComponent({index, day, status, detailedView, hour_start, hour_end}) {
+function CollorFillingComponent({index, day, status, detailedView, hour_start, hour_end, data, prevProgrammings}) {
     const last_status = index === day-1;
     const start_position = convertTimeToMinutes(hour_start) / total_minutes;
     const end_position = convertTimeToMinutes(
@@ -125,17 +145,34 @@ function CollorFillingComponent({index, day, status, detailedView, hour_start, h
     const width = (end_position-start_position)*100;
 
     return(
-        <CollorFilling className={`color-filling color-${status}`} width={width} initAtPosition={init_at_position}>
-            <StatusCode fill={!detailedView}>{status}</StatusCode>
-            {/**
-             * detailedView && (
-                <div className="period">
-                    <p>De: {hour_start}</p>
-                    <p>Às: {hour_end}</p>
-                </div>
-            )
-             */}
-        </CollorFilling>
+        <>
+            <CollorFilling className={`color-filling color-${status}`} width={width} initAtPosition={init_at_position}>
+                <StatusCode fill={!detailedView}>{status}</StatusCode>
+                {detailedView && (
+                    <div className="period">
+                        {status !== 'IM' && (
+                            <>
+                                <p>From {data.origin}</p>
+                                <p>To {data.destination}</p>
+                            </>
+                        )}
+                    </div>
+                )}
+            </CollorFilling>
+            {prevProgrammings.map(prevProgramming => (
+                prevProgramming.width > 0 && (
+                    <CollorFilling 
+                        className="color-filling color-DI" 
+                        width={prevProgramming.width} 
+                        initAtPosition={prevProgramming.init_at_position}
+                    >
+                        <div className="available-status">
+                            <p>SNCJ</p>
+                        </div>
+                    </CollorFilling>
+                )
+            ))}
+        </>
     );
 }
 
@@ -155,52 +192,82 @@ function NextPrevPageAction({onNext, onPrev}) {
     );
 }
 
-function TableRow({data, detailedView}) {
+function TableRow({data, detailedView, openSchedule}) {
     const height = detailedView ? 80 : 40;
-    const [viewSchedule, setViewSchedule] = useState(false);
-
-    function openSchedule() {
-        setViewSchedule(true);
-    }
-
-    function closeSchedule() {
-        setViewSchedule(false);
-    }
-
     return(
-        data.map((model, index) => (
-            <>
-                <tr className="monitoring-table-row">
-                    <td style={{height}} className={`cell-prefix ${index < data.length-1 ? 'no-border-bottom' : ''}`}>
-                        <div className="prefix-name prefix-btn" onClick={openSchedule}>
-                            <p>{model.prefix}</p>
-                        </div>
-                    </td>
-                    <MonitoringCell height={height} className="monitoring-table-body-values">
-                        <tr className="hours-group">
-                            {hours_of_day.map((hour, index) => (
-                                <td className={`status-cell ${index === 0 ? 'no-border-left' : ''}`} />
-                            ))}
-                            {model.data.map((data, index) => (
-                                <CollorFillingComponent 
-                                    status={data.status} 
-                                    index={index} 
-                                    hour_start={data.hora_inicial}
-                                    hour_end={data.hora_final}
-                                    day={model.data.length}
-                                    detailedView={detailedView}
-                                />
-                            ))}
+        <>
+            {data.map((model, index) => {
+                const {data} = model;
+
+                return(
+                    <>
+                        <tr className="monitoring-table-row">
+                            <td style={{height}} className={`cell-prefix ${index < data.length-1 ? 'no-border-bottom' : ''}`}>
+                                <div className="prefix-name prefix-btn" onClick={() => openSchedule(model.prefix)}>
+                                    <p>{model.prefix}</p>
+                                </div>
+                            </td>
+                            <MonitoringCell height={height} className="monitoring-table-body-values">
+                                <tr className="hours-group">
+                                    {hours_of_day.map((hour, index) => (
+                                        <td className={`status-cell ${index === 0 ? 'no-border-left' : ''}`} />
+                                    ))}
+                                    {data.map((model_data, index) => {
+                                        // Calcular disponibilidade entre status
+                                        let prev_programmings = [];
+
+                                        // Se for o primeiro status, pegar as 00:00 como hora início e a data de início do primeiro status como hora final 
+                                        if(index === 0) {
+                                            const difference = subHours('00:00', model_data.hora_inicial);
+                                            
+                                            if(difference >= 60) {
+                                                prev_programmings.push({
+                                                    width: (difference / total_minutes) * 100,
+                                                    init_at_position: 0,
+                                                });
+                                            }
+                                        } else {
+                                            // Se não, calcular usando a hora fim do status anterior menos a hora de início do status atual
+                                            const difference = subHours(data[index-1].hora_final, model_data.hora_inicial);
+                                            if(difference >= 60) {
+                                                prev_programmings.push({
+                                                    width: (difference / total_minutes) * 100,
+                                                    init_at_position: (convertTimeToMinutes(data[index-1].hora_final) / total_minutes)*100,
+                                                });
+                                            }
+                                        }
+
+                                        // Se for o último
+                                        if(index === data.length-1) {
+                                            const difference = subHours(model_data.hora_final, '23:59');
+                                            if(difference >= 60) {
+                                                prev_programmings.push({
+                                                    width: (difference / total_minutes) * 100,
+                                                    init_at_position: (convertTimeToMinutes(model_data.hora_final) / total_minutes)*100,
+                                                });
+                                            }
+                                        }
+
+                                        return(
+                                            <CollorFillingComponent 
+                                                index={index}
+                                                status={model_data.status}  
+                                                hour_start={model_data.hora_inicial}
+                                                hour_end={model_data.hora_final}
+                                                day={model.data.length}
+                                                detailedView={detailedView}
+                                                data={model_data}
+                                                prevProgrammings={prev_programmings}
+                                            />
+                                        );
+                                    })}
+                                </tr>
+                            </MonitoringCell>
                         </tr>
-                    </MonitoringCell>
-                </tr>
-                <AircraftSchedule 
-                    open={viewSchedule} 
-                    prefix={model.prefix}
-                    handleClose={closeSchedule} 
-                />
-            </>
-        ))
+                    </>
+                );
+            })}
+        </>
     );
 }
 
@@ -210,7 +277,7 @@ function TableHead({currentDay}) {
         <>
             <tr className="monitoring-table-head">
                 <th className="assigned-label"></th>
-                <th className="day">{getDatetime(currentDay, EnumDatetimeFormatTypes.READABLE_V2)}</th>
+                {/**<th className="day">{getDatetime(currentDay, EnumDatetimeFormatTypes.READABLE_V2)}</th> */}
             </tr>
             <tr className="monitoring-table-head-container">
                 <td className="cell-prefix">
@@ -228,7 +295,7 @@ function TableHead({currentDay}) {
     );
 }
 
-function AircraftMonitoring({rows, detailedView, currentDay}) {
+function AircraftMonitoring({rows, detailedView, currentDay, openSchedule}) {
     const table_width = 1600;
 
     const subtitles = [
@@ -255,7 +322,7 @@ function AircraftMonitoring({rows, detailedView, currentDay}) {
             <div className="monitoring-table">
                 <TableLayout widthSize={table_width} className="schedule-aircrafts-table">
                     <TableHead currentDay={currentDay} />
-                    <TableRow data={rows} detailedView={detailedView} />
+                    <TableRow data={rows} openSchedule={openSchedule} detailedView={detailedView} />
                 </TableLayout>
             </div>
 
@@ -280,11 +347,13 @@ export default function Programming() {
             prefix: 'PT-SOK',
             data: [
                 {
-                    status: 'IM',
+                    status: 'IV',
                     hora_inicial: '08:30:00',
                     hora_final: '10:30:00',
                     user_name: 'Josué',
                     notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
                 },
                 {
                     status: 'RE',
@@ -292,20 +361,24 @@ export default function Programming() {
                     hora_final: '13:00:00',
                     user_name: 'Josué',
                     notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
                 },
                 {
                     status: 'IM',
                     hora_inicial: '14:30:00',
-                    hora_final: '15:30:00',
+                    hora_final: '18:30:00',
                     user_name: 'Josué',
                     notes: '',
                 },
                 {
-                    status: 'IF',
-                    hora_inicial: '22:30:00',
-                    hora_final: '23:59:00',
+                    status: 'IV',
+                    hora_inicial: '19:00:00',
+                    hora_final: '21:39:00',
                     user_name: 'Josué',
                     notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
                 },
             ]
         },
@@ -313,44 +386,45 @@ export default function Programming() {
             prefix: 'PT-WNG',
             data: [
                 {
-                    status: 'IM',
+                    status: 'IV',
                     hora_inicial: '10:30:00',
-                    hora_final: '12:30:00',
+                    hora_final: '14:30:00',
                     user_name: 'Josué',
                     notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
                 },
                 {
-                    status: 'RE',
-                    hora_inicial: '13:30:00',
-                    hora_final: '14:00:00',
-                    user_name: 'Josué',
-                    notes: '',
-                },
-                {
-                    status: 'IM',
+                    status: 'IV',
                     hora_inicial: '16:30:00',
-                    hora_final: '18:30:00',
+                    hora_final: '19:30:00',
                     user_name: 'Josué',
                     notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
                 },
                 {
-                    status: 'IF',
+                    status: 'IV',
                     hora_inicial: '21:30:00',
                     hora_final: '23:00:00',
                     user_name: 'Josué',
                     notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
                 },
             ]
         },
         {
-            prefix: 'PT-WHT',
+            prefix: 'PT-MFL',
             data: [
                 {
-                    status: 'IM',
+                    status: 'RE',
                     hora_inicial: '08:30:00',
                     hora_final: '10:30:00',
                     user_name: 'Josué',
                     notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
                 },
                 {
                     status: 'RE',
@@ -358,20 +432,229 @@ export default function Programming() {
                     hora_final: '13:00:00',
                     user_name: 'Josué',
                     notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
                 },
                 {
-                    status: 'IM',
+                    status: 'IV',
                     hora_inicial: '14:30:00',
-                    hora_final: '15:30:00',
+                    hora_final: '18:30:00',
                     user_name: 'Josué',
                     notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
                 },
                 {
-                    status: 'IF',
+                    status: 'IV',
                     hora_inicial: '22:30:00',
                     hora_final: '23:59:00',
                     user_name: 'Josué',
                     notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+            ]
+        },
+        {
+            prefix: 'PT-VRT',
+            data: [
+                {
+                    status: 'IV',
+                    hora_inicial: '08:30:00',
+                    hora_final: '11:40:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'RE',
+                    hora_inicial: '11:41:00',
+                    hora_final: '16:00:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'IV',
+                    hora_inicial: '16:01:00',
+                    hora_final: '19:30:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'IV',
+                    hora_inicial: '22:30:00',
+                    hora_final: '23:59:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+            ]
+        },
+        {
+            prefix: 'PT-AMZ',
+            data: [
+                {
+                    status: 'IV',
+                    hora_inicial: '01:30:00',
+                    hora_final: '04:29:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'RE',
+                    hora_inicial: '04:30:00',
+                    hora_final: '06:40:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'IV',
+                    hora_inicial: '06:41:00',
+                    hora_final: '08:00:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'IV',
+                    hora_inicial: '08:30:00',
+                    hora_final: '12:59:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+            ]
+        },
+        {
+            prefix: 'PT-RNZ',
+            data: [
+                {
+                    status: 'IV',
+                    hora_inicial: '05:30:00',
+                    hora_final: '08:30:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'RE',
+                    hora_inicial: '09:30:00',
+                    hora_final: '11:40:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'IV',
+                    hora_inicial: '11:41:00',
+                    hora_final: '13:30:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'IV',
+                    hora_inicial: '13:31:00',
+                    hora_final: '15:40:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+            ]
+        },
+        {
+            prefix: 'PT-JDM',
+            data: [
+                {
+                    status: 'IV',
+                    hora_inicial: '03:30:00',
+                    hora_final: '04:30:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'RE',
+                    hora_inicial: '04:31:00',
+                    hora_final: '06:00:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'IV',
+                    hora_inicial: '08:30:00',
+                    hora_final: '10:30:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'IV',
+                    hora_inicial: '13:30:00',
+                    hora_final: '15:00:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+            ]
+        },
+        {
+            prefix: 'PT-BAP',
+            data: [
+                {
+                    status: 'IV',
+                    hora_inicial: '02:30:00',
+                    hora_final: '03:50:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'RE',
+                    hora_inicial: '04:30:00',
+                    hora_final: '06:00:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
+                },
+                {
+                    status: 'IM',
+                    hora_inicial: '09:00:00',
+                    hora_final: '16:30:00',
+                    user_name: 'Josué',
+                    notes: '',
+                },
+                {
+                    status: 'IV',
+                    hora_inicial: '16:31:00',
+                    hora_final: '18:45:00',
+                    user_name: 'Josué',
+                    notes: '',
+                    origin: 'SNCJ',
+                    destination: 'SBBE',
                 },
             ]
         },
@@ -382,6 +665,19 @@ export default function Programming() {
     }
 
     const [loading, setLoading] = useState(false);
+    const [viewSchedule, setViewSchedule] = useState(false);
+
+    /**
+     * 
+     * @param {string} prefix 
+     */
+    function openSchedule(prefix) {
+        setViewSchedule(true);
+    }
+
+    function closeSchedule() {
+        setViewSchedule(false);
+    }
 
     function handleNext() {
         const current_day = addDays(currentDay, 1);
@@ -402,7 +698,8 @@ export default function Programming() {
         <WrapperContent>
             <section id="programming" className="programming">
             
-            <PageTitle title="Programação" subtitle="Status das aeronaves" />
+            <h1 className="teste">EM TESTE, DESCONSIDERAR ESTA TELA</h1>
+            <PageTitle title="Programação" />
             
             <div className="header">
                 <div className="select-detailed-view">
@@ -427,15 +724,17 @@ export default function Programming() {
                     />
                 </div>
             </div>
-            {loading ? (
-                <>
-                    <Skeleton height={50} animation="wave" />
-                    <Skeleton height={50} animation="wave" />
-                    <Skeleton height={50} animation="wave" />
-                </>
-            ) : (
-                <AircraftMonitoring rows={rows} currentDay={currentDay} detailedView={viewType === 'detailed'} />
-            )}
+            <AircraftMonitoring 
+                rows={rows} 
+                currentDay={currentDay} 
+                openSchedule={openSchedule}
+                detailedView={viewType === 'detailed'} 
+            />
+            <AircraftSchedule 
+                prefix="PT-SOK"
+                open={viewSchedule} 
+                handleClose={closeSchedule} 
+            />
             </section>
         </WrapperContent>
     );

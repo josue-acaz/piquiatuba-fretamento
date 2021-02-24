@@ -1,29 +1,4 @@
 .aircraft-schedule {
     height: 100%;
-}
-.aircraft-schedule .month-swicth {
-    width: 200px;
-}
-.month-switch .prev-month-btn {
-    border: none;
-    background-color: transparent;
-    margin-right: 5px;
-    color: #ffffff;
-}
-.month-switch .next-month-btn {
-    border: none;
-    background-color: transparent;
-    margin-left: 5px;
-    color: #ffffff;
-}
-.month-switch .prev-month-btn:hover {
-    background-color: #f2f2f2;
-    cursor: pointer;
-    color: #444444;
-}
-
-.month-switch .next-month-btn:hover {
-    background-color: #f2f2f2;
-    cursor: pointer;
-    color: #444444;
+    padding: 1rem;
 }

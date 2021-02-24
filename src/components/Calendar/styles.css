@@ -1,0 +1,83 @@
+.calendar, .month-view-container, .month-view {
+    height: 100%;
+}
+.month-view table {
+    height: 100%;
+    min-width: 1200px;
+}
+.month-table-view {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+.month-table-view td, .month-table-view th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.month-view {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+.month-view .table-row td.cell-today {
+    color: rgb(44, 44, 255);
+    font-weight: bold;
+    background-color: rgb(228, 228, 255);
+}
+.month-view .table-row td .cell-content {
+    display: flex;
+    justify-content: flex-end;
+}
+.month-table-view tr:nth-child(even){background-color: #ffffff;}
+.month-table-view .table-row td:hover {
+    background-color: #f2f2f2;
+}
+.month-view .other_month_days {
+    color: #e0e0e0;
+}
+.month-view-container button.prev-button {
+    border: none;
+    background-color: #f2f2f2;
+    width: 60px;
+    height: 30px;
+    border-radius: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+.month-view-container button.prev-button .icon {
+    font-size: 18px;
+    color: #444444;
+}
+.month-view-container button.next-button {
+    border: none;
+    background-color: #f2f2f2;
+    width: 60px;
+    height: 30px;
+    border-radius: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.month-view-container button.next-button .icon {
+    font-size: 18px;
+    color: #444444;
+}
+/*.month-table-view tr:hover {background-color: #ddd;}*/
+.month-view-container .current_month {
+    font-size: 18px;
+    color: #444444;
+    font-weight: 500;
+}
+.month-view-container button.action-disabled {
+    background-color: #f6f6f6;
+}
+.month-view-container button.action-disabled .icon {
+    color: #cccccc;
+}
+.month-view-container .week-day {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

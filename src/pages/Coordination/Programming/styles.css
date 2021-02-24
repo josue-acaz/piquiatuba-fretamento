@@ -10,19 +10,18 @@
 .aircraft-monitoring tr:hover {background-color: transparent;}
 
 .aircraft-monitoring th {
-    padding-top: 12px;
-    padding-bottom: 12px;
     text-align: left;
     background-color: #ebebeb;
     color: #666666;
 }
-
 .monitoring-table-head .assigned-label {
     width: 100px;
     border: none;
     background-color: transparent;
 }
-
+.monitoring-table-head-container .cell-prefix {
+    width: 100px;
+}
 .monitoring-table-head-container .prefix-label {
     height: 40px;
     transition: height .2s;
@@ -47,6 +46,12 @@
     padding: 0;
     border: none;
     height: 40px;
+    border-right-width: 1px;
+    border-right-color: #dddddd;
+    border-right-style: solid;
+    border-top-width: 1px;
+    border-top-color: #dddddd;
+    border-top-style: solid;
 }
 .aircraft-monitoring .monitoring-table-head-values tr {
     width: 100%;
@@ -114,11 +119,25 @@
     cursor: pointer;
     filter: brightness(.9);
 }
+.aircraft-monitoring .available-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.aircraft-monitoring .available-status p {
+    font-size: 12px;
+    color: #666666;
+}
+.aircraft-monitoring .monitoring-table-body-values .color-DI {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #666666;
+}
 .aircraft-monitoring .monitoring-table-body-values .color-RE {
     background-color: rgba(240, 230, 140, .8);
     color: #666666;
 }
-.aircraft-monitoring .monitoring-table-body-values .color-IF {
+.aircraft-monitoring .monitoring-table-body-values .color-IV {
     background-color: rgba(240, 128, 128, .8);
     color: #ffffff;
 }
@@ -240,7 +259,9 @@
     align-items: center;
     justify-content: space-between;
 }
-
+.monitoring-table-head-container td.cell-prefix-mobile {
+    display: none;
+}
 @media screen and (max-width: 800px) {
     .programming .header {
         display: inline-block;
@@ -280,7 +301,15 @@
         background-color: #ffffff;
         z-index: 950;
     }
+    .monitoring-table-head-container td.cell-prefix-mobile {
+        display: inline;
+    }
     .select-detailed-view .select {
         width: 100%;
     }
+}
+.teste {
+    font-size: 22px;
+    color: red;
+    font-weight: bold;
 }

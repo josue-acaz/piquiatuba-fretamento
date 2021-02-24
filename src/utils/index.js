@@ -1,4 +1,4 @@
-import { parseISO, format, addDays } from "date-fns";
+import { format, addDays } from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { isMobile } from 'react-device-detect';
 import { EnumShareWhatsappEndpoints } from '../global';
@@ -88,7 +88,7 @@ export function shareOnWhatsapp(endpoint_share) {
     const whatsapp_mobile = 'https://wa.me/?text=';
 
     window.open((isMobile ? whatsapp_mobile : whatsapp_desktop) + encodeURIComponent(
-        `Acesse:: ${EnumShareWhatsappEndpoints.TEST}${endpoint_share}`
+        `Acesse:: ${EnumShareWhatsappEndpoints.PRODUCTION}${endpoint_share}`
     ), '_blank');
 }
 

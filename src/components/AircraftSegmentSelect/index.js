@@ -6,11 +6,11 @@ import { FlexSpaceBetween, FlexContent, FlexVerticalSpaceBetween } from '../../c
 import { baseURL } from '../../global';
 import { currency } from '../../utils';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
-import FullScreenDialog from '../FullScreenDialog';
 import AircraftSchedule from '../AircraftSchedule';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import DateTimerPicker from '../DateTimerPicker';
 
 import no_image from '../../assets/img/no-image.png';
 
@@ -87,6 +87,7 @@ export default function AircraftSegmentSelect({
         aircraft: '',
         aerodrome: '',
         aircraft_at_origin: false,
+        departure_datetime: '',
     });
 
     function handleChange(e) {
@@ -144,6 +145,17 @@ export default function AircraftSegmentSelect({
                         <RenderAircraft aircraft={inputs.aircraft} operates_aeromedical_transport={operates_aeromedical_transport} />
                     </Col>
                 )}
+
+                <Col sm="12">
+                    <label>Data de partida</label>
+                    <div className="departure-datetime">
+                        <DateTimerPicker
+                            name="departure_datetime"
+                            value={inputs.departure_datetime}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </Col>
             </Row>
         </div>
     );

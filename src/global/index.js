@@ -1,5 +1,5 @@
 const PDF_URL = process.env.REACT_APP_AWS_CLOUD+'/public/pdfs';
-const baseURL = 'http://localhost:3333'; //process.env.REACT_APP_API_URL
+const baseURL = process.env.REACT_APP_API_URL;
 
 const EnumAircraftType = [
     {
@@ -144,7 +144,7 @@ const EnumDatetimeFormatTypes = Object.freeze({
 
 const EnumShareWhatsappEndpoints = Object.freeze({
     TEST: 'http://localhost:3006',
-    PRODUCTION: 'https://fretamento-piquiatuba.netlify.app',
+    PRODUCTION: 'https://charterpiquiatuba.netlify.app',
 });
 
 export {

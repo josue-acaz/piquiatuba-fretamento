@@ -1,5 +1,5 @@
-import React from "react";
-import { PageTitle } from "../../components";
+import React from 'react';
+import { PageTitle } from '../../components';
 import { WrapperContent } from '../../core/design';
 
 import './styles.css';

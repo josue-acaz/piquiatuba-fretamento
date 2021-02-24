@@ -1,6 +1,7 @@
 import React from 'react';
 import { Calendar } from 'primereact/calendar';
 import { addLocale } from 'primereact/api';
+import { isMobile } from 'react-device-detect';
 
 import './styles.css';
 
@@ -16,8 +17,8 @@ export default function DateTimerPicker({
     minDate=today,
     maxDate,
     disabled=false,
+    touchUI,
 }) {
-
     addLocale('pt', {
         firstDayOfWeek: 1,
         dayNames: ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'],
@@ -42,6 +43,7 @@ export default function DateTimerPicker({
             disabled={disabled}
             onChange={onChange}
             placeholder={placeholder}
+            touchUI={isMobile}
             disabledDates={disabledDates}
             className={`calendar-select ${className}`}
         />

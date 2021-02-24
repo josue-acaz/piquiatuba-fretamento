@@ -35,7 +35,7 @@ function FlightSegmentDatetime({
 
     const {departure_datetime, arrival_datetime} = inputs;
 
-    function handleChange(e, f) {
+    function handleChange(e) {
         const { name, value } = e.target;
         setInputs(inputs => ({ ...inputs, [name]: value }));
     }
