@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { baseURL } from '../global';
 import { authHeader } from '../auth/helpers/auth-header';
 
 const api = axios.create({
-    baseURL: "https://api.charterpiquiatuba.com.br",
+    baseURL: process.env.REACT_APP_API_URL, //https://api.charterpiquiatuba.com.br
 });
 
 api.interceptors.request.use(function (config) {

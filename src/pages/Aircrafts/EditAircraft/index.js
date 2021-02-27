@@ -7,7 +7,7 @@ import Autocompletar from '../../../components/Autocompletar';
 import { Row, Col } from 'react-bootstrap';
 import { PageTitle, GoBack, Input, Button, Alert, InputAdorment, TextArea, IOSSwitch } from "../../../components";
 import { WrapperContent, FlexContent } from '../../../core/design';
-import { baseURL, EnumAircraftType, EnumAircraftCarrier, EnumAircraftEngineType, EnumAircraftNumberEngines } from '../../../global';
+import { EnumAircraftType, EnumAircraftCarrier, EnumAircraftEngineType, EnumAircraftNumberEngines } from '../../../global';
 import { useFeedback } from '../../../core/feedback/feedback.context';
 import api from '../../../api';
 import { formatCurrency, priceToFloat } from '../../../utils';
@@ -476,7 +476,7 @@ export default function EditAircraft({history}) {
                                         name="base_id"
                                         inputText={base?.name}
                                         Icon={LocationSearchingIcon}
-                                        endpoint={baseURL+'/bases/autocomplete'}
+                                        endpoint="/bases/autocomplete"
                                         fieldName="name"
                                         renderOption={(op) => (<div>{op.name}</div>)} 
                                         onOptionSelected={handleBaseSelected}

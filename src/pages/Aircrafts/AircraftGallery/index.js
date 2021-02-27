@@ -18,7 +18,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import Select from '@material-ui/core/Select';
 import SingleUploadDialog from '../../../components/UploadDialog/Single';
 import MenuItem from '@material-ui/core/MenuItem';
-import {baseURL, EnumAircraftImageView} from '../../../global';
+import {EnumAircraftImageView} from '../../../global';
 import api from '../../../api';
 import no_image from '../../../assets/img/no-image.png';
 
@@ -47,7 +47,7 @@ function SingleThumb({
                 fileName="thumbimage" 
                 handleClose={toggleOpen}
                 handleRefresh={() => handleRefresh()}
-                endpoint={`${baseURL}/aircrafts/${aircraft_id}/thumbimages`} 
+                endpoint={`/aircrafts/${aircraft_id}/thumbimages`} 
             />
             <div className={`single-thumb-container ${className}`}>
                 <h3>{title}</h3>
@@ -194,7 +194,7 @@ function GalleryTransportType({
                     view,
                     type: type_of_transport,
                 }}
-                endpoint={`${baseURL}/aircrafts/${aircraft_id}/images`}
+                endpoint={`/aircrafts/${aircraft_id}/images`}
                 enableUpload={!!view}
             >
                 <Select 

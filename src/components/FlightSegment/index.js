@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Autocompletar from '../Autocompletar';
-import { baseURL } from '../../global';
 import { Row, Col } from 'react-bootstrap';
 import { FlexSpaceBetween, FlexContent } from '../../core/design';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -210,7 +209,7 @@ export default function FlightSegment({
                                 inputText={origin_city?.full_name}
                                 fieldName="full_name"
                                 renderOption={(op) => (<div>{op.full_name}</div>)}
-                                endpoint={`${baseURL}/cities/autocomplete`}
+                                endpoint="/cities/autocomplete"
                                 placeholder="Informe a cidade de origem"
                                 onOptionSelected={handleChange}
                                 error={submitted && !origin_city}
@@ -227,7 +226,7 @@ export default function FlightSegment({
                                 name="origin_aerodrome"
                                 inputText={origin_aerodrome?.full_name}
                                 renderOption={(op) => (<div>{op.full_name}</div>)} 
-                                endpoint={baseURL+'/aerodromes/autocomplete'}
+                                endpoint="/aerodromes/autocomplete"
                                 placeholder="Informe o aeródromo de origem"
                                 onOptionSelected={handleChange}
                                 Icon={AdjustIcon}
@@ -241,7 +240,7 @@ export default function FlightSegment({
                                 inputText={destination_city?.full_name}
                                 fieldName="full_name"
                                 renderOption={(op) => (<div>{op.full_name}</div>)}
-                                endpoint={`${baseURL}/cities/autocomplete`}
+                                endpoint="/cities/autocomplete"
                                 placeholder="Informe a cidade de destino"
                                 onOptionSelected={handleChange}
                                 error={submitted && !destination_city}
@@ -258,7 +257,7 @@ export default function FlightSegment({
                                 name="destination_aerodrome"
                                 fieldName="name"
                                 renderOption={(op) => (<div>{op.full_name}</div>)} 
-                                endpoint={baseURL+'/aerodromes/autocomplete'}
+                                endpoint="/aerodromes/autocomplete"
                                 placeholder="Informe o aeródromo de destino"
                                 onOptionSelected={handleChange}
                                 Icon={LocationOnIcon}

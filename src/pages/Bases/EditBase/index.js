@@ -5,7 +5,6 @@ import Autocompletar from '../../../components/Autocompletar';
 import { Row, Col } from 'react-bootstrap';
 import { PageTitle, GoBack, Input, Button, Alert } from "../../../components";
 import { WrapperContent, Card } from '../../../core/design';
-import { baseURL } from '../../../global';
 import { useFeedback } from '../../../core/feedback/feedback.context';
 import api from '../../../api';
 
@@ -169,7 +168,7 @@ export default function EditBase({history}) {
                                         fieldName="full_name"
                                         inputText={aerodrome?.full_name}
                                         Icon={LocationOnIcon}
-                                        endpoint={baseURL+'/aerodromes/autocomplete'}
+                                        endpoint="/aerodromes/autocomplete"
                                         renderOption={(op) => (<div>{op.full_name}</div>)} 
                                         onOptionSelected={handleOptionSelected}
                                         placeholder="Escolha o aeródromo onde está a base..."

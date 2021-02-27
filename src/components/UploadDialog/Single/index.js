@@ -4,7 +4,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import SingleUpload from '../../Upload/Single';
 import Transition from '../../Transition';
 import {useFeedback} from '../../../core/feedback/feedback.context';
-import axios from 'axios';
+import api from '../../../api';
 
 export default function SingleUploadDialog({
     open,
@@ -23,8 +23,7 @@ export default function SingleUploadDialog({
         const data = new FormData();
     
         data.append(fileName, file, file.name);
-    
-        axios.put(endpoint, data, {
+        api.put(endpoint, data, {
             params,
             headers: { 'Content-Type': 'multipart/form-data' },
             onUploadProgress: e => {

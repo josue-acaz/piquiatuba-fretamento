@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import api from '../../api';
 import SearchIcon from '@material-ui/icons/Search';
 import Core from './core';
 
@@ -23,7 +23,7 @@ export default function Autocompletar({
     async function getOptions(value) {
         setLoading(true);
         try {
-            const response = await axios.get(endpoint, {
+            const response = await api.get(endpoint, {
                 params: {
                     ...params,
                     limit: 10,
@@ -45,7 +45,7 @@ export default function Autocompletar({
     useEffect(() => {
         async function initialize() {
             try {
-                await axios.get(endpoint, {
+                await api.get(endpoint, {
                     params: {
                         text: '',
                     },

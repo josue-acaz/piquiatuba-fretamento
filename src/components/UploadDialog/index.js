@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import { uniqueId } from "lodash";
 import filesize from "filesize";
-import axios from 'axios';
+import api from '../../api';
 
 import './styles.css';
 
@@ -53,7 +53,7 @@ export default function UploadDialog({
     
         data.append(fileName, uploadedFile.file, uploadedFile.name);
     
-        axios.post(endpoint, data, {
+        api.post(endpoint, data, {
             headers: { 'Content-Type': 'multipart/form-data' },
             params, 
             onUploadProgress: e => {

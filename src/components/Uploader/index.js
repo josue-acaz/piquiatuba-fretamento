@@ -2,8 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Upload from '../Upload';
 import { uniqueId } from 'lodash';
 import filesize from 'filesize';
-import { baseURL } from '../../global';
-import axios from 'axios';
+import api from '../../api';
 
 import './styles.css';
 
@@ -45,7 +44,7 @@ export default function Uploader(props) {
         if(!uploadedFile.file) return;
         data.append(fileName, uploadedFile.file, uploadedFile.name);
     
-        axios.post(baseURL+'/uploads', data, {
+        api.post('/uploads', data, {
             headers: { 'Content-Type': 'multipart/form-data' },
             params, 
             onUploadProgress: e => {
@@ -86,9 +85,9 @@ export default function Uploader(props) {
         
         try {
             if(file_id) {
-                await axios.delete(`${baseURL}/files/${file_id}/delete`);
+                await api.delete(`/files/${file_id}/delete`);
             } else {
-                await axios.delete(`${baseURL}/uploads/delete`, {
+                await api.delete(`/uploads/delete`, {
                     headers: {key}
                 });
             }

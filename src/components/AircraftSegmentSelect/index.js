@@ -3,7 +3,6 @@ import { Row, Col } from 'react-bootstrap';
 import Autocompletar from '../Autocompletar';
 import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive';
 import { FlexSpaceBetween, FlexContent, FlexVerticalSpaceBetween } from '../../core/design';
-import { baseURL } from '../../global';
 import { currency } from '../../utils';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import AircraftSchedule from '../AircraftSchedule';
@@ -133,7 +132,7 @@ export default function AircraftSegmentSelect({
                         fieldName="full_name"
                         name="aircraft"
                         renderOption={(op) => (<div>{op.full_name}</div>)} 
-                        endpoint={baseURL+'/aircrafts/autocomplete'}
+                        endpoint="/aircrafts/autocomplete"
                         placeholder="Selecione uma aeronave"
                         onOptionSelected={handleChange}
                         Icon={AirplanemodeActiveIcon}
