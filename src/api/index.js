@@ -9,7 +9,7 @@ const api = axios.create({
 api.interceptors.request.use(function (config) {
     config.headers = {
         ...config.headers,
-        ...authHeader(),
+        Authorization: authHeader() ? authHeader().Authorization : null,
     };
     return config;
 });
