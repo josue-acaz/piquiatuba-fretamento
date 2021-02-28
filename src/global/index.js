@@ -145,6 +145,7 @@ const EnumDatetimeFormatTypes = Object.freeze({
 const EnumShareWhatsappEndpoints = Object.freeze({
     TEST: 'http://localhost:3006',
     PRODUCTION: 'https://charterpiquiatuba.netlify.app',
+    FORMS: 'https://formularios-piquiatuba.netlify.app',
 });
 
 export {

@@ -14,7 +14,7 @@ import Alert from '../../../components/Alert';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { getDatetime, shareOnWhatsapp } from '../../../utils';
-import { EnumDatetimeFormatTypes } from '../../../global';
+import { EnumDatetimeFormatTypes, EnumShareWhatsappEndpoints } from '../../../global';
 import api from '../../../api';
 
 import './styles.css';
@@ -74,7 +74,7 @@ function Actions({internal_quotation, last_internal_quotation_status, handleEdit
     }
 
     function sendWithWhatsapp(internal_quotation_id) {
-        shareOnWhatsapp(`/quotations/${internal_quotation_id}/download`);
+        shareOnWhatsapp(`${EnumShareWhatsappEndpoints.FORMS}/quotations/${internal_quotation_id}/download`);
     }
 
     return(

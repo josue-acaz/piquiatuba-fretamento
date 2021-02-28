@@ -14,6 +14,7 @@ import Tab from '@material-ui/core/Tab';
 import EmptyForms from './EmptyForms';
 import {shareOnWhatsapp, capitalize} from '../../../utils';
 import api from '../../../api';
+import {EnumShareWhatsappEndpoints} from '../../../global';
 
 import './styles.css';
 
@@ -71,7 +72,7 @@ export default function ListMedicalForms({history}) {
 
     // Enviar formulário sem associação de cotação
     function handleSend() {
-        shareOnWhatsapp(`/medical-forms/${patientInformation.id}/patient`);
+        shareOnWhatsapp(`${EnumShareWhatsappEndpoints.FORMS}/medical-forms/${patientInformation.id}/patient`);
         handleClose();
         setReceiver(null);
         setSubmitted(false);

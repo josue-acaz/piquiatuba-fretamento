@@ -544,7 +544,10 @@ export default function Generate({history}) {
                             />
                         ))}
 
-                        <FlexSpaceBetween>
+                        <div className="add-stretch-container">
+                            <Button disabled={!flightSegments[flightSegments.length-1].completed} variant="contained" color="primary" onClick={handleAddSegment}>
+                                <AddOutlinedIcon className="icon" />
+                            </Button>
                             <FlexContent className="with-extra-info">
                                 <p>Adicionar informação extra?</p>
                                 <Switch
@@ -556,10 +559,7 @@ export default function Generate({history}) {
                                     checked={withExtraInfo}
                                 />
                             </FlexContent>
-                            <Button disabled={!flightSegments[flightSegments.length-1].completed} variant="contained" color="primary" onClick={handleAddSegment}>
-                                <AddOutlinedIcon className="icon" />
-                            </Button>
-                        </FlexSpaceBetween>
+                        </div>
 
                         {withExtraInfo && (
                             <div className="extra-informations">

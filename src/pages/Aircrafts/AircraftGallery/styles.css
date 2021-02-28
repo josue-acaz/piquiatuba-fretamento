@@ -91,6 +91,26 @@
   background: #555; 
 }
 
+.gallery .thumb-gallery::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+.gallery .thumb-gallery::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+.gallery .thumb-gallery::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+.gallery .thumb-gallery::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
 @media screen and (max-width: 800px) {
   .slick-carousel .slick-container .slick-image > img {
     width: 360px;
@@ -117,6 +137,7 @@
 .gallery .thumb-gallery {
   display: flex;
   align-items: center;
+  overflow-x: scroll;
 }
 .single-thumb .rm-margin-left {
   margin-left: 0;

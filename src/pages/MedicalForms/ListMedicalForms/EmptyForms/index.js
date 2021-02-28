@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
 import api from '../../../../api';
 import {getDatetime, shareOnWhatsapp} from '../../../../utils';
-import {EnumDatetimeFormatTypes} from '../../../../global';
+import {EnumDatetimeFormatTypes, EnumShareWhatsappEndpoints} from '../../../../global';
 
 const headCells = [
     {
@@ -184,7 +184,7 @@ export default function EmptyForms({history}) {
                         text: (
                             <div className="actions">
                                 <Tooltip className="action-tooltip" title="Enviar no whatsapp" onClick={() => {
-                                    shareOnWhatsapp(`/medical-forms/${medical_form.id}/patient`);
+                                    shareOnWhatsapp(`${EnumShareWhatsappEndpoints.FORMS}/medical-forms/${medical_form.id}/patient`);
                                 }}>
                                     <IconButton size="small" aria-label="whatsapp">
                                         <WhatsAppIcon className="icon icon-whatsapp" />

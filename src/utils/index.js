@@ -88,7 +88,7 @@ export function shareOnWhatsapp(endpoint_share) {
     const whatsapp_mobile = 'https://wa.me/?text=';
 
     window.open((isMobile ? whatsapp_mobile : whatsapp_desktop) + encodeURIComponent(
-        `Acesse:: ${EnumShareWhatsappEndpoints.PRODUCTION}${endpoint_share}`
+        `Acesse:: ${endpoint_share}`
     ), '_blank');
 }
 

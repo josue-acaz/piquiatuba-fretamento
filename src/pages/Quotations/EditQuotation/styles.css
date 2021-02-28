@@ -58,8 +58,20 @@
     background-color: #324f80;
     color: #ffffff;
 }
-
+.add-stretch-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 @media screen and (max-width: 800px) {
+    .add-stretch-container {
+        display: block;
+        text-align: right;
+    }
+    .generate .with-extra-info {
+        width: 100%;
+        margin-top: 1rem;
+    }
     .view-quote-price .estimated_price {
         width: 100%;
     }

@@ -19,6 +19,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {useFeedback} from '../../../core/feedback/feedback.context';
 import {shareOnWhatsapp} from '../../../utils';
 import api from '../../../api';
+import {EnumShareWhatsappEndpoints} from '../../../global';
 
 import './styles.css';
 
@@ -84,7 +85,7 @@ export default function Generated({history}) {
     }
 
     function handleShareOnWhatsapp() {
-        shareOnWhatsapp(`/quotations/${internal_quotation_id}/download`);
+        shareOnWhatsapp(`${EnumShareWhatsappEndpoints.FORMS}/quotations/${internal_quotation_id}/download`);
     }
 
     return(
