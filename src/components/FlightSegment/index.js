@@ -15,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {EnumFlightSegmentType} from '../../global';
 import {formatCurrency, MinutesToHoursNotation} from '../../utils';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import DateTimerPicker from '../DateTimerPicker';
 import api from '../../api';
 
 import './styles.css';
@@ -38,6 +39,8 @@ export default function FlightSegment({
         origin_aerodrome: '',
         destination_city: '',
         destination_aerodrome: '',
+        departure_datetime: '',
+        arrival_datetime: '',
         type: '',
     });
 
@@ -268,29 +271,56 @@ export default function FlightSegment({
                 </div>
             )}
 
-            <FlexSpaceBetween className="segment-footer">
-                <div className="segment-type">
-                    <Select 
-                        id="type" 
-                        name="type"  
-                        displayEmpty
-                        value={type || ''}
-                        disableUnderline={true}
-                        onChange={handleChange}
-                        className={`select-segment-type select-segment-${type}`}
-                    >
-                        <MenuItem disabled value="">
-                            <em>Tipo de trecho...</em>
-                        </MenuItem>
-                        {EnumFlightSegmentType.map(flight_segment_type => <MenuItem key={flight_segment_type.key} value={flight_segment_type.key}>{flight_segment_type.value}</MenuItem>)}
-                    </Select>
-                    {(submitted && !type) && <span className="error">Este campo é obrigatório.</span>}
-                </div>
-                <FlexContent className="calculed">
-                    <p className="calculed_distance"><strong>Distância: </strong> {formatCurrency(distance)}Km</p>
-                    <p className="calculed_flight_time"><strong>Tempo de voo: </strong> {MinutesToHoursNotation(flightTime)}</p>
-                </FlexContent>
-            </FlexSpaceBetween>
+            <Row className="center-padding">
+                <Col sm="3">
+                    <div className="departure-datetime-element">
+                        <label>Data de partida</label>
+                        <div className="departure-datetime">
+                            <DateTimerPicker
+                                name="departure_datetime"
+                                value={inputs.departure_datetime}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </div>
+                </Col>
+                <Col sm="3">
+                    <div className="departure-datetime-element">
+                        <label>Data de chegada</label>
+                        <div className="departure-datetime">
+                            <DateTimerPicker
+                                name="departure_datetime"
+                                value={inputs.arrival_datetime}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </div>
+                </Col>
+                <Col sm="6" className="segment-footer">
+                    <label>Informações do trecho</label>
+                    <FlexContent className="calculed">
+                        <div className="segment-type">
+                            <Select 
+                                id="type" 
+                                name="type"  
+                                displayEmpty
+                                value={type || ''}
+                                disableUnderline={true}
+                                onChange={handleChange}
+                                className={`select-segment-type select-segment-${type}`}
+                            >
+                                <MenuItem disabled value="">
+                                    <em>Tipo de trecho...</em>
+                                </MenuItem>
+                                {EnumFlightSegmentType.map(flight_segment_type => <MenuItem key={flight_segment_type.key} value={flight_segment_type.key}>{flight_segment_type.value}</MenuItem>)}
+                            </Select>
+                            {(submitted && !type) && <span className="error">Este campo é obrigatório.</span>}
+                        </div>
+                        <p className="calculed_distance"><strong>Distância: </strong> {formatCurrency(distance)}Km</p>
+                        <p className="calculed_flight_time"><strong>Tempo de voo: </strong> {MinutesToHoursNotation(flightTime)}</p>
+                    </FlexContent>
+                </Col>
+            </Row>
         </div>
     );
 }

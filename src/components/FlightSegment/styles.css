@@ -34,19 +34,19 @@
     font-size: 14px;
 }
 .flight-segment .segment-type .select-segment-type {
-    width: 150px;
+    width: 180px;
     font-size: 16px;
     margin: 0;
     padding: 0;
     border: none;
-    border-radius: .6rem;
+    border-radius: .5rem;
     height: auto;
     cursor: pointer;
     padding-left: .6rem;
     padding-right: .2rem;
-    background-color: #ffffff;
+    background-color: #f2f2f2;
     color: #444444;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .23);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.19);
 }
 .flight-segment .segment-type .select-segment-type .MuiSvgIcon-root {
     color: #444444;
@@ -76,7 +76,21 @@
     border-radius: .5rem;
     background-color: #ffa822;
     color: #ffffff;
-    margin-left: 1rem;
+}
+.flight-segment .departure-datetime-element {
+    width: 100%;
+}
+.flight-segment .segment-footer .calculed {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 46px;
+    border-radius: .5rem;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    border-width: 1px;
+    border-color: #f2f2f2;
+    border-style: solid;
 }
 
 @media screen and (max-width: 800px) {
@@ -98,11 +112,16 @@
     .flight-segment .segment-footer .calculed {
         flex-direction: column;
         width: 100%;
+        height: auto;
+        border: none;
+        padding-right: 0;
+        padding-left: 0;
     }
     .flight-segment .segment-footer .calculed_distance {
         display: block;
         margin-bottom: 1rem;
         width: 100%;
         margin-right: 0;
+        margin-left: 0rem;
     }
 }
