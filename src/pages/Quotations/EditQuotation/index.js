@@ -14,8 +14,9 @@ import { useSelector } from 'react-redux';
 import InputAdorment from '../../../components/InputAdorment';
 import { Row, Col } from 'react-bootstrap';
 import { FlexContent, FlexSpaceBetween } from '../../../core/design';
-import { formatCurrency, priceToFloat, numberToReal } from '../../../utils';
+import { formatCurrency, priceToFloat, numberToReal, getDatetime } from '../../../utils';
 import Alert from '../../../components/Alert';
+import { EnumDatetimeFormatTypes } from '../../../global';
 import api from '../../../api';
 
 import './styles.css';
@@ -51,6 +52,8 @@ export default function Generate({history}) {
                 origin_aerodrome: '',
                 destination_city: '',
                 destination_aerodrome: '',
+                departure_datetime: '',
+                arrival_datetime: '',
                 type: '',
             },
             distance: 0,
@@ -106,6 +109,8 @@ export default function Generate({history}) {
                         origin_aerodrome: flight_segment.origin_aerodrome,
                         destination_city: flight_segment.destination_aerodrome.city,
                         destination_aerodrome: flight_segment.destination_aerodrome,
+                        departure_datetime: new Date(flight_segment.departure_datetime),
+                        arrival_datetime: new Date(flight_segment.arrival_datetime),
                         type: flight_segment.type,
                     },
                     distance: flight_segment.distance,
@@ -219,6 +224,8 @@ export default function Generate({history}) {
                 origin_aerodrome: lastSegment.inputs.destination_aerodrome,
                 destination_city: '',
                 destination_aerodrome: '',
+                departure_datetime: '',
+                arrival_datetime: '',
                 type: '',
             },
             distance: 0,
@@ -428,6 +435,8 @@ export default function Generate({history}) {
             flight_time: flight_segment.flight_time,
             origin_aerodrome_id: flight_segment.inputs.origin_aerodrome.id,
             destination_aerodrome_id: flight_segment.inputs.destination_aerodrome.id,
+            departure_datetime: flight_segment.inputs.departure_datetime ? getDatetime(flight_segment.inputs.departure_datetime, EnumDatetimeFormatTypes.SQL) : null,
+            arrival_datetime: flight_segment.inputs.arrival_datetime ? getDatetime(flight_segment.inputs.arrival_datetime, EnumDatetimeFormatTypes.SQL) : null,
             aircraft_id: aircraftSegment.aircraft.id,
         }));
 
@@ -607,7 +616,7 @@ export default function Generate({history}) {
                                     </Col>
                                 )}
                                 <Col sm={inputs.provide_price ? '6' : '12'}>
-                                    <label>Preço Final</label>
+                                    <label>Preço Final*</label>
                                     <InputAdorment 
                                         id="final_price"
                                         name="final_price"

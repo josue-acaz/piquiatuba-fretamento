@@ -29,8 +29,8 @@ function FlightSegmentDatetime({
     disabled=false}) {
 
     const [inputs, setInputs] = useState({
-        departure_datetime: '',
-        arrival_datetime: '',
+        departure_datetime: flightSegment.departure_datetime ? new Date(flightSegment.departure_datetime) : '',
+        arrival_datetime: flightSegment.arrival_datetime ? new Date(flightSegment.arrival_datetime) : '',
     });
 
     const {departure_datetime, arrival_datetime} = inputs;
@@ -219,8 +219,8 @@ export default function QuotationStatus({flight_id, internal_quotation_id, inter
                 id: flight_segment.id,
                 completed: false,
                 number: flight_segment.stretch_number,
-                departure_datetime: flight_segment.departure_datetime,
-                arrival_datetime: flight_segment.arrival_datetime,
+                departure_datetime: flight_segment.departure_datetime ? new Date(flight_segment.departure_datetime) : '',
+                arrival_datetime: flight_segment.arrival_datetime ? new Date(flight_segment.arrival_datetime) : '',
             })));
 
             setLoading(false);

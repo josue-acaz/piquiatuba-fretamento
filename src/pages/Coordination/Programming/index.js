@@ -167,7 +167,7 @@ function CollorFillingComponent({index, day, status, detailedView, hour_start, h
                         initAtPosition={prevProgramming.init_at_position}
                     >
                         <div className="available-status">
-                            <p>SNCJ</p>
+                            <p>{data.destination}</p>
                         </div>
                     </CollorFilling>
                 )
@@ -697,8 +697,6 @@ export default function Programming() {
     return(
         <WrapperContent>
             <section id="programming" className="programming">
-            
-            <h1 className="teste">EM TESTE, DESCONSIDERAR ESTA TELA</h1>
             <PageTitle title="Programação" />
             
             <div className="header">

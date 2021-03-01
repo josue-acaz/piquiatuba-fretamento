@@ -62,3 +62,12 @@
   color: #444444;
   font-weight: bold;
 }
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.actions .delete-admin-btn:hover {
+  color: red;
+  cursor: pointer;
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {addMinutes} from 'date-fns';
 import Autocompletar from '../Autocompletar';
 import { Row, Col } from 'react-bootstrap';
 import { FlexSpaceBetween, FlexContent } from '../../core/design';
@@ -58,6 +59,8 @@ export default function FlightSegment({
         origin_aerodrome, 
         destination_city, 
         destination_aerodrome,
+        departure_datetime,
+        arrival_datetime,
         type,
     } = inputs;
 
@@ -80,8 +83,22 @@ export default function FlightSegment({
                 setInputs(inputs => ({ ...inputs, [fieldAerodrome]: '' }));
             }
         }
+
+        if(name === 'departure_datetime') {
+            if(flightTime > 0) {
+                calcArrivalDatetime(value, flightTime);
+            }
+        }
         
         setInputs(inputs => ({ ...inputs, [name]: value }));
+    }
+
+    async function calcArrivalDatetime(date, flight_time) {
+        let target_date = new Date(date);
+        target_date = addMinutes(target_date, flight_time);
+
+        console.log({target_date});
+        setInputs(inputs => ({ ...inputs, arrival_datetime: target_date }));
     }
 
     async function calculateDistance(p1, p2) {
@@ -104,6 +121,8 @@ export default function FlightSegment({
                     origin_city, 
                     origin_aerodrome, 
                     destination_city, 
+                    departure_datetime,
+                    arrival_datetime,
                     destination_aerodrome,
                     type,
                 },
@@ -121,6 +140,11 @@ export default function FlightSegment({
 
         const flight_time = Number(response.data);
         setFlightTime(flight_time);
+        
+        // Calcular data de chegada se a data de partida tiver sido setada previamente
+        if(inputs.departure_datetime){
+            calcArrivalDatetime(inputs.departure_datetime, flight_time);
+        }
     }
 
     useEffect(() => {
@@ -206,7 +230,7 @@ export default function FlightSegment({
                 <div className="flight-segment-editing">
                     <Row className="center-padding">
                         <Col sm="4">
-                            <label>Cidade de Origem</label>
+                            <label>Cidade de Origem*</label>
                             <Autocompletar
                                 name="origin_city"
                                 inputText={origin_city?.full_name}
@@ -219,7 +243,7 @@ export default function FlightSegment({
                             />
                         </Col>
                         <Col sm="8">
-                            <label>Aeródromo de Origem</label>
+                            <label>Aeródromo de Origem*</label>
                             <Autocompletar
                                 params={{
                                     city: origin_city?.name,
@@ -237,7 +261,7 @@ export default function FlightSegment({
                             />
                         </Col>
                         <Col sm="4">
-                            <label>Cidade de Destino</label>
+                            <label>Cidade de Destino*</label>
                             <Autocompletar
                                 name="destination_city"
                                 inputText={destination_city?.full_name}
@@ -250,7 +274,7 @@ export default function FlightSegment({
                             />
                         </Col>
                         <Col sm="8">
-                            <label>Aeródromo de Destino</label>
+                            <label>Aeródromo de Destino*</label>
                             <Autocompletar
                                 params={{
                                     city: destination_city?.name,
@@ -280,6 +304,7 @@ export default function FlightSegment({
                                 name="departure_datetime"
                                 value={inputs.departure_datetime}
                                 onChange={handleChange}
+                                maxDate={inputs.arrival_datetime}
                             />
                         </div>
                     </div>
@@ -288,16 +313,19 @@ export default function FlightSegment({
                     <div className="departure-datetime-element">
                         <label>Data de chegada</label>
                         <div className="departure-datetime">
-                            <DateTimerPicker
-                                name="departure_datetime"
-                                value={inputs.arrival_datetime}
-                                onChange={handleChange}
-                            />
+                            <p>{inputs.arrival_datetime ? (
+                                <DateTimerPicker
+                                    name="arrival_datetime"
+                                    value={inputs.arrival_datetime}
+                                    onChange={handleChange}
+                                    minDate={inputs.departure_datetime}
+                                />
+                            ) : 'Calculada automaticamente...'}</p>
                         </div>
                     </div>
                 </Col>
                 <Col sm="6" className="segment-footer">
-                    <label>Informações do trecho</label>
+                    <label>Informações do trecho*</label>
                     <FlexContent className="calculed">
                         <div className="segment-type">
                             <Select 

@@ -126,7 +126,7 @@ function MonthView() {
                     {calendar.map(calendar => (
                         <TableRow className="table-row">
                             {calendar.week.map(day => (
-                                <td className={`cell ${day.current_month_day ? '' : 'other_month_days'} ${(day.day_of_month === iso_today && (month_of_today === currentMonth && year_of_today === currentYear)) ? 'cell-today' : ''}`}>
+                                <td className={`cell ${day.current_month_day ? '' : 'other_month_days'} ${(day.day_of_week && (day.day_of_month === iso_today && (month_of_today === currentMonth && year_of_today === currentYear))) ? 'cell-today' : ''}`}>
                                     <div className="cell-content">{day.day_of_month}</div>
                                 </td>
                             ))}

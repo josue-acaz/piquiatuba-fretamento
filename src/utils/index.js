@@ -1,7 +1,6 @@
 import { format, addDays } from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { isMobile } from 'react-device-detect';
-import { EnumShareWhatsappEndpoints } from '../global';
 
 /**
  * 

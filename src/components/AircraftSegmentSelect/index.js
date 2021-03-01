@@ -121,7 +121,7 @@ export default function AircraftSegmentSelect({
             <h3>Aeronave</h3>
             <Row className="center-padding">
                 <Col sm="12">
-                    <label>Selecione a aeronave</label>
+                    <label>Selecione a aeronave*</label>
                     <Autocompletar
                         params={{
                             operates_aeromedical_transport,

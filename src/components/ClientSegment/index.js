@@ -39,7 +39,7 @@ export default function ClientSegment({defaultValues, submitted, onChange}) {
             <h3>Cliente</h3>
             <Row className="center-padding">
                 <Col sm="6">
-                    <label>Nome do cliente</label>
+                    <label>Nome do cliente*</label>
                     <Input 
                         id="client_name"
                         type="text"
@@ -51,7 +51,7 @@ export default function ClientSegment({defaultValues, submitted, onChange}) {
                     />
                 </Col>
                 <Col sm="6">
-                    <label>Tipo de transporte</label>
+                    <label>Tipo de transporte*</label>
                     <Select 
                         id="type_of_transport" 
                         name="type_of_transport"  
