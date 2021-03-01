@@ -34,7 +34,7 @@
     font-size: 14px;
 }
 .flight-segment .segment-type .select-segment-type {
-    width: 180px;
+    width: auto;
     font-size: 16px;
     margin: 0;
     padding: 0;
