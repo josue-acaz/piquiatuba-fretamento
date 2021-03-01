@@ -137,7 +137,7 @@ const EnumInternalQuotationStatus = [
 ];
 
 const EnumDatetimeFormatTypes = Object.freeze({
-    SQL: "yyyy'-'MM'-'dd kk':'mm':'ss", // 2021-08-12 22:45:30
+    SQL: "yyyy'-'MM'-'dd HH':'mm':'ss", // 2021-08-12 22:45:30
     READABLE_V1: "dd 'de' MMMM', às ' HH:mm", // 14 de Agosto, às 22:45h
     READABLE_V2: "dd 'de' MMMM' de ' yyyy",
 });
