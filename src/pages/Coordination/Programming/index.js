@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useState, useEffect} from 'react';
 import {addDays, subDays, isSameDay} from 'date-fns';
 import PageTitle from '../../../components/PageTitle';
 import {
@@ -13,9 +14,16 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import AircraftSchedule from '../../../components/AircraftSchedule';
 import Datepicker from '../../../components/Datepicker';
-import Skeleton from '@material-ui/lab/Skeleton';
+import sistemavoar from '../../../services/sistema-voar';
 import styled from 'styled-components';
-import {getDatetime} from '../../../utils';
+import {getDate} from '../../../utils';
+import Transition from '../../../components/Transition';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 import {EnumDatetimeFormatTypes} from '../../../global';
 
 import './styles.css';
@@ -134,7 +142,7 @@ const CollorFilling = styled.div`
     z-index: 910;
 `;
 
-function CollorFillingComponent({index, day, status, detailedView, hour_start, hour_end, data, prevProgrammings}) {
+function CollorFillingComponent({index, day, notes, status, detailedView, hour_start, hour_end, data, prevProgrammings}) {
     const last_status = index === day-1;
     const start_position = convertTimeToMinutes(hour_start) / total_minutes;
     const end_position = convertTimeToMinutes(
@@ -144,16 +152,44 @@ function CollorFillingComponent({index, day, status, detailedView, hour_start, h
     const init_at_position = start_position*100;
     const width = (end_position-start_position)*100;
 
+    const [open, setOpen] = useState(false);
+
+    function handleOpen() {
+        setOpen(true);
+    }
+
+    function handleClose() {
+        setOpen(false);
+    }
+
     return(
         <>
-            <CollorFilling className={`color-filling color-${status}`} width={width} initAtPosition={init_at_position}>
+            <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-labelledby="alert-event"
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle id="alert-event-title">{hour_start} às {hour_end} ({status})</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">{notes}</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                    OK
+                </Button>
+                </DialogActions>
+            </Dialog>
+            <CollorFilling onClick={handleOpen} className={`color-filling color-${status}`} width={width} initAtPosition={init_at_position}>
                 <StatusCode fill={!detailedView}>{status}</StatusCode>
                 {detailedView && (
                     <div className="period">
-                        {status !== 'IM' && (
+                        {status !== 'MNT' && (
                             <>
-                                <p>From {data.origin}</p>
-                                <p>To {data.destination}</p>
+                                <p>De Teste 1</p>
+                                <p>Para Teste 2</p>
                             </>
                         )}
                     </div>
@@ -162,7 +198,7 @@ function CollorFillingComponent({index, day, status, detailedView, hour_start, h
             {prevProgrammings.map(prevProgramming => (
                 prevProgramming.width > 0 && (
                     <CollorFilling 
-                        className="color-filling color-DI" 
+                        className="color-filling color-DIS" 
                         width={prevProgramming.width} 
                         initAtPosition={prevProgramming.init_at_position}
                     >
@@ -254,6 +290,7 @@ function TableRow({data, detailedView, openSchedule}) {
                                                 status={model_data.status}  
                                                 hour_start={model_data.hora_inicial}
                                                 hour_end={model_data.hora_final}
+                                                notes={model_data.notes}
                                                 day={model.data.length}
                                                 detailedView={detailedView}
                                                 data={model_data}
@@ -309,7 +346,7 @@ function AircraftMonitoring({rows, detailedView, currentDay, openSchedule}) {
         },
         {
             color: 'rgba(240, 230, 140, .8)',
-            subtitle: 'Reservada',
+            subtitle: 'Reservado',
         },
         {
             color: 'rgba(119, 136, 153, .8)',
@@ -342,336 +379,82 @@ export default function Programming() {
     const today = new Date();
     const [viewType, setViewType] = useState('simplified');
     const [currentDay, setCurrentDay] = useState(today);
-    const [rows, setRows] = useState([
-        {
-            prefix: 'PT-SOK',
-            data: [
-                {
-                    status: 'IV',
-                    hora_inicial: '08:30:00',
-                    hora_final: '10:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'RE',
-                    hora_inicial: '11:30:00',
-                    hora_final: '13:00:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IM',
-                    hora_inicial: '14:30:00',
-                    hora_final: '18:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '19:00:00',
-                    hora_final: '21:39:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-            ]
-        },
-        {
-            prefix: 'PT-WNG',
-            data: [
-                {
-                    status: 'IV',
-                    hora_inicial: '10:30:00',
-                    hora_final: '14:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '16:30:00',
-                    hora_final: '19:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '21:30:00',
-                    hora_final: '23:00:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-            ]
-        },
-        {
-            prefix: 'PT-MFL',
-            data: [
-                {
-                    status: 'RE',
-                    hora_inicial: '08:30:00',
-                    hora_final: '10:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'RE',
-                    hora_inicial: '11:30:00',
-                    hora_final: '13:00:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '14:30:00',
-                    hora_final: '18:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '22:30:00',
-                    hora_final: '23:59:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-            ]
-        },
-        {
-            prefix: 'PT-VRT',
-            data: [
-                {
-                    status: 'IV',
-                    hora_inicial: '08:30:00',
-                    hora_final: '11:40:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'RE',
-                    hora_inicial: '11:41:00',
-                    hora_final: '16:00:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '16:01:00',
-                    hora_final: '19:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '22:30:00',
-                    hora_final: '23:59:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-            ]
-        },
-        {
-            prefix: 'PT-AMZ',
-            data: [
-                {
-                    status: 'IV',
-                    hora_inicial: '01:30:00',
-                    hora_final: '04:29:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'RE',
-                    hora_inicial: '04:30:00',
-                    hora_final: '06:40:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '06:41:00',
-                    hora_final: '08:00:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '08:30:00',
-                    hora_final: '12:59:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-            ]
-        },
-        {
-            prefix: 'PT-RNZ',
-            data: [
-                {
-                    status: 'IV',
-                    hora_inicial: '05:30:00',
-                    hora_final: '08:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'RE',
-                    hora_inicial: '09:30:00',
-                    hora_final: '11:40:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '11:41:00',
-                    hora_final: '13:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '13:31:00',
-                    hora_final: '15:40:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-            ]
-        },
-        {
-            prefix: 'PT-JDM',
-            data: [
-                {
-                    status: 'IV',
-                    hora_inicial: '03:30:00',
-                    hora_final: '04:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'RE',
-                    hora_inicial: '04:31:00',
-                    hora_final: '06:00:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '08:30:00',
-                    hora_final: '10:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '13:30:00',
-                    hora_final: '15:00:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-            ]
-        },
-        {
-            prefix: 'PT-BAP',
-            data: [
-                {
-                    status: 'IV',
-                    hora_inicial: '02:30:00',
-                    hora_final: '03:50:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'RE',
-                    hora_inicial: '04:30:00',
-                    hora_final: '06:00:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-                {
-                    status: 'IM',
-                    hora_inicial: '09:00:00',
-                    hora_final: '16:30:00',
-                    user_name: 'Josué',
-                    notes: '',
-                },
-                {
-                    status: 'IV',
-                    hora_inicial: '16:31:00',
-                    hora_final: '18:45:00',
-                    user_name: 'Josué',
-                    notes: '',
-                    origin: 'SNCJ',
-                    destination: 'SBBE',
-                },
-            ]
-        },
-    ]);
+    const [loading, setLoading] = useState(true);
+    const [rows, setRows] = useState([]);
     
+    async function index(current_date) {
+        setLoading(true);
+        try {
+            const aircrafts = await sistemavoar.getAircraftList();
+            const aircraft_status = await sistemavoar.getAircraftStatusList(getDate(current_date, EnumDatetimeFormatTypes.SQL_ONLY_DATE), getDate(current_date, EnumDatetimeFormatTypes.SQL_ONLY_DATE));
+
+            const flight_order_types = await sistemavoar.getFlightOrderTypes();
+            console.log({flight_order_types});
+
+            makeRows(aircrafts.data, aircraft_status.sort((a, b) => b.initial_date - a.initial_date));
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {index(currentDay)}, []);
+
+    function makeRows(aircrafts, aircraft_status) {
+        let arr = aircrafts.map(aircraft => ({
+            prefix: aircraft.air_mark
+        }));
+
+        setPrefix(arr[0]);
+
+        arr.map(el => {
+            let data = [];
+            for (let index = 0; index < aircraft_status.length; index++) {
+                const aircraft_status_el = aircraft_status[index];
+                
+                let initial_date = aircraft_status_el.initial_date.split('T');
+                let final_date = aircraft_status_el.final_date.split('T');
+
+                let initial_time = initial_date[1].split(':');
+                let final_time = final_date[1].split(':');
+
+                if(aircraft_status_el.aircraft === el.prefix) {
+                    let el_status = {
+                        status: aircraft_status_el.status,
+                        hora_inicial: `${initial_time[0]}:${initial_time[1]}`,
+                        hora_final: `${final_time[0]}:${final_time[1]}`,
+                        notes: aircraft_status_el.notes,
+                    };
+
+                    if(aircraft_status_el.status === 'VOO') {
+                        el_status.origin = 'SNCJ';
+                        el_status.destination = 'SBBE';
+                    }
+
+                    data.push(el_status);
+                }
+            }
+
+            el.data = data;
+            return el;
+        });
+    
+        setRows(arr);
+        setLoading(false);
+    }
+
     function handleChangeViewType(e) {
         setViewType(e.target.value);
     }
 
-    const [loading, setLoading] = useState(false);
     const [viewSchedule, setViewSchedule] = useState(false);
+    const [prefix, setPrefix] = useState('');
 
     /**
      * 
      * @param {string} prefix 
      */
     function openSchedule(prefix) {
+        setPrefix(prefix);
         setViewSchedule(true);
     }
 
@@ -682,16 +465,19 @@ export default function Programming() {
     function handleNext() {
         const current_day = addDays(currentDay, 1);
         setCurrentDay(current_day);
+        index(current_day);
     }
 
     function handlePrev() {
         if(isSameDay(currentDay, today)) return;
         const current_day = subDays(currentDay, 1);
         setCurrentDay(current_day);
+        index(current_day);
     }
 
     function handleChangeFromDatepicker(date) {
         setCurrentDay(date);
+        index(date);
     }
 
     return(
@@ -699,40 +485,44 @@ export default function Programming() {
             <section id="programming" className="programming">
             <PageTitle title="Programação" />
             
-            <div className="header">
-                <div className="select-detailed-view">
-                    <Select 
-                        id="type" 
-                        name="type" 
-                        className="select" 
-                        displayEmpty
-                        value={viewType}
-                        disableUnderline={true}
-                        onChange={handleChangeViewType}
-                    >
-                        <MenuItem value="simplified">Visão simplificada</MenuItem>
-                        <MenuItem value="detailed">Visão detalhada</MenuItem>
-                    </Select>
-                </div>
-                <div className="actions-programing">
-                    <Datepicker value={currentDay} onChange={handleChangeFromDatepicker} />
-                    <NextPrevPageAction 
-                        onNext={handleNext} 
-                        onPrev={handlePrev} 
+            {loading ? <p>Carregando...</p> : (
+                <>
+                    <div className="header">
+                        <div className="select-detailed-view">
+                            <Select 
+                                id="type" 
+                                name="type" 
+                                className="select" 
+                                displayEmpty
+                                value={viewType}
+                                disableUnderline={true}
+                                onChange={handleChangeViewType}
+                            >
+                                <MenuItem value="simplified">Visão simplificada</MenuItem>
+                                <MenuItem value="detailed">Visão detalhada</MenuItem>
+                            </Select>
+                        </div>
+                        <div className="actions-programing">
+                            <Datepicker value={currentDay} onChange={handleChangeFromDatepicker} />
+                            <NextPrevPageAction 
+                                onNext={handleNext} 
+                                onPrev={handlePrev} 
+                            />
+                        </div>
+                    </div>
+                    <AircraftMonitoring 
+                        rows={rows} 
+                        currentDay={currentDay} 
+                        openSchedule={openSchedule}
+                        detailedView={viewType === 'detailed'} 
                     />
-                </div>
-            </div>
-            <AircraftMonitoring 
-                rows={rows} 
-                currentDay={currentDay} 
-                openSchedule={openSchedule}
-                detailedView={viewType === 'detailed'} 
-            />
-            <AircraftSchedule 
-                prefix="PT-SOK"
-                open={viewSchedule} 
-                handleClose={closeSchedule} 
-            />
+                    <AircraftSchedule 
+                        prefix={prefix}
+                        open={viewSchedule} 
+                        handleClose={closeSchedule} 
+                    />
+                </>
+            )}
             </section>
         </WrapperContent>
     );

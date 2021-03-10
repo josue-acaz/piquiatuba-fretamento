@@ -12,6 +12,7 @@ import TableTask from '../../../components/TableTask';
 import QuotationStatus from '../../../components/QuotationStatus';
 import Alert from '../../../components/Alert';
 import Dialog from '@material-ui/core/Dialog';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import DialogContent from '@material-ui/core/DialogContent';
 import { getDatetime, shareOnWhatsapp } from '../../../utils';
 import { EnumDatetimeFormatTypes, EnumShareWhatsappEndpoints } from '../../../global';
@@ -77,6 +78,10 @@ function Actions({internal_quotation, last_internal_quotation_status, handleEdit
         shareOnWhatsapp(`${EnumShareWhatsappEndpoints.FORMS}/quotations/${internal_quotation_id}/download`);
     }
 
+    function handleDownload() {
+        window.open(internal_quotation.document.url, "_blank");
+    }
+
     return(
         <div className="actions">
             <Dialog open={open} onClose={handleClose} className="dialog-send">
@@ -97,6 +102,12 @@ function Actions({internal_quotation, last_internal_quotation_status, handleEdit
                                         <EmailOutlinedIcon />
                                     </IconButton>
                                     <p>Email</p>
+                                </div>
+                                <div className="download">
+                                    <IconButton onClick={handleDownload}>
+                                        <CloudDownloadIcon />
+                                    </IconButton>
+                                    <p>Baixar</p>
                                 </div>
                             </FlexSpaceBetween>
                         </div>
@@ -207,12 +218,7 @@ export default function ListQuotations({history}) {
                         id: 4,
                         disablePadding: false,
                         align: 'right',
-                        text: internal_quotation.type_of_transport === 
-                        'aeromedical_with_uti' ? 'Aeromédico - UTI' : 
-                        internal_quotation.type_of_transport === 
-                        'aeromedical_without_uti' ? 'Aeromédico' : 
-                        internal_quotation.type_of_transport === 
-                        'passengers' ? 'PAX' : 'Carga',
+                        text: internal_quotation.type_of_transport,
                     },
                     {
                         id: 5,

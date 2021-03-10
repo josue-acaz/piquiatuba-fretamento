@@ -454,7 +454,7 @@ export default function Generate({history}) {
         };
 
         // Se for transporte aeromédico, adicionar ambulâncias
-        if(type_of_transport === 'aeromedical_with_uti' || type_of_transport === 'aeromedical_without_uti') {
+        if(type_of_transport === 'aeromedical') {
             data.internal_quotation.ambulance_at_origin = ambulance_at_origin;
             data.internal_quotation.ambulance_at_destination = ambulance_at_destination;
         }
@@ -529,7 +529,7 @@ export default function Generate({history}) {
                         />
                         <AircraftSegmentSelect 
                             defaultValues={aircraftSegment}
-                            operates_aeromedical_transport={clientSegment.type_of_transport === 'aeromedical_with_uti' || clientSegment.type_of_transport === 'aeromedical_without_uti'} 
+                            operates_aeromedical_transport={clientSegment.type_of_transport === 'aeromedical'} 
                             onChange={handleChangeAircraftSegment} 
                         />
                         {flightSegments.map(flight_segment => (

@@ -70,7 +70,7 @@ export default function ClientSegment({defaultValues, submitted, onChange}) {
                 </Col>
             </Row>
 
-            {(inputs.type_of_transport === 'aeromedical_with_uti' || inputs.type_of_transport === 'aeromedical_without_uti') && (
+            {(inputs.type_of_transport === 'aeromedical') && (
                 <div className="aeromedical">
                     <FlexContent>
                         <AddBoxOutlinedIcon className="aeromedical-icon" />

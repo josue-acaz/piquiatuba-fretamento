@@ -1,6 +1,12 @@
 import { format, addDays } from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { isMobile } from 'react-device-detect';
+import api from '../api';
+
+export async function getDatetimeFromServer() {
+    const {data} = await api.get('/current-datetime');
+    return data;
+}
 
 /**
  * 
@@ -156,6 +162,15 @@ export function getDayOfWeek(date) {
 export function getCurrentDate(date_format_type, add_days=0) {
     let date = new Date();
   
+    if(add_days > 0) {
+      date = addDays(date, add_days);
+    }
+  
+    const formatted = format(date, date_format_type, {locale: ptBR});
+    return formatted;
+}
+
+export function getDate(date, date_format_type, add_days=0) {
     if(add_days > 0) {
       date = addDays(date, add_days);
     }

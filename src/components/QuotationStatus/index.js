@@ -169,7 +169,7 @@ export default function QuotationStatus({flight_id, internal_quotation_id, inter
             handleOpen('dialog');
             getFlightSegments(flight_id);
         } else {
-            handleMarkAsClosed(status);
+            handleMarkAsClosed(status, flight_id);
         }
     }
 
@@ -236,7 +236,7 @@ export default function QuotationStatus({flight_id, internal_quotation_id, inter
     }
 
     // Marca como fechada
-    async function handleMarkAsClosed(status) {
+    async function handleMarkAsClosed(status, flight_id) {
         setProcessing(true);
 
         // Formatar as datas dos segmentos
@@ -255,7 +255,7 @@ export default function QuotationStatus({flight_id, internal_quotation_id, inter
                 },
                 flight_segments_datetime,
             }, {
-                headers: {flight_id},
+                headers: {flight_id}
             });
 
             setStatus(status);
@@ -358,7 +358,7 @@ export default function QuotationStatus({flight_id, internal_quotation_id, inter
                     message="As datas e horários estão corretos?" 
                     processingTitle="Alterando cotação"
                     processingMsg="Por favor, aguarde!"
-                    onConfirm={() => handleMarkAsClosed(newStatus)}
+                    onConfirm={() => handleMarkAsClosed(newStatus, flight_id)}
                     onCancel={() => handleClose('alert')}
                 />
                 

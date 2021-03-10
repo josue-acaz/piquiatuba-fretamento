@@ -1,11 +1,19 @@
-import React, {useState} from 'react';
-import {setMonth, getMonth, getYear} from 'date-fns';
-import {getDayOfMonth} from '../../utils';
+import React, {useState, useEffect} from 'react';
+import {setMonth, getMonth} from 'date-fns';
+import {getDayOfMonth, getDate} from '../../utils';
 import {getDaysOfMonth, getMonthView} from './functions';
 import {FlexContent} from  '../../core/design';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import styled from 'styled-components';
+import {EnumDatetimeFormatTypes} from '../../global';
+import Transition from '../../components/Transition';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 import './styles.css';
 
@@ -55,12 +63,71 @@ const days_of_week = [
     'Sábado',
 ];
 
-function MonthView() {
+function Event({event, formatted_day, day}) {
+    const [open, setOpen] = useState(false);
+
+    function handleOpen() {
+        setOpen(true);
+    }
+
+    function handleClose() {
+        setOpen(false);
+    }
+
+    const arr_start_date = event.start_time.split(' ');
+    const start_part_of_date = arr_start_date[0];
+    
+    const arr_end_date = event.end_time.split(' ');
+    const end_part_of_date = arr_end_date[0];
+
+    return(
+        (formatted_day === start_part_of_date) && day.current_month_day && (
+            <>
+                <Dialog
+                    open={open}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-labelledby="alert-event"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle id="alert-event-title">{event.title}</DialogTitle>
+                    <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">{event.notes}</DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        OK
+                    </Button>
+                    </DialogActions>
+                </Dialog>
+                <div onClick={handleOpen} className={`item-event item-event-${event.status}`}>
+                <p>{event.title}</p>
+                </div>
+            </>
+        )
+    );
+}
+
+function WeekDay({day, events, iso_today, month_of_today, currentMonth, year_of_today, currentYear}) {
+    const date_day = new Date(currentYear, currentMonth, day.day_of_month);
+    const formatted_day = getDate(date_day, EnumDatetimeFormatTypes.SQL_ONLY_DATE);
+
+    return(
+        <td className={`cell ${day.current_month_day ? '' : 'other_month_days'} ${(day.day_of_week && (day.day_of_month === iso_today && (month_of_today === currentMonth && year_of_today === currentYear))) ? 'cell-today' : ''}`}>
+            <div className="cell-content">{day.day_of_month}</div>
+            <div className="events">
+                {events.map(event => <Event event={event} formatted_day={formatted_day} day={day} />)}
+            </div>
+        </td>
+    );
+}
+
+export default function Calendar({currentDate, onChange, events}) {
     const today = new Date();
     const iso_today = getDayOfMonth(today);
     const month_of_today = getMonth(today);
     const year_of_today = today.getFullYear();
-    const [currentDate, setCurrentDate] = useState(today);
     const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
     
     let prev_month = setMonth(currentDate, currentMonth-1);
@@ -78,7 +145,7 @@ function MonthView() {
         }
 
         const prev_month = currentMonth-1;
-        setCurrentDate(setMonth(currentDate, prev_month));
+        onChange(setMonth(currentDate, prev_month));
 
         // Ano anterior
         if(prev_month === -1) {
@@ -90,7 +157,7 @@ function MonthView() {
 
     function handleNext() {
         const next_month = currentMonth+1;
-        setCurrentDate(setMonth(currentDate, next_month));
+        onChange(setMonth(currentDate, next_month));
 
         // Próximo ano
         if(next_month === 12) {
@@ -101,7 +168,8 @@ function MonthView() {
     }
 
     return(
-        <div className="month-view-container">
+        <div className="calendar">
+            <div className="month-view-container">
             <Toolbar>
                 <p className="current_month">{`${month_names[currentMonth]} de ${currentYear}`}</p>
                 <FlexContent>
@@ -126,22 +194,20 @@ function MonthView() {
                     {calendar.map(calendar => (
                         <TableRow className="table-row">
                             {calendar.week.map(day => (
-                                <td className={`cell ${day.current_month_day ? '' : 'other_month_days'} ${(day.day_of_week && (day.day_of_month === iso_today && (month_of_today === currentMonth && year_of_today === currentYear))) ? 'cell-today' : ''}`}>
-                                    <div className="cell-content">{day.day_of_month}</div>
-                                </td>
+                                <WeekDay 
+                                    day={day} 
+                                    events={events}
+                                    iso_today={iso_today} 
+                                    currentMonth={currentMonth} 
+                                    year_of_today={year_of_today} 
+                                    currentYear={currentYear} 
+                                />
                             ))}
                         </TableRow>
                     ))}
                 </table>
             </div>
         </div>
-    );
-}
-
-export default function Calendar() {
-    return(
-        <div className="calendar">
-            <MonthView />
         </div>
     );
 }

@@ -108,12 +108,8 @@ const EnumTypeOfTransport = [
         value: 'Passageiros',
     },
     {
-        key: 'aeromedical_with_uti',
-        value: 'Aeromédico com UTI',
-    },
-    {
-        key: 'aeromedical_without_uti',
-        value: 'Aeromédico sem UTI',
+        key: 'aeromedical',
+        value: 'Aeromédico',
     },
     {
         key: 'cargo',
@@ -140,6 +136,7 @@ const EnumDatetimeFormatTypes = Object.freeze({
     SQL: "yyyy'-'MM'-'dd HH':'mm':'ss", // 2021-08-12 22:45:30
     READABLE_V1: "dd 'de' MMMM', às ' HH:mm", // 14 de Agosto, às 22:45h
     READABLE_V2: "dd 'de' MMMM' de ' yyyy",
+    SQL_ONLY_DATE: "yyyy'-'MM'-'dd",
 });
 
 const EnumShareWhatsappEndpoints = Object.freeze({

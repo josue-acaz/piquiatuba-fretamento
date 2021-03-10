@@ -359,7 +359,7 @@ export default function AircraftGallery({history}) {
     if(operates_aeromedical_transport) {
         transportTypeImages.push({
             title: 'Transporte aeromédico',
-            type_of_transport: 'aeromedical_with_uti',
+            type_of_transport: 'aeromedical',
         });
     }
 

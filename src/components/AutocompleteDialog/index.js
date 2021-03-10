@@ -30,7 +30,7 @@ export default function AutocompleteDialog({open=true, endpoint, handleClose, ti
     const [params, setParams] = useState({
         limit: 15,
         offset: 0,
-        type_of_transport: 'aeromedical_with_uti',
+        type_of_transport: 'aeromedical',
         text: '',
         target: 'origin',
         order: 'DESC',
