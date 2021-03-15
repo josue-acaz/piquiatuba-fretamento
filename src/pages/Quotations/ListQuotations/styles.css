@@ -34,3 +34,11 @@
 .dialog-send .send-content .share {
     text-align: center;
 }
+.list-quotations .custom-info {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-top: 1rem;
+}
+.list-quotations .custom-info p strong {
+    font-weight: bold;
+}

@@ -9,6 +9,8 @@ import {
 } from '../../../core/design';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Processing from '../../../components/Processing';
+import Skeleton from '@material-ui/lab/Skeleton';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
@@ -228,7 +230,7 @@ function NextPrevPageAction({onNext, onPrev}) {
     );
 }
 
-function TableRow({data, detailedView, openSchedule}) {
+function TableRow({data, detailedView, openSchedule, processing}) {
     const height = detailedView ? 80 : 40;
     return(
         <>
@@ -245,59 +247,67 @@ function TableRow({data, detailedView, openSchedule}) {
                             </td>
                             <MonitoringCell height={height} className="monitoring-table-body-values">
                                 <tr className="hours-group">
-                                    {hours_of_day.map((hour, index) => (
-                                        <td className={`status-cell ${index === 0 ? 'no-border-left' : ''}`} />
-                                    ))}
-                                    {data.map((model_data, index) => {
-                                        // Calcular disponibilidade entre status
-                                        let prev_programmings = [];
-
-                                        // Se for o primeiro status, pegar as 00:00 como hora início e a data de início do primeiro status como hora final 
-                                        if(index === 0) {
-                                            const difference = subHours('00:00', model_data.hora_inicial);
-                                            
-                                            if(difference >= 60) {
-                                                prev_programmings.push({
-                                                    width: (difference / total_minutes) * 100,
-                                                    init_at_position: 0,
-                                                });
-                                            }
-                                        } else {
-                                            // Se não, calcular usando a hora fim do status anterior menos a hora de início do status atual
-                                            const difference = subHours(data[index-1].hora_final, model_data.hora_inicial);
-                                            if(difference >= 60) {
-                                                prev_programmings.push({
-                                                    width: (difference / total_minutes) * 100,
-                                                    init_at_position: (convertTimeToMinutes(data[index-1].hora_final) / total_minutes)*100,
-                                                });
-                                            }
-                                        }
-
-                                        // Se for o último
-                                        if(index === data.length-1) {
-                                            const difference = subHours(model_data.hora_final, '23:59');
-                                            if(difference >= 60) {
-                                                prev_programmings.push({
-                                                    width: (difference / total_minutes) * 100,
-                                                    init_at_position: (convertTimeToMinutes(model_data.hora_final) / total_minutes)*100,
-                                                });
-                                            }
-                                        }
-
-                                        return(
-                                            <CollorFillingComponent 
-                                                index={index}
-                                                status={model_data.status}  
-                                                hour_start={model_data.hora_inicial}
-                                                hour_end={model_data.hora_final}
-                                                notes={model_data.notes}
-                                                day={model.data.length}
-                                                detailedView={detailedView}
-                                                data={model_data}
-                                                prevProgrammings={prev_programmings}
-                                            />
-                                        );
-                                    })}
+                                    {processing ? (
+                                        <div className="cell-loader">
+                                            <Skeleton height={40} animation="wave" variant="rect" />
+                                        </div>
+                                    ) : (
+                                        <>
+                                            {hours_of_day.map((hour, index) => (
+                                                <td className={`status-cell ${index === 0 ? 'no-border-left' : ''}`} />
+                                            ))}
+                                            {data.map((model_data, index) => {
+                                                // Calcular disponibilidade entre status
+                                                let prev_programmings = [];
+        
+                                                // Se for o primeiro status, pegar as 00:00 como hora início e a data de início do primeiro status como hora final 
+                                                if(index === 0) {
+                                                    const difference = subHours('00:00', model_data.hora_inicial);
+                                                    
+                                                    if(difference >= 60) {
+                                                        prev_programmings.push({
+                                                            width: (difference / total_minutes) * 100,
+                                                            init_at_position: 0,
+                                                        });
+                                                    }
+                                                } else {
+                                                    // Se não, calcular usando a hora fim do status anterior menos a hora de início do status atual
+                                                    const difference = subHours(data[index-1].hora_final, model_data.hora_inicial);
+                                                    if(difference >= 60) {
+                                                        prev_programmings.push({
+                                                            width: (difference / total_minutes) * 100,
+                                                            init_at_position: (convertTimeToMinutes(data[index-1].hora_final) / total_minutes)*100,
+                                                        });
+                                                    }
+                                                }
+        
+                                                // Se for o último
+                                                if(index === data.length-1) {
+                                                    const difference = subHours(model_data.hora_final, '23:59');
+                                                    if(difference >= 60) {
+                                                        prev_programmings.push({
+                                                            width: (difference / total_minutes) * 100,
+                                                            init_at_position: (convertTimeToMinutes(model_data.hora_final) / total_minutes)*100,
+                                                        });
+                                                    }
+                                                }
+        
+                                                return(
+                                                    <CollorFillingComponent 
+                                                        index={index}
+                                                        status={model_data.status}  
+                                                        hour_start={model_data.hora_inicial}
+                                                        hour_end={model_data.hora_final}
+                                                        notes={model_data.notes}
+                                                        day={model.data.length}
+                                                        detailedView={detailedView}
+                                                        data={model_data}
+                                                        prevProgrammings={prev_programmings}
+                                                    />
+                                                );
+                                            })}    
+                                        </>
+                                    )}
                                 </tr>
                             </MonitoringCell>
                         </tr>
@@ -332,7 +342,7 @@ function TableHead({currentDay}) {
     );
 }
 
-function AircraftMonitoring({rows, detailedView, currentDay, openSchedule}) {
+function AircraftMonitoring({rows, processing, detailedView, currentDay, openSchedule}) {
     const table_width = 1600;
 
     const subtitles = [
@@ -359,7 +369,7 @@ function AircraftMonitoring({rows, detailedView, currentDay, openSchedule}) {
             <div className="monitoring-table">
                 <TableLayout widthSize={table_width} className="schedule-aircrafts-table">
                     <TableHead currentDay={currentDay} />
-                    <TableRow data={rows} openSchedule={openSchedule} detailedView={detailedView} />
+                    <TableRow processing={processing} data={rows} openSchedule={openSchedule} detailedView={detailedView} />
                 </TableLayout>
             </div>
 
@@ -375,8 +385,8 @@ function AircraftMonitoring({rows, detailedView, currentDay, openSchedule}) {
     );
 }
 
-export default function Programming() {
-    const today = new Date();
+export default function Programming({serverDatetime}) {
+    const today = new Date(serverDatetime);
     const [viewType, setViewType] = useState('simplified');
     const [currentDay, setCurrentDay] = useState(today);
     const [loading, setLoading] = useState(true);
@@ -388,9 +398,7 @@ export default function Programming() {
             const aircrafts = await sistemavoar.getAircraftList();
             const aircraft_status = await sistemavoar.getAircraftStatusList(getDate(current_date, EnumDatetimeFormatTypes.SQL_ONLY_DATE), getDate(current_date, EnumDatetimeFormatTypes.SQL_ONLY_DATE));
 
-            const flight_order_types = await sistemavoar.getFlightOrderTypes();
-            console.log({flight_order_types});
-
+            //const flight_order_types = await sistemavoar.getFlightOrderTypes();
             makeRows(aircrafts.data, aircraft_status.sort((a, b) => b.initial_date - a.initial_date));
         } catch (error) {
             console.error(error);
@@ -427,7 +435,7 @@ export default function Programming() {
 
                     if(aircraft_status_el.status === 'VOO') {
                         el_status.origin = 'SNCJ';
-                        el_status.destination = 'SBBE';
+                        el_status.destination = 'previous location';
                     }
 
                     data.push(el_status);
@@ -485,7 +493,7 @@ export default function Programming() {
             <section id="programming" className="programming">
             <PageTitle title="Programação" />
             
-            {loading ? <p>Carregando...</p> : (
+            {rows.length === 0 && loading ? <Processing /> : (
                 <>
                     <div className="header">
                         <div className="select-detailed-view">
@@ -512,11 +520,13 @@ export default function Programming() {
                     </div>
                     <AircraftMonitoring 
                         rows={rows} 
+                        processing={loading}
                         currentDay={currentDay} 
                         openSchedule={openSchedule}
                         detailedView={viewType === 'detailed'} 
                     />
                     <AircraftSchedule 
+                        serverDatetime={serverDatetime}
                         prefix={prefix}
                         open={viewSchedule} 
                         handleClose={closeSchedule} 

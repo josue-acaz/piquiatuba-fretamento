@@ -26,9 +26,10 @@ function CustomToolbar({title, handleClose}) {
     );
 }
 
-export default function AircraftSchedule({prefix, open, handleClose}) {
+export default function AircraftSchedule({prefix, open, handleClose, serverDatetime}) {
     const [loading, setLoading] = useState(true);
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentDate, setCurrentDate] = useState(new Date(serverDatetime));
+    const [today, setToday] = useState(new Date(serverDatetime));
     const [events, setEvents] = useState([]);
     
     function handlePrev() {}
@@ -80,6 +81,7 @@ export default function AircraftSchedule({prefix, open, handleClose}) {
                 const {data} = await api.get('/current-datetime');
                 const current_datetime = new Date(data);
                 setCurrentDate(current_datetime);
+                setToday(current_datetime);
             } catch (error) {
                 console.error(error);
             }
@@ -109,6 +111,7 @@ export default function AircraftSchedule({prefix, open, handleClose}) {
             <div className="aircraft-schedule">
                 {loading ? <p>Carregando...</p> : (
                     <Calendar 
+                        today={today}
                         events={events}
                         currentDate={currentDate} 
                         onChange={onChangeDate} 

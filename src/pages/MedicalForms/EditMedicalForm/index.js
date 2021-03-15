@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {Row, Col} from 'react-bootstrap';
 import filesize from 'filesize';
+import Processing from '../../../components/Processing';
 import {WrapperContent, FlexContent, Card} from '../../../core/design';
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -143,7 +144,7 @@ export default function EditMedicalForm({history}) {
             <GoBack onClick={() => history.goBack()} />
             {!loading && <PageTitle title={patientInformation.full_name} subtitle="Editar formulário" />}
         
-            {loading ? <p>Carregando...</p> : (
+            {loading ? <Processing /> : (
                 <Card>
                     <form id="medical-form" onSubmit={handleSubmit}>
                         <Row className="center-padding">
@@ -160,6 +161,28 @@ export default function EditMedicalForm({history}) {
                                 />
                             </Col>
                             <Col sm="6">
+                            <label>Tipo de plano</label>
+                                <Select
+                                    id="select-plan"
+                                    name="plan"
+                                    value={inputs.plan}
+                                    displayEmpty
+                                    className="select-plan"
+                                    onChange={handleChangeValue}
+                                    placeholder="Selecione um plano"
+                                    disableUnderline={true}
+                                >
+                                    <MenuItem disabled value="">
+                                        <em>Tipo de plano...</em>
+                                    </MenuItem>
+                                    <MenuItem className="menu-item" value="plan">Plano</MenuItem>
+                                    <MenuItem className="menu-item" value="particular">Particular</MenuItem>
+                                </Select>
+                                {(submitted && !inputs.plan) && <span className="error">Campo obrigatório.</span>}
+                            </Col>
+                        </Row>
+                        <Row className="center-padding">
+                            <Col sm="6">
                                 <label>Contato do acompanhante</label>
                                 <Input
                                     id="companion_contact"
@@ -172,8 +195,6 @@ export default function EditMedicalForm({history}) {
                                     error={submitted && !inputs.companion_contact}
                                 />
                             </Col>
-                        </Row>
-                        <Row className="center-padding">
                             <Col sm="6">
                                 <label>Contato de emergência (opcional)</label>
                                 <Input
@@ -460,7 +481,7 @@ export default function EditMedicalForm({history}) {
                             </Col>
                         </Row>
                     
-                        <Button id="submit-button" disabled={!submit} type="submit" variant="contained" color="primary">Enviar</Button>
+                        <Button id="submit-button" disabled={!submit} type="submit" variant="contained" color="primary">Alterar</Button>
                     </form>
                 </Card>
             )}

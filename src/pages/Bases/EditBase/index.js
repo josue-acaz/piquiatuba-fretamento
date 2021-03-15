@@ -97,22 +97,36 @@ export default function EditBase({history}) {
             longitude: Number(inputs.longitude),
         };
 
-        console.log(inputs)
-
         setProcessing(true);
         try {
-            await api.post('/bases', data, {
-                headers: {
+            if(edit) {
+                await api.put(`/bases/${base_id}/update`, {
+                    ...data,
                     aerodrome_id: inputs.aerodrome_id,
-                }
-            });
-            setProcessing(false);
-            setOpen(false);
-            feedback.open({
-                severity: 'success',
-                msg: 'Base adicionada com sucesso!',
-            });
-            history.goBack();
+                });
+
+                setProcessing(false);
+
+                setOpen(false);
+
+                feedback.open({
+                    severity: 'success',
+                    msg: 'Base atualizada com sucesso!',
+                });
+            } else {
+                await api.post('/bases', data, {
+                    headers: {
+                        aerodrome_id: inputs.aerodrome_id,
+                    }
+                });
+                setProcessing(false);
+                setOpen(false);
+                feedback.open({
+                    severity: 'success',
+                    msg: 'Base adicionada com sucesso!',
+                });
+                history.goBack();
+            }
         } catch (error) {
             setProcessing(false);
             setOpen(false);

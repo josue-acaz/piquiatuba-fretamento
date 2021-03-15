@@ -112,9 +112,8 @@ function Event({event, formatted_day, day}) {
 function WeekDay({day, events, iso_today, month_of_today, currentMonth, year_of_today, currentYear}) {
     const date_day = new Date(currentYear, currentMonth, day.day_of_month);
     const formatted_day = getDate(date_day, EnumDatetimeFormatTypes.SQL_ONLY_DATE);
-
     return(
-        <td className={`cell ${day.current_month_day ? '' : 'other_month_days'} ${(day.day_of_week && (day.day_of_month === iso_today && (month_of_today === currentMonth && year_of_today === currentYear))) ? 'cell-today' : ''}`}>
+        <td className={`cell ${day.current_month_day ? '' : 'other_month_days'} ${((day.day_of_month === iso_today) && (month_of_today === currentMonth) && (year_of_today === currentYear)) ? 'cell-today' : ''}`}>
             <div className="cell-content">{day.day_of_month}</div>
             <div className="events">
                 {events.map(event => <Event event={event} formatted_day={formatted_day} day={day} />)}
@@ -123,8 +122,7 @@ function WeekDay({day, events, iso_today, month_of_today, currentMonth, year_of_
     );
 }
 
-export default function Calendar({currentDate, onChange, events}) {
-    const today = new Date();
+export default function Calendar({today, currentDate, onChange, events}) {
     const iso_today = getDayOfMonth(today);
     const month_of_today = getMonth(today);
     const year_of_today = today.getFullYear();
@@ -198,6 +196,7 @@ export default function Calendar({currentDate, onChange, events}) {
                                     day={day} 
                                     events={events}
                                     iso_today={iso_today} 
+                                    month_of_today={month_of_today}
                                     currentMonth={currentMonth} 
                                     year_of_today={year_of_today} 
                                     currentYear={currentYear} 

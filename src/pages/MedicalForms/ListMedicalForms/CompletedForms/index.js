@@ -11,6 +11,15 @@ import EditIcon from '@material-ui/icons/Edit';
 import AutocompleteDialog from '../../../../components/AutocompleteDialog';
 import TransitionDialog from '../../../../components/TransitionDialog';
 import {currency, normalizeString} from '../../../../utils';
+import Processing from '../../../../components/Processing';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
+import WhatsappIcon from '@material-ui/icons/WhatsApp';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import {FlexSpaceBetween} from '../../../../core/design';
+import {shareOnWhatsapp} from '../../../../utils';
+
 import api from '../../../../api';
 
 import './styles.css';
@@ -176,6 +185,92 @@ const headCells = [
     },
 ];
 
+function Actions({history, path, medical_form}) {
+    const [processing, setProcessing] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [pdf, setPdf] = useState('');
+
+    function handleOpen() {
+        setOpen(true);
+    }
+
+    function handleClose() {
+        setOpen(false);
+    }
+
+    function handleEdit(patient_information_id) {
+        history.push(`${path}/${patient_information_id}/edit`);
+    }
+
+    function handleExportPdf(patient_information) {
+        createPdf(patient_information, patient_information.internal_quotation);
+    }
+
+    async function createPdf(patient_information, internal_quotation) {
+        setProcessing(true);
+        try {
+            const response = await api.post(`/medical-forms/${patient_information.id}/document`, {}, {
+                headers: {internal_quotation_id: internal_quotation ? internal_quotation.id : 0}
+            });
+
+            const pdf = response.data.url;
+            console.log({pdf});
+            setPdf(pdf);
+            setProcessing(false);
+            handleOpen(true);
+        } catch (error) {
+            console.error(error);
+            setProcessing(false);
+        }
+    }
+
+    return(
+        <div className="actions">
+            <Processing open={processing} />
+            <Dialog open={open} onClose={handleClose} className="dialog-send">
+                <DialogContent>
+                    <div className="send-action">
+                        <p className="title">Enviar por</p>
+
+                        <div className="send-content">
+                            <FlexSpaceBetween>
+                                <div className="share" onClick={() => shareOnWhatsapp(pdf)}>
+                                    <IconButton>
+                                        <WhatsappIcon />
+                                    </IconButton>
+                                    <p>Whatsapp</p>
+                                </div>
+                                <div className="share">
+                                    <IconButton>
+                                        <EmailOutlinedIcon />
+                                    </IconButton>
+                                    <p>Email</p>
+                                </div>
+                                <div className="download">
+                                    <IconButton>
+                                        <a rel="noreferrer" target="_blank" href={pdf}><CloudDownloadIcon /></a>
+                                    </IconButton>
+                                    <p>Baixar</p>
+                                </div>
+                            </FlexSpaceBetween>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+            <Tooltip title="Editar formulário">
+                <IconButton size="small" onClick={() => handleEdit(medical_form.id)}>
+                    <EditIcon />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Exportar como PDF">
+                <IconButton size="small" onClick={() => handleExportPdf(medical_form)}>
+                    <i className="pi pi-file-pdf"></i>
+                </IconButton>
+            </Tooltip>
+        </div>
+    );
+}
+
 export default function CompletedForms({history}) {
     const feedback = useFeedback();
     const {path} = useRouteMatch();
@@ -259,7 +354,7 @@ export default function CompletedForms({history}) {
         setDeleting(true);
         try {
             await Promise.all(selecteds.map(id => {
-                return api.delete(`/internal-quotations/${id}/delete`);
+                return api.delete(`/medical-forms/${id}/delete`);
             }));
             feedback.open({
                 severity: 'success',
@@ -277,10 +372,6 @@ export default function CompletedForms({history}) {
             handleClose('alert');
             console.error(error);
         }
-    }
-
-    function handleEdit(patient_information_id) {
-        history.push(`${path}/${patient_information_id}/edit`);
     }
 
     function getTableRows(medical_forms) {
@@ -335,20 +426,7 @@ export default function CompletedForms({history}) {
                         id: 7,
                         disablePadding: false,
                         align: 'right',
-                        text: (
-                            <div className="actions">
-                                <Tooltip title="Editar formulário">
-                                    <IconButton size="small" onClick={() => handleEdit(medical_form.id)}>
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Exportar como PDF">
-                                    <IconButton size="small">
-                                        <i className="pi pi-file-pdf"></i>
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        ),
+                        text: <Actions medical_form={medical_form} path={path} history={history} />,
                     },
                 ],
             })

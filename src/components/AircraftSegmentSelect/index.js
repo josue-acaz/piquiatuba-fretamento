@@ -14,7 +14,7 @@ import no_image from '../../assets/img/no-image.png';
 
 import './styles.css';
 
-function RenderAircraft({aircraft, operates_aeromedical_transport}) {
+function RenderAircraft({aircraft, operates_aeromedical_transport, serverDatetime}) {
     const [viewSchedule, setViewSchedule] = useState(false);
 
     function openSchedule() {
@@ -29,6 +29,7 @@ function RenderAircraft({aircraft, operates_aeromedical_transport}) {
         <div className="render-aircraft-segment">
             <AircraftSchedule 
                 open={viewSchedule} 
+                serverDatetime={serverDatetime}
                 aircraft_id={aircraft.id} 
                 aircraft_name={aircraft.full_name}
                 handleClose={closeSchedule}
@@ -77,6 +78,7 @@ function RenderAircraft({aircraft, operates_aeromedical_transport}) {
 export default function AircraftSegmentSelect({
     defaultValues,
     onChange,
+    serverDatetime,
     operates_aeromedical_transport,
     submitted=false,
 }) {
@@ -139,7 +141,7 @@ export default function AircraftSegmentSelect({
                 </Col>
                 {inputs.aircraft && (
                     <Col sm="12">
-                        <RenderAircraft aircraft={inputs.aircraft} operates_aeromedical_transport={operates_aeromedical_transport} />
+                        <RenderAircraft serverDatetime={serverDatetime} aircraft={inputs.aircraft} operates_aeromedical_transport={operates_aeromedical_transport} />
                     </Col>
                 )}
             </Row>

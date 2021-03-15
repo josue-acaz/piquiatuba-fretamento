@@ -14,7 +14,7 @@ import Alert from '../../../components/Alert';
 import Dialog from '@material-ui/core/Dialog';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import DialogContent from '@material-ui/core/DialogContent';
-import { getDatetime, shareOnWhatsapp } from '../../../utils';
+import { getDatetime, shareOnWhatsapp, currency } from '../../../utils';
 import { EnumDatetimeFormatTypes, EnumShareWhatsappEndpoints } from '../../../global';
 import api from '../../../api';
 
@@ -133,7 +133,7 @@ function Actions({internal_quotation, last_internal_quotation_status, handleEdit
     );
 }
 
-export default function ListQuotations({history}) {
+export default function ListQuotations({history, serverDatetime}) {
     const feedback = useFeedback();
     const [loading, setLoading] = useState(true);
     const [rows, setRows] = useState([]);
@@ -184,9 +184,55 @@ export default function ListQuotations({history}) {
             rows.push({
                 id: internal_quotation.id,
                 expansive: {
-                    headCells: [],
-                    rows: [],
-                    custom: () => (<></>),
+                    headCells: [
+                        {
+                            id: 1,
+                            label: 'Número do trecho',
+                            disablePadding: false,
+                            align: 'left',
+                        },
+                        {
+                            id: 1,
+                            label: 'Aeródromo de origem',
+                            disablePadding: false,
+                            align: 'left',
+                        },
+                        {
+                            id: 1,
+                            label: 'Aeródromo de destino',
+                            disablePadding: false,
+                            align: 'left',
+                        },
+                    ],
+                    rows: internal_quotation.flight.flight_segments.map((flight_segment, index) => ({
+                        id: index+1,
+                        cells: [
+                            {
+                                id: 1,
+                                text: flight_segment.stretch_number,
+                                disablePadding: false,
+                                align: 'left',
+                            },
+                            {
+                                id: 1,
+                                text: flight_segment.origin_aerodrome.full_name,
+                                disablePadding: false,
+                                align: 'left',
+                            },
+                            {
+                                id: 1,
+                                text: flight_segment.destination_aerodrome.full_name,
+                                disablePadding: false,
+                                align: 'left',
+                            }
+                        ]
+                    })),
+                    custom: () => (
+                        <div className="custom-info">
+                            <p><strong>Aeronave:</strong> {internal_quotation.flight.flight_segments[0].aircraft.full_name}</p>
+                            <p><strong>Preço cotado:</strong> {currency(internal_quotation.flight.final_price)}</p>
+                        </div>
+                    ),
                 },
                 cells: [
                     {
@@ -205,6 +251,7 @@ export default function ListQuotations({history}) {
                         id: 3,
                         text: (
                             <QuotationStatus 
+                                serverDatetime={serverDatetime}
                                 internal_quotation_id={internal_quotation.id}
                                 internal_quotation_name={internal_quotation.full_name}
                                 flight_id={internal_quotation.flight.id}

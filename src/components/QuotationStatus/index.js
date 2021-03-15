@@ -95,7 +95,7 @@ function FlightSegmentDatetime({
     );
 }
 
-export default function QuotationStatus({flight_id, internal_quotation_id, internal_quotation_name, current_status, onChange}) {
+export default function QuotationStatus({flight_id, internal_quotation_id, internal_quotation_name, current_status, onChange, serverDatetime}) {
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState(current_status);
     const [processing, setProcessing] = useState(false);
@@ -370,7 +370,7 @@ export default function QuotationStatus({flight_id, internal_quotation_id, inter
                             <form id="form-segment-status" onSubmit={handleSubmit}>
                                 {flightSegments.map((flight_segment, index) => {
 
-                                    const today = new Date(); // Substituir pela data do servidor
+                                    const today = new Date(serverDatetime); // Substituir pela data do servidor
 
                                     return(
                                         <FlightSegmentDatetime 

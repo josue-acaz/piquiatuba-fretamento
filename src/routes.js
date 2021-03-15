@@ -5,16 +5,16 @@ import { store } from './auth/helpers';
 import AppRoutes from './routes/app.routes';
 import AuthRoutes from './routes/auth.routes';
 
-function GetRoutes() {
+function GetRoutes({serverDatetime}) {
     const loggedIn = useSelector(state => state.authentication.loggedIn);
-    return loggedIn ? <AppRoutes /> : <AuthRoutes />;
+    return loggedIn ? <AppRoutes serverDatetime={serverDatetime} /> : <AuthRoutes />;
 }
 
-export default function Routes() {
+export default function Routes({serverDatetime}) {
     return(
         <BrowserRouter>
             <Provider store={store}>
-                <GetRoutes />
+                <GetRoutes serverDatetime={serverDatetime} />
             </Provider>
         </BrowserRouter>
     );

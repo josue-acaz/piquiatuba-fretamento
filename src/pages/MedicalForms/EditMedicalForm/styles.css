@@ -14,3 +14,25 @@
     padding-left: 1rem;
     cursor: pointer;
 }
+.wrapper-medical-form .divider-form {
+    margin-bottom: 1rem;
+}
+.wrapper-medical-form form label {
+    font-weight: bold;
+}
+.wrapper-medical-form form .section-title {
+    font-size: 20;
+    text-transform: uppercase;
+}
+.wrapper-medical-form .select-plan {
+    width: 100%;
+    font-size: 18px;
+    height: 48px;
+    border: none;
+    border-radius: .6rem;
+    background-color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    padding-left: .8rem;
+    color: #666666;
+}

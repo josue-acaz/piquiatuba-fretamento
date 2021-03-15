@@ -33,8 +33,6 @@ class SistemaVoar {
         });
 
         const aircraft_status = response.data;
-        console.log({aircraft_status});
-        
         return aircraft_status;
     }
 
@@ -53,8 +51,6 @@ class SistemaVoar {
             }
         });
         const aircraft_status = response.data;
-        console.log({aircraft_status});
-
         return aircraft_status;
     }
 }

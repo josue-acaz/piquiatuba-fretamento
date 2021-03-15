@@ -55,7 +55,7 @@ const routes = [
     },
 ];
 
-const AppRoutes = () => {
+const AppRoutes = ({serverDatetime}) => {
     const[minimized, setMinimized] = useState(false);
     const handleMaxMin = () => { setMinimized(!minimized) };
 
@@ -68,7 +68,7 @@ const AppRoutes = () => {
                             key={route.id} 
                             exact={route.exact} 
                             path={route.path} 
-                            component={route.component} 
+                            component={(props) => <route.component serverDatetime={serverDatetime} {...props} />} 
                         />
                     ))}
                 </FeedbackProvider>

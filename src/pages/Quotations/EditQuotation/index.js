@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouteMatch, useParams, useLocation } from 'react-router-dom';
 import { WrapperContent } from '../../../core/design';
 import { PageTitle, Extra, GoBack } from '../../../components';
+import Processing from '../../../components/Processing';
 import { useFeedback } from '../../../core/feedback/feedback.context';
 import AircraftSegmentSelect from '../../../components/AircraftSegmentSelect';
 import FlightSegment from '../../../components/FlightSegment';
@@ -21,7 +22,7 @@ import api from '../../../api';
 
 import './styles.css';
 
-export default function Generate({history}) {
+export default function EditQuotation({history, serverDatetime}) {
     const {internal_quotation_id} = useParams();
     const {state} = useLocation();
     const edit = internal_quotation_id !== '0';
@@ -512,7 +513,7 @@ export default function Generate({history}) {
                 onConfirm={handleSave}
                 onCancel={() => setOpenAlert(false)}
             />
-            {loading ? <p>Carregando...</p> : (
+            {loading ? <Processing /> : (
                 <section id="generate" className="generate">
                     <GoBack onClick={() => {
                         history.goBack();
@@ -528,6 +529,7 @@ export default function Generate({history}) {
                             onChange={handleChangeClientSegment} 
                         />
                         <AircraftSegmentSelect 
+                            serverDatetime={serverDatetime}
                             defaultValues={aircraftSegment}
                             operates_aeromedical_transport={clientSegment.type_of_transport === 'aeromedical'} 
                             onChange={handleChangeAircraftSegment} 
