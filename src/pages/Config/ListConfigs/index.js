@@ -18,7 +18,7 @@ import api from '../../../api';
 
 import './styles.css';
 
-function AdminRow({admin, onUpdate, handleRefresh}) {
+function AdminRow({admin, onUpdate, handleRefresh, path, history}) {
     const {user} = admin;
     const [open, setOpen] = useState(false);
     const [processing, setProcessing] = useState(false);
@@ -82,6 +82,10 @@ function AdminRow({admin, onUpdate, handleRefresh}) {
         if(!value) {
             onUpdate(user.id, data);
         }
+    }
+
+    function handleEdit(admin_id) {
+        history.push(`${path}/${admin_id}/edit`);
     }
 
     return(
@@ -181,7 +185,7 @@ function AdminRow({admin, onUpdate, handleRefresh}) {
             <td style={{textAlign: 'right'}}>
                 <div className="actions">
                     <Tooltip title="Editar administrador">
-                        <IconButton>
+                        <IconButton onClick={() => handleEdit(admin.id)}>
                             <EditIcon className="icon" />
                         </IconButton>
                     </Tooltip>
@@ -261,7 +265,7 @@ export default function ListConfigs({history}) {
                             <th>Notificações</th>
                             <th>Ações</th>
                         </tr>
-                        {admins.map(admin => <AdminRow admin={admin} onUpdate={handleUpdate} handleRefresh={handleRefresh} />)}
+                        {admins.map((admin, index) => <AdminRow key={index} path={path} admin={admin} onUpdate={handleUpdate} handleRefresh={handleRefresh} history={history} />)}
                     </table>
                 </div>
             )}

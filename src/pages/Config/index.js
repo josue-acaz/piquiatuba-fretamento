@@ -25,9 +25,12 @@ export default function Bases(props) {
     return(
         <Switch>
             {routes.reverse().map(route => (
-                <Route key={route.id} exact={route.exact} path={route.path}>
-                    <route.component {...props} />
-                </Route>
+                <Route 
+                    key={route.id} 
+                    exact={route.exact} 
+                    path={route.path} 
+                    component={route.component} 
+                />
             ))}
         </Switch>
     );

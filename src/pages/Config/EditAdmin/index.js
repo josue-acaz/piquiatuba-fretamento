@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useParams} from 'react-router-dom';
 import {WrapperContent, Card} from '../../../core/design';
 import {Row, Col} from 'react-bootstrap';
 import {Input, InputAdorment, GoBack, PageTitle, Alert} from '../../../components';
@@ -15,7 +16,10 @@ import api from '../../../api';
 import './styles.css';
 
 export default function EditAdmin({history}) {
+    const {admin_id} = useParams();
+    const edit = admin_id !== '0';
     const [submitted, setSubmitted] = useState(false);
+    const [admin, setAdmin] = useState(null);
     const [inputs, setInputs] = useState({
         name: '',
         email: '',
@@ -48,7 +52,34 @@ export default function EditAdmin({history}) {
     }
 
     useEffect(() => {
-        
+        async function show() {
+            try {
+                const response = await api.get(`/admins/${admin_id}/show`);
+                setAdmin(response.data);
+                const {sector, user: {
+                    name,
+                    email,
+                    phone_number,
+                }} = response.data;
+
+                const form = {
+                    name,
+                    email,
+                    phone_number,
+                    sector,
+                    password: '',
+                };
+
+                Object.keys(form).forEach(key => {
+                    const form_el = form[key];
+                    setInputs(inputs => ({ ...inputs, [key]: form_el }));
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        show();
     }, []);
 
     function goBack() {
@@ -62,8 +93,14 @@ export default function EditAdmin({history}) {
         if(inputs.name &&
             inputs.email &&
             inputs.sector &&
-            inputs.phone_number &&
-            inputs.password) {
+            inputs.phone_number) {
+
+            if(!edit) {
+                if(!inputs.password) {
+                    return;
+                }
+            }
+
             setOpen(true);
         }
     }
@@ -71,23 +108,37 @@ export default function EditAdmin({history}) {
     async function handleAdd() {
         setProcessing(true);
 
-        const data = {
+        const data_user = {
             name: inputs.name.trim(),
             email: inputs.email,
             phone_number: inputs.phone_number,
-            sector: inputs.sector.trim(),
             password: inputs.password,
         };
 
+        const data_admin = {
+            sector: inputs.sector.trim(),
+        };
+
         try {
-            await api.post('/admins', data);
-            setProcessing(true);
+            if(edit) {
+                await api.put(`/admins/${admin.user.id}/update`, {
+                    user: data_user,
+                    admin: data_admin,
+                });
+            } else {
+                await api.post('/admins', {
+                    ...data_admin,
+                    ...data_user,
+                });
+                history.goBack();
+            }
+
+            setProcessing(false);
+            setOpen(false);
             feedback.open({
                 severity: 'success',
                 msg: 'Operação realizada com sucesso!'
             });
-
-            history.goBack();
         } catch (error) {
             console.error(error);
             setProcessing(true);
@@ -103,16 +154,16 @@ export default function EditAdmin({history}) {
             <Alert 
                 open={open} 
                 processing={processing}
-                title="Adicionar novo adminstrador?"
-                message={`A adminstrador ${inputs.name} será adicionado!`}
+                title={edit ? 'Alterar dados?' : 'Adicionar novo adminstrador?'}
+                message={edit ? 'Os dados serão alterados!' : `A adminstrador ${inputs.name} será adicionado!`}
                 processingTitle="Salvando..."
                 processingMsg="Por favor, aguarde!"
                 onConfirm={handleAdd}
                 onCancel={() => setOpen(false)}
             />
 
-            <GoBack onSubmit={goBack} />
-            <PageTitle title="Novo administrador" subtitle="Adicionar ou editar administradores" />
+            <GoBack onClick={goBack} />
+            <PageTitle title={edit ? 'Editar administrador' : 'Novo administrador'} subtitle="Dados do administrador" />
             <section id="add-admin" className="add-admin">
                 <Card>
                     <form id="form-admin" onSubmit={handleSubmit}>
@@ -186,7 +237,7 @@ export default function EditAdmin({history}) {
                                             {visiblePassword ? <VisibilityIcon className="icon" /> : <VisibilityOffIcon className="icon" />}
                                         </IconButton>
                                     }
-                                    error={submitted && !inputs.password}
+                                    error={(submitted && !inputs.password) && !edit}
                                 />
                             </Col>
                         </Row>
